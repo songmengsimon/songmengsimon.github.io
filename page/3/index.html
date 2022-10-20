@@ -495,7 +495,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-03 20:41:18" itemprop="dateModified" datetime="2022-10-03T20:41:18+08:00">2022-10-03</time>
+                <time title="修改时间：2022-10-20 13:27:47" itemprop="dateModified" datetime="2022-10-20T13:27:47+08:00">2022-10-20</time>
               </span>
 
           
@@ -646,9 +646,16 @@
 
 <p>当使用const指针指向的值也是const类型时，const指针本身必须再次使用一次const，因为要保持类型的一致</p>
 <h3 id="顶-x2F-底层const"><a href="#顶-x2F-底层const" class="headerlink" title="顶&#x2F;底层const"></a>顶&#x2F;底层const</h3><p>对于指针，指针本身是一个对象，而它也指向了另一个对象，<strong>因此用顶层const表示指针本身是个const类型，用底层const表示指针所指的对象时一个const型</strong>。一般来说，顶层const可以表示任意对象。</p>
-<h2 id="7、constexpr类型"><a href="#7、constexpr类型" class="headerlink" title="7、constexpr类型"></a>7、constexpr类型</h2><ul>
-<li><p>常量表达式：指值不会改变<strong>并且在编译过程就能得到结果的表达式</strong>；字面值、用常量表达式初始化的const对象也是常量表达式。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> i = <span class="number">10</span>;			<span class="comment">//字面值是常量表达式</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> j = i+<span class="number">1</span>;			<span class="comment">//j是常量表达式</span></span><br><span class="line"><span class="type">int</span> k = i;					<span class="comment">//k不是const对象，所以k不是是常量表达式</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> m = get_val(); 	<span class="comment">//m的值直到运行时才能获得，所以m不是常量表达是</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>当const + 类型 时，意为使这个类型的值为常量，如</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> *p;</span><br></pre></td></tr></table></figure>
+
+<p>定义一个指针变量，该变量所指的值为int型，因此该值（*p）不可被修改，但是p可以被修改。</p>
+</li>
+<li><p>当const + 变量 时，意为使该变量为常量，如：</p>
+</li>
+<li><p>&#96;&#96;&#96;c++<br>int* const p;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  指针变量p为常量，因此其指向的地址无法被改变，但是地址中的值(*p)可以被改变。</span><br><span class="line"></span><br><span class="line">## 7、constexpr类型</span><br><span class="line"></span><br><span class="line">* 常量表达式：指值不会改变**并且在编译过程就能得到结果的表达式**；字面值、用常量表达式初始化的const对象也是常量表达式。</span><br><span class="line"></span><br><span class="line">  ```c</span><br><span class="line">  const int i = 10;			//字面值是常量表达式</span><br><span class="line">  const int j = i+1;			//j是常量表达式</span><br><span class="line">  int k = i;					//k不是const对象，所以k不是是常量表达式</span><br><span class="line">  const int m = get_val(); 	//m的值直到运行时才能获得，所以m不是常量表达是</span><br></pre></td></tr></table></figure>
 
 <p>从上面我们可以看出，使用const进行声明时，我们需要<strong>人为的验证</strong>赋给const对象的初始值是不是常量表达是，在复杂系统中，有时候很难分辨，而使用constexpr进行声明时，可以由<strong>编译器来验证</strong>变量是不是常量表达式</p>
 </li>
