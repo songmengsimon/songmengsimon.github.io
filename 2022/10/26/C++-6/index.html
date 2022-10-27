@@ -22,25 +22,28 @@
     var CONFIG = {"hostname":"dhkkk.gitee.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="记录一些学习日常">
-<meta property="og:type" content="website">
-<meta property="og:title" content="小董的BLOG">
-<meta property="og:url" content="https://dhkkk.gitee.io/index.html">
+  <meta name="description" content="定义抽象数据类型定义一个类C++中可以使用struct和class构建一个类，struct为继承C语言留下，但用法与C不同。struct和class使用方法完全相同，只是对类成员默认的访问权限不同，这点后面会谈到。 123456struct&#x2F;class person&amp;#123;	string name;	string addr;   int test();&amp;#125;  在类的外部定义成员函数C+">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++_类">
+<meta property="og:url" content="https://dhkkk.gitee.io/2022/10/26/C++-6/index.html">
 <meta property="og:site_name" content="小董的BLOG">
-<meta property="og:description" content="记录一些学习日常">
+<meta property="og:description" content="定义抽象数据类型定义一个类C++中可以使用struct和class构建一个类，struct为继承C语言留下，但用法与C不同。struct和class使用方法完全相同，只是对类成员默认的访问权限不同，这点后面会谈到。 123456struct&#x2F;class person&amp;#123;	string name;	string addr;   int test();&amp;#125;  在类的外部定义成员函数C+">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-10-26T12:53:02.000Z">
+<meta property="article:modified_time" content="2022-10-27T14:07:12.432Z">
 <meta property="article:author" content="dhk">
+<meta property="article:tag" content="C++学习">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://dhkkk.gitee.io/">
+<link rel="canonical" href="https://dhkkk.gitee.io/2022/10/26/C++-6/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
@@ -58,7 +61,7 @@
   padding: 1px 4px;
 }
 </style>
-  <title>小董的BLOG</title>
+  <title>C++_类 | 小董的BLOG</title>
   
 
 
@@ -189,90 +192,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkk.gitee.io/2022/09/08/%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/09/08/%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/" class="post-title-link" itemprop="url">使用说明</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-    <i class="fa fa-thumb-tack"></i>
-    <font color=green>TOP</font>
-    <span class="post-meta-divider">|</span>
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-09-08 18:51:12" itemprop="dateCreated datePublished" datetime="2022-09-08T18:51:12+08:00">2022-09-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-09-20 21:57:48" itemprop="dateModified" datetime="2022-09-20T21:57:48+08:00">2022-09-20</time>
-              </span>
-
-          
-
-        </div>
-      </header>
 
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="欢迎访问DHK的个人博客！以下是一些使用说明："><a href="#欢迎访问DHK的个人博客！以下是一些使用说明：" class="headerlink" title="欢迎访问DHK的个人博客！以下是一些使用说明："></a>欢迎访问DHK的个人博客！以下是一些使用说明：</h1><h2 id="1-写的目的"><a href="#1-写的目的" class="headerlink" title="1.写的目的"></a>1.写的目的</h2><p>主要是为了记录自己在一些学习中的笔记和感想，方便日后回忆与查阅，仅供内部学习，未经同意请勿转载！</p>
-<p>由于大部分是将自己的理解总结出来，所以有些地方不一定正确，也欢迎读者随时给予斧正，一些联系方式也已经放在侧边栏。</p>
-<h2 id="2-如何查找需要内容"><a href="#2-如何查找需要内容" class="headerlink" title="2.如何查找需要内容"></a>2.如何查找需要内容</h2><ul>
-<li>左侧目录有相关分类tag，以供查找</li>
-<li>也可以通过左侧搜索功能搜索想要的内容</li>
-<li>左侧我的GitHub仓库中也上传过之前使用过的一些例程模板</li>
-</ul>
-<h2 id="3-注意事项"><a href="#3-注意事项" class="headerlink" title="3.注意事项"></a>3.注意事项</h2><ul>
-<li><u>如果你曾经打开过此博客网站，<strong>请务必在阅读相关博客之前先Ctrl+F5</strong>强制清理之前的缓存，不然你可能会看不到最新更新的内容！！！</u><em>（感觉是gitee的问题，之前部署到GitHub时并未遇见此问题）</em></li>
-<li>如果想定位到想查找的内容的具体位置，建议先用博客的搜索功能定位到文章，再通过ctrl F搜索关键字即可。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -288,10 +211,9 @@
       <meta itemprop="name" content="小董的BLOG">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/10/26/C++-6/" class="post-title-link" itemprop="url">C++_类</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          C++_类
+        </h1>
 
         <div class="post-meta">
 		  
@@ -323,7 +245,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="定义抽象数据类型"><a href="#定义抽象数据类型" class="headerlink" title="定义抽象数据类型"></a>定义抽象数据类型</h1><h2 id="定义一个类"><a href="#定义一个类" class="headerlink" title="定义一个类"></a>定义一个类</h2><p>C++中可以使用struct和class构建一个类，struct为继承C语言留下，但用法与C不同。struct和class使用方法完全相同，只是对类成员默认的访问权限不同，这点后面会谈到。</p>
+        <h1 id="定义抽象数据类型"><a href="#定义抽象数据类型" class="headerlink" title="定义抽象数据类型"></a>定义抽象数据类型</h1><h2 id="定义一个类"><a href="#定义一个类" class="headerlink" title="定义一个类"></a>定义一个类</h2><p>C++中可以使用struct和class构建一个类，struct为继承C语言留下，但用法与C不同。struct和class使用方法完全相同，只是对类成员默认的访问权限不同，这点后面会谈到。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span>/<span class="keyword">class</span> <span class="title class_">person</span></span><br><span class="line">&#123;</span><br><span class="line">	string name;</span><br><span class="line">	string addr;</span><br><span class="line">   <span class="function"><span class="type">int</span> <span class="title">test</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="在类的外部定义成员函数"><a href="#在类的外部定义成员函数" class="headerlink" title="在类的外部定义成员函数"></a>在类的外部定义成员函数</h2><p>C++的struct与C最不同的一点就是C++可以在类中定义函数，例如上述类中声明了一个返回值为int型的函数。</p>
@@ -361,190 +283,41 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">person</span></span><br><span class="line">&#123;	</span><br><span class="line">   <span class="built_in">person</span>()=<span class="keyword">default</span>;</span><br><span class="line">   <span class="built_in">person</span>(string s1, string s2) &#123;name=s1;addr=s2;&#125;</span><br><span class="line">   <span class="built_in">person</span>(person &amp;item) &#123;<span class="built_in">copy</span>(item);&#125;</span><br><span class="line">   <span class="built_in">person</span>(istream &amp;in) &#123;<span class="built_in">read</span>(in,*<span class="keyword">this</span>);&#125;</span><br><span class="line"><span class="comment">/**********************以上为构造函数*******************/</span>      </span><br><span class="line">	string name;</span><br><span class="line">	string addr;</span><br><span class="line">   <span class="function">person&amp; <span class="title">copy</span><span class="params">(<span class="type">const</span> person &amp;x)</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">      name=x.name;</span><br><span class="line">      <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">istream &amp;<span class="title">read</span><span class="params">(istream &amp;in, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    in&gt;&gt;item.name&gt;&gt;item.addr;</span><br><span class="line">    <span class="keyword">return</span> in;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   person a;</span><br><span class="line">   <span class="function">string <span class="title">s1</span><span class="params">(<span class="string">&quot;dhk&quot;</span>)</span>,<span class="title">s2</span><span class="params">(<span class="string">&quot;aca&quot;</span>)</span></span>; <span class="function">person <span class="title">b</span><span class="params">(s1,s2)</span></span>;</span><br><span class="line">   <span class="function">person <span class="title">c</span><span class="params">(b)</span></span>;</span><br><span class="line">   <span class="function">person <span class="title">d</span><span class="params">(cin)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
-      
     </div>
 
     
     
-    
+    <div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
+          <div class="post-tags">
+              <a href="/tags/C-%E5%AD%A6%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i># C++学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/10/14/51%E5%8D%95%E7%89%87%E6%9C%BA%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/" rel="prev" title="51单片机汇编指令查询">
+      <i class="fa fa-chevron-left"></i> 51单片机汇编指令查询
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
       </footer>
+    
   </article>
   
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkk.gitee.io/2022/10/14/51%E5%8D%95%E7%89%87%E6%9C%BA%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/10/14/51%E5%8D%95%E7%89%87%E6%9C%BA%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/" class="post-title-link" itemprop="url">51单片机汇编指令查询</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2022-10-14 10:13:19 / 修改时间：16:39:56" itemprop="dateCreated datePublished" datetime="2022-10-14T10:13:19+08:00">2022-10-14</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1、寻址"><a href="#1、寻址" class="headerlink" title="1、寻址"></a>1、寻址</h1><h2 id="寻址方式"><a href="#寻址方式" class="headerlink" title="寻址方式"></a>寻址方式</h2><p>寻找操作数的地址的各种方式。</p>
-<h3 id="1-立即寻址"><a href="#1-立即寻址" class="headerlink" title="1.立即寻址"></a>1.立即寻址</h3><p>直接使用操作数将操作数存入相关地址中</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MOV R0,#26H</span><br><span class="line">MOV DPTR,#2000H</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>立即数可以是8位或16位</li>
-<li>立即数前必须加<code>#</code></li>
-</ul>
-<h3 id="2-直接寻址"><a href="#2-直接寻址" class="headerlink" title="2.直接寻址"></a>2.直接寻址</h3><p>将操作数视为地址，并将该地址存储的数据转递到相关地址中。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MOV A,30H //相当于对30H进行解引用，将30H值传入A中</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-寄存器寻址"><a href="#3-寄存器寻址" class="headerlink" title="3.寄存器寻址"></a>3.寄存器寻址</h3><p>直接使用寄存器名字作为地址并对进行解引用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MOV A,R1 //*R1</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-寄存器间接寻址"><a href="#4-寄存器间接寻址" class="headerlink" title="4.寄存器间接寻址"></a>4.寄存器间接寻址</h3><p>指定寄存器的内容为操作数的地址，该地址存储的内容才是操作数</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MOV A,@R0 // @R0相当于**R0</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>需使用间址符<code>@</code></li>
-<li>对外部RAM进行读取时必须采用该方式</li>
-</ul>
-<h3 id="5-变址寻址"><a href="#5-变址寻址" class="headerlink" title="5.变址寻址"></a>5.变址寻址</h3><p>通过对基地址进行偏移获得当前操作数地址</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MOV A,#06H</span><br><span class="line">MOVC A,@A+PC</span><br></pre></td></tr></table></figure>
-
-<p>由于这里（@A+PC）整体应为一个地址，所以这里要对<strong>A使用间址符取06H作为地址</strong>的偏移量，因此该两行指令的意思为：将（@A+PC）地址中存储的数据传入A中</p>
-<h3 id="6-相对寻址"><a href="#6-相对寻址" class="headerlink" title="6.相对寻址"></a>6.相对寻址</h3><p>直接以PC作为基地址，只写出相对偏移量，有两种方式：</p>
-<h4 id="无条件转移："><a href="#无条件转移：" class="headerlink" title="无条件转移："></a>无条件转移：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SJMP 08H //使PC转移至当前PC值+08H（当前PC为下一指令地址）</span><br></pre></td></tr></table></figure>
-
-<h4 id="条件转移："><a href="#条件转移：" class="headerlink" title="条件转移："></a>条件转移：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JZ LOP //仅当（A）=0时执行，LOP为标号</span><br></pre></td></tr></table></figure>
-
-<h1 id="2、指令系统"><a href="#2、指令系统" class="headerlink" title="2、指令系统"></a>2、指令系统</h1><h2 id="1-数据传送指令"><a href="#1-数据传送指令" class="headerlink" title="1.数据传送指令"></a>1.数据传送指令</h2><ul>
-<li>片内数据传送：MOV</li>
-<li>片外数据传送：MOVX</li>
-<li>程序存储器数据传送：MOVC</li>
-</ul>
-<h2 id="2-数据交换指令"><a href="#2-数据交换指令" class="headerlink" title="2.数据交换指令"></a>2.数据交换指令</h2><ul>
-<li><p>字节交换（全部）：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">XCH A,Rn</span><br><span class="line">XCH A,@Ri //寄存器区只有R0和R1可用作间接寻址</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>字节交换（低四位）：XCHD</p>
-</li>
-<li><p>字节交换（高低互换）：SWAP</p>
-</li>
-</ul>
-<h2 id="3-堆栈操作指令"><a href="#3-堆栈操作指令" class="headerlink" title="3.堆栈操作指令"></a>3.堆栈操作指令</h2><ul>
-<li>入栈：PUSH	SP先变化再压栈</li>
-<li>出栈：POP      先出栈再变化SP</li>
-</ul>
-<h2 id="4-算术运算指令"><a href="#4-算术运算指令" class="headerlink" title="4.算术运算指令"></a>4.算术运算指令</h2><ul>
-<li>加法<ul>
-<li>不带进位： ADD</li>
-<li>带进位（Cy）：ADDC</li>
-<li>加一：INC</li>
-</ul>
-</li>
-<li>减法<ul>
-<li>不带进位：SUB</li>
-<li>带进位：SUBB</li>
-<li>减一：DEC</li>
-</ul>
-</li>
-<li>乘法：MUL</li>
-<li>除法：DIV</li>
-</ul>
-<h2 id="5-逻辑运算指令"><a href="#5-逻辑运算指令" class="headerlink" title="5.逻辑运算指令"></a>5.逻辑运算指令</h2><ul>
-<li>逻辑与：ANL</li>
-<li>逻辑或：ORL</li>
-<li>逻辑异或：XRL</li>
-<li>取反：CPL</li>
-<li>清零：CLR</li>
-<li>移位<ul>
-<li>不带进位：RL&#x2F;RR 左移&#x2F;右移1位</li>
-<li>带进位：RLC&#x2F;RRC ~</li>
-</ul>
-</li>
-</ul>
-<h2 id="6-位运算"><a href="#6-位运算" class="headerlink" title="6.位运算"></a>6.位运算</h2><p>该运算对象仅针对Cy和bit型对象</p>
-<ul>
-<li>位传送：MOV</li>
-<li>置1：SETB</li>
-<li>清0：CLR</li>
-<li>取非：CPL</li>
-<li>取与：ANL</li>
-<li>取或：ORL</li>
-</ul>
-<h2 id="7-控制转移类指令"><a href="#7-控制转移类指令" class="headerlink" title="7.控制转移类指令"></a>7.控制转移类指令</h2><ul>
-<li><p>无条件转移：LJMP  3字节，直接转移至该16位地址</p>
-</li>
-<li><p>相对转移：SJMP</p>
-</li>
-<li><p>条件转移：**(条件转移皆为相对PC的转移)**</p>
-<ul>
-<li><p>累加器<u><strong>判0</strong></u>：JZ&#x2F;JNZ</p>
-</li>
-<li><p>进位Cy判断：JC&#x2F;JNC</p>
-</li>
-<li><p>任意位判断：JB&#x2F;JNB&#x2F;JBC</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">JB bit,rel</span><br><span class="line">// bit: 判断位  rel：偏移量</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>比较<strong>不相等</strong>判断（不相等为满足条件）:CJNE</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CJNE A,#data,rel</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>减1<strong>不为0</strong>判断转移：DJNZ</p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
 
 
           </div>
@@ -595,6 +368,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E6%8A%BD%E8%B1%A1%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">定义抽象数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E4%B8%80%E4%B8%AA%E7%B1%BB"><span class="nav-number">1.1.</span> <span class="nav-text">定义一个类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E7%B1%BB%E7%9A%84%E5%A4%96%E9%83%A8%E5%AE%9A%E4%B9%89%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.</span> <span class="nav-text">在类的外部定义成员函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E4%B8%80%E4%B8%AA%E8%BF%94%E5%9B%9E%E7%B1%BB%E7%9A%84%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.</span> <span class="nav-text">定义一个返回类的函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E7%B1%BB%E7%9B%B8%E5%85%B3%E7%9A%84%E9%9D%9E%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0"><span class="nav-number">1.4.</span> <span class="nav-text">定义类相关的非成员函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E5%AE%9A%E4%B9%89%E6%B5%81%E7%9A%84%E5%BC%95%E7%94%A8%E7%9B%B4%E6%8E%A5%E6%93%8D%E4%BD%9C%E7%B1%BB%E6%88%90%E5%91%98%E7%9A%84%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA"><span class="nav-number">1.4.1.</span> <span class="nav-text">通过定义流的引用直接操作类成员的输入输出</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B1%BB%E7%9A%84%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">类的构造函数</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
