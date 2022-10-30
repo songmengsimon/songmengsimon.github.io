@@ -1,120 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>51单片机汇编指令查询</title>
-    <url>/2022/10/14/51%E5%8D%95%E7%89%87%E6%9C%BA%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/</url>
-    <content><![CDATA[<h1 id="1、寻址"><a href="#1、寻址" class="headerlink" title="1、寻址"></a>1、寻址</h1><h2 id="寻址方式"><a href="#寻址方式" class="headerlink" title="寻址方式"></a>寻址方式</h2><p>寻找操作数的地址的各种方式。</p>
-<h3 id="1-立即寻址"><a href="#1-立即寻址" class="headerlink" title="1.立即寻址"></a>1.立即寻址</h3><p>直接使用操作数将操作数存入相关地址中</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">MOV R0,#26H</span><br><span class="line">MOV DPTR,#2000H</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>立即数可以是8位或16位</li>
-<li>立即数前必须加<code>#</code></li>
-</ul>
-<h3 id="2-直接寻址"><a href="#2-直接寻址" class="headerlink" title="2.直接寻址"></a>2.直接寻址</h3><p>将操作数视为地址，并将该地址存储的数据转递到相关地址中。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">MOV A,30H //相当于对30H进行解引用，将30H值传入A中</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-寄存器寻址"><a href="#3-寄存器寻址" class="headerlink" title="3.寄存器寻址"></a>3.寄存器寻址</h3><p>直接使用寄存器名字作为地址并对进行解引用</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">MOV A,R1 //*R1</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-寄存器间接寻址"><a href="#4-寄存器间接寻址" class="headerlink" title="4.寄存器间接寻址"></a>4.寄存器间接寻址</h3><p>指定寄存器的内容为操作数的地址，该地址存储的内容才是操作数</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">MOV A,@R0 // @R0相当于**R0</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>需使用间址符<code>@</code></li>
-<li>对外部RAM进行读取时必须采用该方式</li>
-</ul>
-<h3 id="5-变址寻址"><a href="#5-变址寻址" class="headerlink" title="5.变址寻址"></a>5.变址寻址</h3><p>通过对基地址进行偏移获得当前操作数地址</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">MOV A,#06H</span><br><span class="line">MOVC A,@A+PC</span><br></pre></td></tr></table></figure>
-
-<p>由于这里（@A+PC）整体应为一个地址，所以这里要对<strong>A使用间址符取06H作为地址</strong>的偏移量，因此该两行指令的意思为：将（@A+PC）地址中存储的数据传入A中</p>
-<h3 id="6-相对寻址"><a href="#6-相对寻址" class="headerlink" title="6.相对寻址"></a>6.相对寻址</h3><p>直接以PC作为基地址，只写出相对偏移量，有两种方式：</p>
-<h4 id="无条件转移："><a href="#无条件转移：" class="headerlink" title="无条件转移："></a>无条件转移：</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SJMP 08H //使PC转移至当前PC值+08H（当前PC为下一指令地址）</span><br></pre></td></tr></table></figure>
-
-<h4 id="条件转移："><a href="#条件转移：" class="headerlink" title="条件转移："></a>条件转移：</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">JZ LOP //仅当（A）=0时执行，LOP为标号</span><br></pre></td></tr></table></figure>
-
-<h1 id="2、指令系统"><a href="#2、指令系统" class="headerlink" title="2、指令系统"></a>2、指令系统</h1><h2 id="1-数据传送指令"><a href="#1-数据传送指令" class="headerlink" title="1.数据传送指令"></a>1.数据传送指令</h2><ul>
-<li>片内数据传送：MOV</li>
-<li>片外数据传送：MOVX</li>
-<li>程序存储器数据传送：MOVC</li>
-</ul>
-<h2 id="2-数据交换指令"><a href="#2-数据交换指令" class="headerlink" title="2.数据交换指令"></a>2.数据交换指令</h2><ul>
-<li><p>字节交换（全部）：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">XCH A,Rn</span><br><span class="line">XCH A,@Ri //寄存器区只有R0和R1可用作间接寻址</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>字节交换（低四位）：XCHD</p>
-</li>
-<li><p>字节交换（高低互换）：SWAP</p>
-</li>
-</ul>
-<h2 id="3-堆栈操作指令"><a href="#3-堆栈操作指令" class="headerlink" title="3.堆栈操作指令"></a>3.堆栈操作指令</h2><ul>
-<li>入栈：PUSH	SP先变化再压栈</li>
-<li>出栈：POP      先出栈再变化SP</li>
-</ul>
-<h2 id="4-算术运算指令"><a href="#4-算术运算指令" class="headerlink" title="4.算术运算指令"></a>4.算术运算指令</h2><ul>
-<li>加法<ul>
-<li>不带进位： ADD</li>
-<li>带进位（Cy）：ADDC</li>
-<li>加一：INC</li>
-</ul>
-</li>
-<li>减法<ul>
-<li>不带进位：SUB</li>
-<li>带进位：SUBB</li>
-<li>减一：DEC</li>
-</ul>
-</li>
-<li>乘法：MUL</li>
-<li>除法：DIV</li>
-</ul>
-<h2 id="5-逻辑运算指令"><a href="#5-逻辑运算指令" class="headerlink" title="5.逻辑运算指令"></a>5.逻辑运算指令</h2><ul>
-<li>逻辑与：ANL</li>
-<li>逻辑或：ORL</li>
-<li>逻辑异或：XRL</li>
-<li>取反：CPL</li>
-<li>清零：CLR</li>
-<li>移位<ul>
-<li>不带进位：RL&#x2F;RR 左移&#x2F;右移1位</li>
-<li>带进位：RLC&#x2F;RRC ~</li>
-</ul>
-</li>
-</ul>
-<h2 id="6-位运算"><a href="#6-位运算" class="headerlink" title="6.位运算"></a>6.位运算</h2><p>该运算对象仅针对Cy和bit型对象</p>
-<ul>
-<li>位传送：MOV</li>
-<li>置1：SETB</li>
-<li>清0：CLR</li>
-<li>取非：CPL</li>
-<li>取与：ANL</li>
-<li>取或：ORL</li>
-</ul>
-<h2 id="7-控制转移类指令"><a href="#7-控制转移类指令" class="headerlink" title="7.控制转移类指令"></a>7.控制转移类指令</h2><ul>
-<li><p>无条件转移：LJMP  3字节，直接转移至该16位地址</p>
-</li>
-<li><p>相对转移：SJMP</p>
-</li>
-<li><p>条件转移：**(条件转移皆为相对PC的转移)**</p>
-<ul>
-<li><p>累加器<u><strong>判0</strong></u>：JZ&#x2F;JNZ</p>
-</li>
-<li><p>进位Cy判断：JC&#x2F;JNC</p>
-</li>
-<li><p>任意位判断：JB&#x2F;JNB&#x2F;JBC</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">JB bit,rel</span><br><span class="line">// bit: 判断位  rel：偏移量</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>比较<strong>不相等</strong>判断（不相等为满足条件）:CJNE</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CJNE A,#data,rel</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>减1<strong>不为0</strong>判断转移：DJNZ</p>
-</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>嵌入式学习</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>C++_2</title>
     <url>/2022/09/09/C++-2/</url>
     <content><![CDATA[<h1 id="第二章——变量和基本类型"><a href="#第二章——变量和基本类型" class="headerlink" title="第二章——变量和基本类型"></a>第二章——变量和基本类型</h1><h2 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h2><p>C++这个板块是我在学习了C之后才学的，因此我只会记录一些重要的或者在C中没有的东西</p>
@@ -317,217 +203,117 @@
       </tags>
   </entry>
   <entry>
-    <title>C++_3</title>
-    <url>/2022/09/15/C++-3/</url>
-    <content><![CDATA[<h1 id="字符串、向量和数组"><a href="#字符串、向量和数组" class="headerlink" title="字符串、向量和数组"></a>字符串、向量和数组</h1><h2 id="1、using声明"><a href="#1、using声明" class="headerlink" title="1、using声明"></a>1、using声明</h2><p>作用：使用using声明命名空间的相关成员后，后续不需再声明</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> std::cin;</span><br><span class="line"><span class="type">int</span> i;</span><br><span class="line">cin&gt;&gt;i;</span><br></pre></td></tr></table></figure>
+    <title>51单片机汇编指令查询</title>
+    <url>/2022/10/14/51%E5%8D%95%E7%89%87%E6%9C%BA%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/</url>
+    <content><![CDATA[<h1 id="1、寻址"><a href="#1、寻址" class="headerlink" title="1、寻址"></a>1、寻址</h1><h2 id="寻址方式"><a href="#寻址方式" class="headerlink" title="寻址方式"></a>寻址方式</h2><p>寻找操作数的地址的各种方式。</p>
+<h3 id="1-立即寻址"><a href="#1-立即寻址" class="headerlink" title="1.立即寻址"></a>1.立即寻址</h3><p>直接使用操作数将操作数存入相关地址中</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">MOV R0,#26H</span><br><span class="line">MOV DPTR,#2000H</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>每个名字都需要独立的using声明</li>
+<li>立即数可以是8位或16位</li>
+<li>立即数前必须加<code>#</code></li>
 </ul>
-<h2 id="2、string类型"><a href="#2、string类型" class="headerlink" title="2、string类型"></a>2、string类型</h2><ul>
-<li>使用前需包含头文件<code>&lt;string&gt;</code>(没有.h)，且需声明string定义于命名空间中</li>
-</ul>
-<h3 id="初始化string类型的方法"><a href="#初始化string类型的方法" class="headerlink" title="初始化string类型的方法"></a>初始化string类型的方法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">string s1;</span><br><span class="line">string s2=s1;</span><br><span class="line"><span class="function">string <span class="title">s3</span><span class="params">(<span class="string">&quot;value&quot;</span>)</span></span>;</span><br><span class="line">string s3 =<span class="string">&quot;value&quot;</span>;</span><br><span class="line"><span class="function">string <span class="title">s4</span><span class="params">(n,<span class="string">&#x27;c&#x27;</span>)</span></span>;<span class="comment">//此处只能为字符</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-直接寻址"><a href="#2-直接寻址" class="headerlink" title="2.直接寻址"></a>2.直接寻址</h3><p>将操作数视为地址，并将该地址存储的数据转递到相关地址中。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">MOV A,30H //相当于对30H进行解引用，将30H值传入A中</span><br></pre></td></tr></table></figure>
 
-<h3 id="读写string对象"><a href="#读写string对象" class="headerlink" title="读写string对象"></a>读写string对象</h3><p>当要将标准输入内容读取到一个string对象时，string对象会自动忽略开头的空白（空格、换行等），从第一个真正的字符开始，直到遇到遇到下一个空白（但读取结束的标准是换行）</p>
-<h3 id="使用getline函数读取一整行"><a href="#使用getline函数读取一整行" class="headerlink" title="使用getline函数读取一整行"></a>使用getline函数读取一整行</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">string s;</span><br><span class="line"><span class="built_in">getline</span>(cin,s);</span><br></pre></td></tr></table></figure>
+<h3 id="3-寄存器寻址"><a href="#3-寄存器寻址" class="headerlink" title="3.寄存器寻址"></a>3.寄存器寻址</h3><p>直接使用寄存器名字作为地址并对进行解引用</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">MOV A,R1 //*R1</span><br></pre></td></tr></table></figure>
 
-<p>getline只有当读取到换行符时才会结束，并且这个换行符会被丢弃。</p>
-<h3 id="相加问题"><a href="#相加问题" class="headerlink" title="相加问题"></a>相加问题</h3><p>string对象可以相加，string对象也可以与字面值相加，<strong>但字面值不能与字面值相加！</strong></p>
-<h3 id="单独处理字符"><a href="#单独处理字符" class="headerlink" title="单独处理字符"></a>单独处理字符</h3><p>C++11提供了一种语句：范围for</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">string <span class="built_in">str</span>(<span class="string">&quot;something&quot;</span>);</span><br><span class="line"><span class="keyword">for</span>(auto c:<span class="built_in">str</span>)	cout&lt;&lt;c&lt;&lt;endl;</span><br></pre></td></tr></table></figure>
+<h3 id="4-寄存器间接寻址"><a href="#4-寄存器间接寻址" class="headerlink" title="4.寄存器间接寻址"></a>4.寄存器间接寻址</h3><p>指定寄存器的内容为操作数的地址，该地址存储的内容才是操作数</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">MOV A,@R0 // @R0相当于**R0</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>每次循环中，都会把序列中的<strong>基础元素</strong>存入c中</li>
+<li>需使用间址符<code>@</code></li>
+<li>对外部RAM进行读取时必须采用该方式</li>
 </ul>
-<p>还可以通过引用等方式单独改变字符</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">string <span class="title">str</span><span class="params">(<span class="string">&quot;something&quot;</span>)</span></span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> &amp;c:str)	c=<span class="built_in">toupper</span>(c);<span class="comment">//大写转换函数</span></span><br></pre></td></tr></table></figure>
+<h3 id="5-变址寻址"><a href="#5-变址寻址" class="headerlink" title="5.变址寻址"></a>5.变址寻址</h3><p>通过对基地址进行偏移获得当前操作数地址</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">MOV A,#06H</span><br><span class="line">MOVC A,@A+PC</span><br></pre></td></tr></table></figure>
 
-<h3 id="下标问题"><a href="#下标问题" class="headerlink" title="下标问题"></a>下标问题</h3><p>C++支持对字符串使用下标运算符<code>[]</code>访问字符串的单个字符，规则同python，但貌似C++不支持截取。</p>
-<h2 id="3、vector类型"><a href="#3、vector类型" class="headerlink" title="3、vector类型"></a>3、vector类型</h2><p>要想使用vector，需包含<code>&lt;vector&gt;</code>头文件。<strong>类型vector表示对象的集合</strong></p>
-<p>与python中的class意义类似。</p>
-<p>实例化：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">vector&lt;<span class="type">int</span>&gt; a;</span><br><span class="line">vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; b;</span><br></pre></td></tr></table></figure>
+<p>由于这里（@A+PC）整体应为一个地址，所以这里要对<strong>A使用间址符取06H作为地址</strong>的偏移量，因此该两行指令的意思为：将（@A+PC）地址中存储的数据传入A中</p>
+<h3 id="6-相对寻址"><a href="#6-相对寻址" class="headerlink" title="6.相对寻址"></a>6.相对寻址</h3><p>直接以PC作为基地址，只写出相对偏移量，有两种方式：</p>
+<h4 id="无条件转移："><a href="#无条件转移：" class="headerlink" title="无条件转移："></a>无条件转移：</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SJMP 08H //使PC转移至当前PC值+08H（当前PC为下一指令地址）</span><br></pre></td></tr></table></figure>
 
-<h3 id="定义与初始化"><a href="#定义与初始化" class="headerlink" title="定义与初始化"></a>定义与初始化</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">vector&lt;<span class="type">int</span>&gt; a;</span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">a</span><span class="params">(b)</span></span>; <span class="comment">//a包含b中所有元素的副本 a和b的类型需相同</span></span><br><span class="line">vector&lt;<span class="type">int</span>&gt; a=b;</span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">a</span><span class="params">(n,val)</span></span>; <span class="comment">//a中有n个重复的val</span></span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">a</span><span class="params">(n)</span></span>; <span class="comment">//包含n个对象</span></span><br><span class="line">vector&lt;<span class="type">int</span>&gt; a&#123;A,B,C&#125;;</span><br><span class="line">vector&lt;<span class="type">int</span>&gt; a=&#123;A,B,C&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="条件转移："><a href="#条件转移：" class="headerlink" title="条件转移："></a>条件转移：</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">JZ LOP //仅当（A）=0时执行，LOP为标号</span><br></pre></td></tr></table></figure>
 
-<h3 id="向vector对象尾部添加元素"><a href="#向vector对象尾部添加元素" class="headerlink" title="向vector对象尾部添加元素"></a>向vector对象尾部添加元素</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">vector&lt;<span class="type">int</span>&gt; a;</span><br><span class="line">a.<span class="built_in">push_back</span>(<span class="number">1</span>);<span class="comment">//a=&#123;1&#125;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="其他函数"><a href="#其他函数" class="headerlink" title="其他函数"></a>其他函数</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">a.<span class="built_in">empty</span>(); <span class="comment">//如果a不含元素则返回真</span></span><br><span class="line">a.<span class="built_in">size</span>(); <span class="comment">//返回元素个数</span></span><br></pre></td></tr></table></figure>
-
-<p>其他的类函数参考书p91</p>
-<h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3><p>vector对象同样支持使用下标运算符进行单个元素的索引，但不能通过下标添加元素。</p>
-<h2 id="4、迭代器"><a href="#4、迭代器" class="headerlink" title="4、迭代器"></a>4、迭代器</h2><p>迭代器（iterator）是一种可以遍历容器元素的数据类型。迭代器是一个变量，相当于容器和操纵容器的算法之间的中介。<strong>C++更趋向于使用迭代器而不是数组下标操作</strong>，因为标准库为每一种标准容器（如vector、map和list等）定义了一种迭代器类型，而只有少数容器（如vector）支持数组下标操作访问容器元素。可以通过迭代器指向你想访问容器的元素地址，通过*x打印出元素值。这和我们所熟知的指针极其类似。</p>
-<p>C语言有指针，指针用起来十分灵活高效。<br>C++语言有迭代器，迭代器相对于指针而言功能更为丰富。</p>
-<h3 id="迭代器的使用"><a href="#迭代器的使用" class="headerlink" title="迭代器的使用"></a>迭代器的使用</h3><p>可以看出，迭代器的基本使用和指针极其相似</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	vector&lt;string&gt; v&#123;<span class="string">&quot;aaaa&quot;</span>,<span class="string">&quot;bbbb&quot;</span>&#125;;</span><br><span class="line">	<span class="keyword">auto</span> i=v.<span class="built_in">begin</span>();</span><br><span class="line">	cout&lt;&lt;*(i+<span class="number">1</span>); <span class="comment">//bbbb</span></span><br><span class="line">	<span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="迭代器运算符"><a href="#迭代器运算符" class="headerlink" title="迭代器运算符"></a>迭代器运算符</h3><ul>
-<li><p>获得迭代器所指元素</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">*iter  <span class="keyword">or</span>  iter-&gt;mem</span><br></pre></td></tr></table></figure>
+<h1 id="2、指令系统"><a href="#2、指令系统" class="headerlink" title="2、指令系统"></a>2、指令系统</h1><h2 id="1-数据传送指令"><a href="#1-数据传送指令" class="headerlink" title="1.数据传送指令"></a>1.数据传送指令</h2><ul>
+<li>片内数据传送：MOV</li>
+<li>片外数据传送：MOVX</li>
+<li>程序存储器数据传送：MOVC</li>
+</ul>
+<h2 id="2-数据交换指令"><a href="#2-数据交换指令" class="headerlink" title="2.数据交换指令"></a>2.数据交换指令</h2><ul>
+<li><p>字节交换（全部）：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">XCH A,Rn</span><br><span class="line">XCH A,@Ri //寄存器区只有R0和R1可用作间接寻址</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>获取迭代器长度</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">i.<span class="built_in">end</span>()-i.<span class="built_in">begin</span>()</span><br></pre></td></tr></table></figure></li>
+<li><p>字节交换（低四位）：XCHD</p>
+</li>
+<li><p>字节交换（高低互换）：SWAP</p>
+</li>
 </ul>
-<h3 id="迭代器类型"><a href="#迭代器类型" class="headerlink" title="迭代器类型"></a>迭代器类型</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">vector&lt;string&gt; v&#123;<span class="string">&quot;aaaa&quot;</span>,<span class="string">&quot;bbbb&quot;</span>&#125;;</span><br><span class="line"><span class="keyword">auto</span> i=v.<span class="built_in">begin</span>();</span><br><span class="line"><span class="comment">//vector&lt;string&gt;::iterator i; 类型</span></span><br><span class="line"></span><br><span class="line"><span class="function">string <span class="title">str</span><span class="params">(<span class="string">&quot;12345&quot;</span>)</span></span>;</span><br><span class="line"><span class="keyword">auto</span> i=str.<span class="built_in">begin</span>();</span><br><span class="line"><span class="comment">//string::iterator i; 类型</span></span><br><span class="line"></span><br><span class="line">对应的只读类型</span><br><span class="line"><span class="comment">//vector&lt;string&gt;::const_iterator v;</span></span><br><span class="line"><span class="comment">//string::const_iterator str;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="当需要对迭代器进行遍历时，需注意for循环的条件3："><a href="#当需要对迭代器进行遍历时，需注意for循环的条件3：" class="headerlink" title="当需要对迭代器进行遍历时，需注意for循环的条件3："></a>当需要对迭代器进行遍历时，需注意for循环的条件3：</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	vector&lt;<span class="type">int</span>&gt; v&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>&#125;;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> i=v.<span class="built_in">begin</span>(); i !=v.<span class="built_in">end</span>(); ++i)<span class="comment">//应使用++i，这是因为end为元素10之后的位置	</span></span><br><span class="line">	&#123;</span><br><span class="line">		*i=*i*<span class="number">2</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> a:v) cout&lt;&lt;a&lt;&lt;endl;</span><br><span class="line">	<span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="5、数组"><a href="#5、数组" class="headerlink" title="5、数组"></a>5、数组</h2><p>大部分规定与C相同。</p>
+<h2 id="3-堆栈操作指令"><a href="#3-堆栈操作指令" class="headerlink" title="3.堆栈操作指令"></a>3.堆栈操作指令</h2><ul>
+<li>入栈：PUSH	SP先变化再压栈</li>
+<li>出栈：POP      先出栈再变化SP</li>
+</ul>
+<h2 id="4-算术运算指令"><a href="#4-算术运算指令" class="headerlink" title="4.算术运算指令"></a>4.算术运算指令</h2><ul>
+<li>加法<ul>
+<li>不带进位： ADD</li>
+<li>带进位（Cy）：ADDC</li>
+<li>加一：INC</li>
+</ul>
+</li>
+<li>减法<ul>
+<li>不带进位：SUB</li>
+<li>带进位：SUBB</li>
+<li>减一：DEC</li>
+</ul>
+</li>
+<li>乘法：MUL</li>
+<li>除法：DIV</li>
+</ul>
+<h2 id="5-逻辑运算指令"><a href="#5-逻辑运算指令" class="headerlink" title="5.逻辑运算指令"></a>5.逻辑运算指令</h2><ul>
+<li>逻辑与：ANL</li>
+<li>逻辑或：ORL</li>
+<li>逻辑异或：XRL</li>
+<li>取反：CPL</li>
+<li>清零：CLR</li>
+<li>移位<ul>
+<li>不带进位：RL&#x2F;RR 左移&#x2F;右移1位</li>
+<li>带进位：RLC&#x2F;RRC ~</li>
+</ul>
+</li>
+</ul>
+<h2 id="6-位运算"><a href="#6-位运算" class="headerlink" title="6.位运算"></a>6.位运算</h2><p>该运算对象仅针对Cy和bit型对象</p>
 <ul>
-<li><p>定义数组时不允许用auto关键字由初始值推断类型。</p>
-</li>
-<li><p>可使用decltype(数组名)定义数组类型。</p>
-</li>
-<li><p><strong>数组不是类类型，因此没有成员函数。</strong></p>
-<p>因此C++11引入了begin、end函数来查询数组相关元素的<strong>地址</strong></p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a[]=&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;</span><br><span class="line"><span class="type">int</span> *p=<span class="built_in">begin</span>(a);</span><br></pre></td></tr></table></figure></li>
+<li>位传送：MOV</li>
+<li>置1：SETB</li>
+<li>清0：CLR</li>
+<li>取非：CPL</li>
+<li>取与：ANL</li>
+<li>取或：ORL</li>
 </ul>
-<p>注意：end()和vector类型的子函数.end()不同，end()函数返回的是数组最后一个元素的地址，而vector类型的end子函数返回的是最后一个元素的后一位地址</p>
-<h3 id="单个元素类型"><a href="#单个元素类型" class="headerlink" title="单个元素类型"></a>单个元素类型</h3><p>通常对数组的单个类型定义为size_t型，该类型为一种机器相关的无符号类型，它被设计得足够大以便能表示内存中任意对象的大小</p>
-<p><strong>要使用该类型，应包含cstddef头文件</strong></p>
-<h3 id="C与C-的字符串风格"><a href="#C与C-的字符串风格" class="headerlink" title="C与C++的字符串风格"></a>C与C++的字符串风格</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">char</span> a[<span class="number">10</span>]=<span class="string">&quot;dhk&quot;</span>; <span class="comment">//C风格</span></span><br><span class="line"><span class="function">string <span class="title">a</span><span class="params">(<span class="string">&quot;dhk&quot;</span>)</span></span>;	<span class="comment">//C++风格</span></span><br></pre></td></tr></table></figure>
-
-<p>在C中，通常我们要对字符串进行一些例如比较、拷贝、连接等的操作时，通常使用的是标准库中的相关字符串长度，相较于C++中string类型的变量可以对存放字符串的变量直接进行运算等操作，C的字符串风格更加繁琐，且极容易在数组的内存方面引发严重问题</p>
-<h4 id="混用规则："><a href="#混用规则：" class="headerlink" title="混用规则："></a>混用规则：</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">string <span class="title">a</span><span class="params">(<span class="string">&quot;dhk&quot;</span>)</span></span>;</span><br><span class="line"><span class="type">char</span> *str=a;<span class="comment">//错误，a的类型为string，而str类型为char*，冲突</span></span><br><span class="line"><span class="type">char</span> *str=a.<span class="built_in">c_str</span>();<span class="comment">//正确。c_str()函数返回的是C风格字符串（一个地址）</span></span><br></pre></td></tr></table></figure>
-
-<p>上述用法相当于是<strong>又</strong>在内存中创建了一个”dhk”字符串，而用于找到该字符串的指针一旦改变，该字符串就将不能再被找到，因此通常对存放该类型的指针进行const操作。其规则类似C中的<code>char *str=&quot;dhk&quot;</code>所遵循的规则。</p>
-<h3 id="使用数组初始化vector类型"><a href="#使用数组初始化vector类型" class="headerlink" title="使用数组初始化vector类型"></a>使用数组初始化vector类型</h3><p>C++不允许用一个数组为另一个数组赋初值，也不允许通过vector类型对象为一个数组初始化，但是允许通过数组为vector对象初始化。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a[]=&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">v</span><span class="params">(begin(a),end(a))</span></span>;</span><br></pre></td></tr></table></figure>
-
-<h2 id="6、多维数组"><a href="#6、多维数组" class="headerlink" title="6、多维数组"></a>6、多维数组</h2><p>一些基础内容同C，详见<u>二维数组复习 | 小董的BLOG (gitee.io)</u></p>
-<p>多维数组可以理解为数组的数组例如<code>int a[3][4]</code>可以理解为a数组包含三个元素，而这三个元素都为大小为4的数组</p>
-<h3 id="下标引用"><a href="#下标引用" class="headerlink" title="下标引用"></a>下标引用</h3><h3 id="使用范围for语句和下标引用处理多维数组"><a href="#使用范围for语句和下标引用处理多维数组" class="headerlink" title="使用范围for语句和下标引用处理多维数组"></a>使用范围for语句和下标引用处理多维数组</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">3</span>][<span class="number">4</span>]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line"><span class="type">size_t</span> x=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> &amp;row : a)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> &amp;col : row)</span><br><span class="line">	&#123;</span><br><span class="line">		col=x;</span><br><span class="line">		x++;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <tags>
-        <tag>C++学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>C++_表达式</title>
-    <url>/2022/10/03/C++-4/</url>
-    <content><![CDATA[<h1 id="1、基础内容"><a href="#1、基础内容" class="headerlink" title="1、基础内容"></a>1、基础内容</h1><p>表达式是<strong>由一个或多个运算对象组成</strong>，对表达式求值得到的是一个<strong>结果</strong>，字面值和变量时最简单的表达式。</p>
-<h2 id="左值和右值"><a href="#左值和右值" class="headerlink" title="左值和右值"></a>左值和右值</h2><p>当一个对象被用作右值时，使用的是该对象的值；而被用作左值时，使用的时对象的内存。</p>
+<h2 id="7-控制转移类指令"><a href="#7-控制转移类指令" class="headerlink" title="7.控制转移类指令"></a>7.控制转移类指令</h2><ul>
+<li><p>无条件转移：LJMP  3字节，直接转移至该16位地址</p>
+</li>
+<li><p>相对转移：SJMP</p>
+</li>
+<li><p>条件转移：**(条件转移皆为相对PC的转移)**</p>
 <ul>
-<li>赋值运算符需要一个非常量左值为其左侧运算对象</li>
-<li>取地址符作用于一个左值运算对象，返回一个指向该运算对象的指针，该指针为右值</li>
-<li>解引用求值结果为左值</li>
-</ul>
-<h2 id="求值顺序"><a href="#求值顺序" class="headerlink" title="求值顺序"></a>求值顺序</h2><p>部分运算符是没有明确指明执行顺序的，例如&lt;&lt;运算符：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">cout&lt;&lt;i&lt;&lt;<span class="string">&quot;&quot;</span>&lt;&lt;++i;</span><br></pre></td></tr></table></figure>
-
-<p>++i和i没有明确的先后关系，因此编译器可能做出任何行为。</p>
-<p>当多个函数会影响同一对象时，当同时调用这些函数时，调用函数的顺序也没有明确的先后关系。</p>
-<h1 id="2、算术运算符"><a href="#2、算术运算符" class="headerlink" title="2、算术运算符"></a>2、算术运算符</h1><h2 id="bool类型"><a href="#bool类型" class="headerlink" title="bool类型"></a>bool类型</h2><p>bool类型原则不应参与运算，在运算时会自动转化为int型的1，只要计算结果不为0，都将返回ture</p>
-<h2 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h2><p>C++大部分同优先级运算都满足从左至右的规律，赋值则相反</p>
-<h2 id="递增运算"><a href="#递增运算" class="headerlink" title="递增运算"></a>递增运算</h2><p>C++中，<strong>非必要不使用</strong>后置递增&#x2F;减符（i++&#x2F;i–)，因为前置运算为将对象本身作为左值返回，而后置则要额外的空间存储原始值，并将这个额外存储的原始值副本作为右值返回，因此，使用后置操作会消耗更多内存，这在相对复杂的工作中是消耗巨大的。</p>
-<h2 id="位操作"><a href="#位操作" class="headerlink" title="位操作"></a>位操作</h2><p>关于符号位的处理没有明确规定，因此位运算最好用来处理无符号类型</p>
-<h1 id="3、类型转换"><a href="#3、类型转换" class="headerlink" title="3、类型转换"></a>3、类型转换</h1><p>C++的类型转换格式不同于C：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cast-name&lt;类型&gt;(表达式)</span><br></pre></td></tr></table></figure>
-
-<p>最常用的cast-name为<code>static_cast</code>和<code>const_cast</code></p>
-<h3 id="static-cast"><a href="#static-cast" class="headerlink" title="static_cast"></a>static_cast</h3><p>任何有明确定义的类型转换（除了底层const）都可以使用static_cast</p>
-<p>例：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> *p = &amp;d;<span class="comment">//d不能为常量（底层const）</span></span><br><span class="line"><span class="type">double</span> *dp = <span class="built_in">static_cast</span>&lt;<span class="type">double</span>*&gt;(p);</span><br></pre></td></tr></table></figure>
-
-<h3 id="const-cast"><a href="#const-cast" class="headerlink" title="const_cast"></a>const_cast</h3><p><strong>专用</strong>于改变底层const，其作用为改变const性质</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">char</span>* pc;</span><br><span class="line"><span class="type">char</span> *p=<span class="built_in">const_cast</span>&lt;<span class="type">char</span>*&gt;(pc);</span><br></pre></td></tr></table></figure>
-
-<p>需要注意，可以有以下用法：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">char</span>* pc;</span><br><span class="line"><span class="type">char</span> *p=<span class="built_in">const_cast</span>&lt;<span class="type">const</span> <span class="type">char</span>*&gt;(pc);</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <tags>
-        <tag>C++学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>C++_1</title>
-    <url>/2022/09/07/C++-1/</url>
-    <content><![CDATA[<h1 id="输入与输出"><a href="#输入与输出" class="headerlink" title="输入与输出"></a>输入与输出</h1><ul>
-<li><p><strong>iostream库</strong></p>
-<p>在C++中没有专门定义的输入输出（IO）语句，而是使用了一个全面的<strong>标准库</strong>来提供IO机制等功能，也就是iostream库。而在iostream库中包含了两个基础<strong>类型</strong>：</p>
-<ul>
-<li>istream(in stream)：输入流</li>
-<li>ostream(out stream)：输出流</li>
+<li><p>累加器<u><strong>判0</strong></u>：JZ&#x2F;JNZ</p>
+</li>
+<li><p>进位Cy判断：JC&#x2F;JNC</p>
+</li>
+<li><p>任意位判断：JB&#x2F;JNB&#x2F;JBC</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">JB bit,rel</span><br><span class="line">// bit: 判断位  rel：偏移量</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>比较<strong>不相等</strong>判断（不相等为满足条件）:CJNE</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CJNE A,#data,rel</span><br></pre></td></tr></table></figure></li>
 </ul>
 </li>
-<li><p>流的</p>
-</li>
-<li><p><strong>IO对象</strong></p>
-<p>在标准库中定义了4个IO对象，分别为1个istream型，3个ostream型：</p>
-<ul>
-<li>instream型：<ul>
-<li>cin(发音see in)：标准输入对象</li>
-</ul>
-</li>
-<li>ostream型：<ul>
-<li>cout：标准输出对象</li>
-<li>cerr：输出警告和错误信息</li>
-<li>clog：输出程序运行时的一般性消息</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="输入输出例程："><a href="#输入输出例程：" class="headerlink" title="输入输出例程："></a>输入输出例程：</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;iostream&quot;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> a,b;</span><br><span class="line">	std::cin&gt;&gt;a&gt;&gt;b;<span class="comment">//输入</span></span><br><span class="line">	std::cout&lt;&lt;a+b&lt;&lt;std::endl;<span class="comment">//输出</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>下面针对这个例程讲解：</p>
-<ul>
-<li><p>前缀std::</p>
-<p>这个前缀指出cin、cout、endl都是定义在名为std的命名空间中的。使用命名空间可以避免与用户定义的名字冲突。且标准库的所有名字都是定义在std中的。</p>
-</li>
-<li><h3 id="从输入流读取数据："><a href="#从输入流读取数据：" class="headerlink" title="从输入流读取数据："></a>从输入流<strong>读取</strong>数据：</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a,b;</span><br><span class="line">std::cin&gt;&gt;a&gt;&gt;b;<span class="comment">//输入</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p><strong>输入运算符（&gt;&gt;)</strong></p>
-<p>该运算符接收两个运算对象：</p>
-<ul>
-<li><p>左侧：必须为一个ostream型的对象</p>
-</li>
-<li><p>右侧：存放输入的值的变量</p>
-</li>
-</ul>
-<p>返回值（计算结果）： ostream型的对象（左侧运算对象）</p>
-<p>也就是说下面几种写法是一个意思：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">std::cin&gt;&gt;a&gt;&gt;b;</span><br><span class="line">/****************************/</span><br><span class="line">(std::cin&gt;&gt;a)&gt;&gt;b;</span><br><span class="line">/****************************/</span><br><span class="line">std:cin&gt;&gt;a;</span><br><span class="line">std:cin&gt;&gt;b;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><h3 id="向输出流写入数据："><a href="#向输出流写入数据：" class="headerlink" title="向输出流写入数据："></a>向输出流<strong>写入</strong>数据：</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">std::cout&lt;&lt;a+b&lt;&lt;std::endl;<span class="comment">//输出</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p><strong>输出运算符（&lt;&lt;)</strong></p>
-<p>该运算符接收两个运算对象：</p>
-<ul>
-<li>左侧：必须为一个istream型的对象</li>
-<li>右侧：要打印的值</li>
-</ul>
-<p>返回值（计算结果）： 写入给定值的ostream型的对象</p>
-<p>也就是说下面几种写法是一个意思：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">std::cout&lt;&lt;a+b&lt;&lt;std::endl;</span><br><span class="line"><span class="comment">/****************************/</span></span><br><span class="line">(std::cout&lt;&lt;a+b)&lt;&lt;std::endl;</span><br><span class="line"><span class="comment">/****************************/</span></span><br><span class="line">std::cout&lt;&lt;a+b;</span><br><span class="line">std::cout&lt;&lt;std::endl;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>endl操纵符</strong> <em>(小写L,不是1)</em></p>
-<p>endl也是被定义在std中的一个特殊值，写入endl的效果是结束当前行（类似c中的\n)，并将与设备相关联的缓冲区中的内容刷到设备中。</p>
-<p>缓冲刷新操作可以保证目前为止程序中所产生的所有输出都真正的写入到了输出流中，而不仅停留在内存中等待写入流。</p>
-</li>
-<li><p><strong>关于数据缓冲区</strong></p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;iostream&quot;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> a,b=<span class="number">1</span>,c;</span><br><span class="line">	<span class="keyword">while</span>(std::cin&gt;&gt;a)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//while (getchar()!= &#x27;\n&#x27;);</span></span><br><span class="line">		std::cout&lt;&lt;<span class="string">&quot;times:&quot;</span>&lt;&lt;b++&lt;&lt;std::endl;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>当使用一个istream对象为<strong>条件</strong>时，其效果就是检测输入流当前的状态，如果流是有效的，此时istream对象使条件为真，当遇到以下情况时为假：</p>
-<ul>
-<li>无效输入：例如上方输入不为int型（与a类型不符合）</li>
-<li>当输入流遇到文件结束符，对于window系统，<strong>输入文件结束符的方法是ctrl+z+\n</strong></li>
-</ul>
-<p>在上方程序中（当注释掉第七行时），当输入4 ‘\0’ 5时，time也会对应输出2次，即1 ‘\n’ 2 。这是因为当输入一次性输入两个数时，第一个数存进a，第二个数会被存在数据缓冲区中等待下一次读取输入流的操作；若想清除缓冲区（或者说是清零），只需添加第7行即可。</p>
-</li>
-</ul>
+<li><p>减1<strong>不为0</strong>判断转移：DJNZ</p>
 </li>
 </ul>
 ]]></content>
       <tags>
-        <tag>C++学习</tag>
+        <tag>嵌入式学习</tag>
       </tags>
   </entry>
   <entry>
@@ -601,8 +387,10 @@
 <h2 id="try语句块"><a href="#try语句块" class="headerlink" title="try语句块"></a>try语句块</h2><p>格式：</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123; &#125;<span class="comment">//程序正常逻辑，异常类在此throw出 </span></span><br><span class="line"><span class="built_in">catch</span>(异常声明)</span><br><span class="line">&#123;&#125;</span><br><span class="line"><span class="built_in">catch</span>(异常声明)</span><br><span class="line">&#123;&#125;</span><br></pre></td></tr></table></figure>
 
-
-
+<ul>
+<li>当try内一旦提出异常类时，就不再执行该throw表达式后的内容；反之，若没有throw任何异常，则不会触发任何catch语句，程序正常执行完try语句。</li>
+<li></li>
+</ul>
 <h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><h2 id="参数传递"><a href="#参数传递" class="headerlink" title="参数传递"></a>参数传递</h2><ul>
 <li>形参实参之间的转递为值拷贝</li>
 <li>C++中建议用引用类型的形参代替指针形参，引用类型同样可以达到修改值的内容，并且可以避免拷贝，因为引用是与实参绑定的。</li>
@@ -651,6 +439,44 @@
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">fuc</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="constexpr函数"><a href="#constexpr函数" class="headerlink" title="constexpr函数"></a>constexpr函数</h2><p>将函数隐式地定义为内联函数，但函数内只能有一条return语句，且返回值必须为字面值</p>
+]]></content>
+      <tags>
+        <tag>C++学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C++_表达式</title>
+    <url>/2022/10/03/C++-4/</url>
+    <content><![CDATA[<h1 id="1、基础内容"><a href="#1、基础内容" class="headerlink" title="1、基础内容"></a>1、基础内容</h1><p>表达式是<strong>由一个或多个运算对象组成</strong>，对表达式求值得到的是一个<strong>结果</strong>，字面值和变量时最简单的表达式。</p>
+<h2 id="左值和右值"><a href="#左值和右值" class="headerlink" title="左值和右值"></a>左值和右值</h2><p>当一个对象被用作右值时，使用的是该对象的值；而被用作左值时，使用的时对象的内存。</p>
+<ul>
+<li>赋值运算符需要一个非常量左值为其左侧运算对象</li>
+<li>取地址符作用于一个左值运算对象，返回一个指向该运算对象的指针，该指针为右值</li>
+<li>解引用求值结果为左值</li>
+</ul>
+<h2 id="求值顺序"><a href="#求值顺序" class="headerlink" title="求值顺序"></a>求值顺序</h2><p>部分运算符是没有明确指明执行顺序的，例如&lt;&lt;运算符：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">cout&lt;&lt;i&lt;&lt;<span class="string">&quot;&quot;</span>&lt;&lt;++i;</span><br></pre></td></tr></table></figure>
+
+<p>++i和i没有明确的先后关系，因此编译器可能做出任何行为。</p>
+<p>当多个函数会影响同一对象时，当同时调用这些函数时，调用函数的顺序也没有明确的先后关系。</p>
+<h1 id="2、算术运算符"><a href="#2、算术运算符" class="headerlink" title="2、算术运算符"></a>2、算术运算符</h1><h2 id="bool类型"><a href="#bool类型" class="headerlink" title="bool类型"></a>bool类型</h2><p>bool类型原则不应参与运算，在运算时会自动转化为int型的1，只要计算结果不为0，都将返回ture</p>
+<h2 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h2><p>C++大部分同优先级运算都满足从左至右的规律，赋值则相反</p>
+<h2 id="递增运算"><a href="#递增运算" class="headerlink" title="递增运算"></a>递增运算</h2><p>C++中，<strong>非必要不使用</strong>后置递增&#x2F;减符（i++&#x2F;i–)，因为前置运算为将对象本身作为左值返回，而后置则要额外的空间存储原始值，并将这个额外存储的原始值副本作为右值返回，因此，使用后置操作会消耗更多内存，这在相对复杂的工作中是消耗巨大的。</p>
+<h2 id="位操作"><a href="#位操作" class="headerlink" title="位操作"></a>位操作</h2><p>关于符号位的处理没有明确规定，因此位运算最好用来处理无符号类型</p>
+<h1 id="3、类型转换"><a href="#3、类型转换" class="headerlink" title="3、类型转换"></a>3、类型转换</h1><p>C++的类型转换格式不同于C：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cast-name&lt;类型&gt;(表达式)</span><br></pre></td></tr></table></figure>
+
+<p>最常用的cast-name为<code>static_cast</code>和<code>const_cast</code></p>
+<h3 id="static-cast"><a href="#static-cast" class="headerlink" title="static_cast"></a>static_cast</h3><p>任何有明确定义的类型转换（除了底层const）都可以使用static_cast</p>
+<p>例：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> *p = &amp;d;<span class="comment">//d不能为常量（底层const）</span></span><br><span class="line"><span class="type">double</span> *dp = <span class="built_in">static_cast</span>&lt;<span class="type">double</span>*&gt;(p);</span><br></pre></td></tr></table></figure>
+
+<h3 id="const-cast"><a href="#const-cast" class="headerlink" title="const_cast"></a>const_cast</h3><p><strong>专用</strong>于改变底层const，其作用为改变const性质</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">char</span>* pc;</span><br><span class="line"><span class="type">char</span> *p=<span class="built_in">const_cast</span>&lt;<span class="type">char</span>*&gt;(pc);</span><br></pre></td></tr></table></figure>
+
+<p>需要注意，可以有以下用法：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">char</span>* pc;</span><br><span class="line"><span class="type">char</span> *p=<span class="built_in">const_cast</span>&lt;<span class="type">const</span> <span class="type">char</span>*&gt;(pc);</span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <tags>
         <tag>C++学习</tag>
@@ -743,106 +569,92 @@
       </tags>
   </entry>
   <entry>
-    <title>指针相关复习</title>
-    <url>/2022/07/31/C-%E6%8C%87%E9%92%88/</url>
-    <content><![CDATA[<h1 id="1-基本内容"><a href="#1-基本内容" class="headerlink" title="1.基本内容"></a>1.基本内容</h1><h2 id="什么是指针"><a href="#什么是指针" class="headerlink" title="什么是指针"></a>什么是指针</h2><ul>
-<li>在计算机中所有数据都存储在内存单元中,而每个内存单元都有一个对应的地址, 只要通过这个地址就能找到对应单元中存储的数据.</li>
-<li>由于通过地址能找到所需的变量单元，所以我们说该地址指向了该变量单元。将地址形象化的称为“指针”</li>
-<li>内存单元的指针(地址)和内存单元的内容是两个不同的概念。</li>
-</ul>
-<h2 id="什么是指针变量"><a href="#什么是指针变量" class="headerlink" title="什么是指针变量"></a>什么是指针变量</h2><p>在C语言中,允许用一个变量来存放其它变量的地址, 这种专门用于存储其它变量地址的变量, 我们称之为指针变量。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">char</span> ch = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="type">char</span> *p; <span class="comment">// 一个用于指向字符型变量的指针</span></span><br><span class="line">p = &amp;ch; </span><br></pre></td></tr></table></figure>
-
-<p>*表示这是一个指针变量</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> *p;</span><br><span class="line">p =  <span class="number">250</span>; <span class="comment">// 错误写法</span></span><br><span class="line"><span class="comment">/****************************/</span></span><br><span class="line"><span class="type">int</span> *p;</span><br><span class="line">*p=&amp;a; <span class="comment">//错误写法</span></span><br></pre></td></tr></table></figure>
+    <title>C++_3</title>
+    <url>/2022/09/15/C++-3/</url>
+    <content><![CDATA[<h1 id="字符串、向量和数组"><a href="#字符串、向量和数组" class="headerlink" title="字符串、向量和数组"></a>字符串、向量和数组</h1><h2 id="1、using声明"><a href="#1、using声明" class="headerlink" title="1、using声明"></a>1、using声明</h2><p>作用：使用using声明命名空间的相关成员后，后续不需再声明</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> std::cin;</span><br><span class="line"><span class="type">int</span> i;</span><br><span class="line">cin&gt;&gt;i;</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>多个指针变量可以指向同一个地址。</li>
+<li>每个名字都需要独立的using声明</li>
 </ul>
-<h3 id="对指针变量的理解"><a href="#对指针变量的理解" class="headerlink" title="对指针变量的理解"></a>对指针变量的理解</h3><p>指针变量本身的作用是储存一个用户定义的变量的地址，但是其本身作为一个额外的变量，也有自己的地址，<strong>且这个地址不等于其储存的变量的地址；</strong></p>
-<p>例：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a=<span class="number">1</span>;</span><br><span class="line">    <span class="type">int</span> *c;</span><br><span class="line">    c=&amp;a;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;指针变量c自身的地址为：%d&quot;</span>,&amp;c);<span class="comment">//6487568 </span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;指针变量c存储单元内存储的内容(也就是a的地址)为：%d&quot;</span>,c);<span class="comment">//6487576</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;变量a的地址为：%d&quot;</span>,a);<span class="comment">//6487576</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//  c代表c内存放的地址</span></span><br><span class="line"><span class="comment">//  &amp;c代表c自身的地址</span></span><br><span class="line"><span class="comment">//  *c代表c内存放的地址中所存储的值</span></span><br><span class="line"><span class="comment">// (c+1)代表c内存放的地址+1*类型长度</span></span><br><span class="line"><span class="comment">// *c+1代表c内存放的地址中所存储的值本身+1</span></span><br><span class="line"><span class="comment">// *(c+1)代表c内存放的地址+1*类型长度后得到的地址中存储的值</span></span><br></pre></td></tr></table></figure>
+<h2 id="2、string类型"><a href="#2、string类型" class="headerlink" title="2、string类型"></a>2、string类型</h2><ul>
+<li>使用前需包含头文件<code>&lt;string&gt;</code>(没有.h)，且需声明string定义于命名空间中</li>
+</ul>
+<h3 id="初始化string类型的方法"><a href="#初始化string类型的方法" class="headerlink" title="初始化string类型的方法"></a>初始化string类型的方法</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">string s1;</span><br><span class="line">string s2=s1;</span><br><span class="line"><span class="function">string <span class="title">s3</span><span class="params">(<span class="string">&quot;value&quot;</span>)</span></span>;</span><br><span class="line">string s3 =<span class="string">&quot;value&quot;</span>;</span><br><span class="line"><span class="function">string <span class="title">s4</span><span class="params">(n,<span class="string">&#x27;c&#x27;</span>)</span></span>;<span class="comment">//此处只能为字符</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="取地址运算符（-amp-）与解引用运算符（-）"><a href="#取地址运算符（-amp-）与解引用运算符（-）" class="headerlink" title="取地址运算符（&amp;）与解引用运算符（*）"></a>取地址运算符（&amp;）与解引用运算符（*）</h2><ul>
-<li><p>取地址运算符：&amp;x，其作用为返回操作对象的地址</p>
-</li>
-<li><p>解引用运算符：<code>*x</code>，其作用是<strong>返回x中存储的地址内存储的值</strong></p>
-<p>例： <code>int a,*p1;p1=&amp;a;</code><strong>则此时*p1代表的就是变量a的内容,而不是a的地址</strong></p>
-<p>这也就是为什么使用<code>printf(&quot;%d&quot;,*p);</code>时是用*p而不是p了，因为 *p才是代表a的值，p则存储的变量a的地址</p>
-<p><strong>综上：除开定义时，其余时间*p等同a，p等同&amp;a</strong></p>
-<p>在定义时，<code>int *p1=&amp;a;</code>也是合法的且作用与上相同，个人理解为是一种指针格式的“声明”（？）这也解释了当某个函数参数定义为为<code>int *a</code>时实际使用时传入的也是&amp;的取地址变量了（个人理解）</p>
-</li>
-</ul>
-<h1 id="2-一些用法"><a href="#2-一些用法" class="headerlink" title="2.一些用法"></a>2.一些用法</h1><h2 id="二级指针"><a href="#二级指针" class="headerlink" title="二级指针"></a>二级指针</h2><ul>
-<li><p>如果一个指针变量存放的又是另一个指针变量的地址,则称这个指针变量为指向指针的指针￼变量。也称为“二级指针”。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">char</span> c = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="type">char</span> *cp;</span><br><span class="line">cp = &amp;c;</span><br><span class="line"><span class="type">char</span> **cp2;</span><br><span class="line">cp2 = &amp;cp;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;c = %c&quot;</span>, **cp2);<span class="comment">//  c=a</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="指针访问数组元素"><a href="#指针访问数组元素" class="headerlink" title="指针访问数组元素"></a>指针访问数组元素</h2><ul>
-<li><p>在指针指向数组元素时,允许以下运算:</p>
-<ul>
-<li>加一个整数(用+或+&#x3D;),如p+1</li>
-<li>减一个整数(用-或-&#x3D;),如p-1</li>
-<li>自加运算,如p++,++p</li>
-<li>自减运算,如p–,–p</li>
-</ul>
-<p>如果指针变量p已指向数组中的一个元素,则p+1<code>指向</code>同一数组中的下一个元素,p-1<code>指向</code>同 一数组中的上一个元素。【*(p+1)】</p>
-<p>(p+N)在地址上的变化为<code>p内存放的地址+数组元素类型长度*N</code></p>
-<ul>
-<li>其对p所有的基本运算均符合上述规律</li>
-</ul>
-</li>
-</ul>
-<h2 id="指针与字符串"><a href="#指针与字符串" class="headerlink" title="指针与字符串"></a>指针与字符串</h2><p>定义字符串除了使用字符数组存放之外，还可以通过字符串指针的方式指向字符串。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 数组名保存的是数组第0个元素的地址, 指针也可以保存第0个元素的地址</span></span><br><span class="line"><span class="type">char</span> *str = <span class="string">&quot;abc&quot;</span></span><br></pre></td></tr></table></figure>
+<h3 id="读写string对象"><a href="#读写string对象" class="headerlink" title="读写string对象"></a>读写string对象</h3><p>当要将标准输入内容读取到一个string对象时，string对象会自动忽略开头的空白（空格、换行等），从第一个真正的字符开始，直到遇到遇到下一个空白（但读取结束的标准是换行）</p>
+<h3 id="使用getline函数读取一整行"><a href="#使用getline函数读取一整行" class="headerlink" title="使用getline函数读取一整行"></a>使用getline函数读取一整行</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">string s;</span><br><span class="line"><span class="built_in">getline</span>(cin,s);</span><br></pre></td></tr></table></figure>
+
+<p>getline只有当读取到换行符时才会结束，并且这个换行符会被丢弃。</p>
+<h3 id="相加问题"><a href="#相加问题" class="headerlink" title="相加问题"></a>相加问题</h3><p>string对象可以相加，string对象也可以与字面值相加，<strong>但字面值不能与字面值相加！</strong></p>
+<h3 id="单独处理字符"><a href="#单独处理字符" class="headerlink" title="单独处理字符"></a>单独处理字符</h3><p>C++11提供了一种语句：范围for</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">string <span class="built_in">str</span>(<span class="string">&quot;something&quot;</span>);</span><br><span class="line"><span class="keyword">for</span>(auto c:<span class="built_in">str</span>)	cout&lt;&lt;c&lt;&lt;endl;</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li><p>使用注意事项</p>
+<li>每次循环中，都会把序列中的<strong>基础元素</strong>存入c中</li>
+</ul>
+<p>还可以通过引用等方式单独改变字符</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">string <span class="title">str</span><span class="params">(<span class="string">&quot;something&quot;</span>)</span></span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> &amp;c:str)	c=<span class="built_in">toupper</span>(c);<span class="comment">//大写转换函数</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="下标问题"><a href="#下标问题" class="headerlink" title="下标问题"></a>下标问题</h3><p>C++支持对字符串使用下标运算符<code>[]</code>访问字符串的单个字符，规则同python，但貌似C++不支持截取。</p>
+<h2 id="3、vector类型"><a href="#3、vector类型" class="headerlink" title="3、vector类型"></a>3、vector类型</h2><p>要想使用vector，需包含<code>&lt;vector&gt;</code>头文件。<strong>类型vector表示对象的集合</strong></p>
+<p>与python中的class意义类似。</p>
+<p>实例化：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">vector&lt;<span class="type">int</span>&gt; a;</span><br><span class="line">vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; b;</span><br></pre></td></tr></table></figure>
+
+<h3 id="定义与初始化"><a href="#定义与初始化" class="headerlink" title="定义与初始化"></a>定义与初始化</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">vector&lt;<span class="type">int</span>&gt; a;</span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">a</span><span class="params">(b)</span></span>; <span class="comment">//a包含b中所有元素的副本 a和b的类型需相同</span></span><br><span class="line">vector&lt;<span class="type">int</span>&gt; a=b;</span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">a</span><span class="params">(n,val)</span></span>; <span class="comment">//a中有n个重复的val</span></span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">a</span><span class="params">(n)</span></span>; <span class="comment">//包含n个对象</span></span><br><span class="line">vector&lt;<span class="type">int</span>&gt; a&#123;A,B,C&#125;;</span><br><span class="line">vector&lt;<span class="type">int</span>&gt; a=&#123;A,B,C&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="向vector对象尾部添加元素"><a href="#向vector对象尾部添加元素" class="headerlink" title="向vector对象尾部添加元素"></a>向vector对象尾部添加元素</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">vector&lt;<span class="type">int</span>&gt; a;</span><br><span class="line">a.<span class="built_in">push_back</span>(<span class="number">1</span>);<span class="comment">//a=&#123;1&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="其他函数"><a href="#其他函数" class="headerlink" title="其他函数"></a>其他函数</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">a.<span class="built_in">empty</span>(); <span class="comment">//如果a不含元素则返回真</span></span><br><span class="line">a.<span class="built_in">size</span>(); <span class="comment">//返回元素个数</span></span><br></pre></td></tr></table></figure>
+
+<p>其他的类函数参考书p91</p>
+<h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3><p>vector对象同样支持使用下标运算符进行单个元素的索引，但不能通过下标添加元素。</p>
+<h2 id="4、迭代器"><a href="#4、迭代器" class="headerlink" title="4、迭代器"></a>4、迭代器</h2><p>迭代器（iterator）是一种可以遍历容器元素的数据类型。迭代器是一个变量，相当于容器和操纵容器的算法之间的中介。<strong>C++更趋向于使用迭代器而不是数组下标操作</strong>，因为标准库为每一种标准容器（如vector、map和list等）定义了一种迭代器类型，而只有少数容器（如vector）支持数组下标操作访问容器元素。可以通过迭代器指向你想访问容器的元素地址，通过*x打印出元素值。这和我们所熟知的指针极其类似。</p>
+<p>C语言有指针，指针用起来十分灵活高效。<br>C++语言有迭代器，迭代器相对于指针而言功能更为丰富。</p>
+<h3 id="迭代器的使用"><a href="#迭代器的使用" class="headerlink" title="迭代器的使用"></a>迭代器的使用</h3><p>可以看出，迭代器的基本使用和指针极其相似</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	vector&lt;string&gt; v&#123;<span class="string">&quot;aaaa&quot;</span>,<span class="string">&quot;bbbb&quot;</span>&#125;;</span><br><span class="line">	<span class="keyword">auto</span> i=v.<span class="built_in">begin</span>();</span><br><span class="line">	cout&lt;&lt;*(i+<span class="number">1</span>); <span class="comment">//bbbb</span></span><br><span class="line">	<span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="迭代器运算符"><a href="#迭代器运算符" class="headerlink" title="迭代器运算符"></a>迭代器运算符</h3><ul>
+<li><p>获得迭代器所指元素</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">*iter  <span class="keyword">or</span>  iter-&gt;mem</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取迭代器长度</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">i.<span class="built_in">end</span>()-i.<span class="built_in">begin</span>()</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="迭代器类型"><a href="#迭代器类型" class="headerlink" title="迭代器类型"></a>迭代器类型</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">vector&lt;string&gt; v&#123;<span class="string">&quot;aaaa&quot;</span>,<span class="string">&quot;bbbb&quot;</span>&#125;;</span><br><span class="line"><span class="keyword">auto</span> i=v.<span class="built_in">begin</span>();</span><br><span class="line"><span class="comment">//vector&lt;string&gt;::iterator i; 类型</span></span><br><span class="line"></span><br><span class="line"><span class="function">string <span class="title">str</span><span class="params">(<span class="string">&quot;12345&quot;</span>)</span></span>;</span><br><span class="line"><span class="keyword">auto</span> i=str.<span class="built_in">begin</span>();</span><br><span class="line"><span class="comment">//string::iterator i; 类型</span></span><br><span class="line"></span><br><span class="line">对应的只读类型</span><br><span class="line"><span class="comment">//vector&lt;string&gt;::const_iterator v;</span></span><br><span class="line"><span class="comment">//string::const_iterator str;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="当需要对迭代器进行遍历时，需注意for循环的条件3："><a href="#当需要对迭代器进行遍历时，需注意for循环的条件3：" class="headerlink" title="当需要对迭代器进行遍历时，需注意for循环的条件3："></a>当需要对迭代器进行遍历时，需注意for循环的条件3：</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	vector&lt;<span class="type">int</span>&gt; v&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>&#125;;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> i=v.<span class="built_in">begin</span>(); i !=v.<span class="built_in">end</span>(); ++i)<span class="comment">//应使用++i，这是因为end为元素10之后的位置	</span></span><br><span class="line">	&#123;</span><br><span class="line">		*i=*i*<span class="number">2</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> a:v) cout&lt;&lt;a&lt;&lt;endl;</span><br><span class="line">	<span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="5、数组"><a href="#5、数组" class="headerlink" title="5、数组"></a>5、数组</h2><p>大部分规定与C相同。</p>
 <ul>
-<li><p>此方法不可修改字符串内容</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//使用字符数组来保存的字符串是保存栈里的,保存栈里面东西是可读可写,所有可以修改字符串中的的字符</span></span><br><span class="line"><span class="comment">//使用字符指针来保存字符串,它保存的是字符串常量地址,常量区是只读的,所以我们不可以修改字符串中的字符</span></span><br><span class="line"><span class="type">char</span> *str = <span class="string">&quot;lnj&quot;</span>;</span><br><span class="line">*(str+<span class="number">2</span>) = <span class="string">&#x27;y&#x27;</span>; <span class="comment">// 错误</span></span><br></pre></td></tr></table></figure>
+<li><p>定义数组时不允许用auto关键字由初始值推断类型。</p>
 </li>
-<li><p>不能够直接接收键盘输入</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 错误的原因是:str是一个野指针,他并没有指向某一块内存空间</span></span><br><span class="line"><span class="comment">// 所以不允许这样写如果给str分配内存空间是可以这样用 的</span></span><br><span class="line"><span class="type">char</span> *str;</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>, str);</span><br></pre></td></tr></table></figure></li>
+<li><p>可使用decltype(数组名)定义数组类型。</p>
+</li>
+<li><p><strong>数组不是类类型，因此没有成员函数。</strong></p>
+<p>因此C++11引入了begin、end函数来查询数组相关元素的<strong>地址</strong></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a[]=&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;</span><br><span class="line"><span class="type">int</span> *p=<span class="built_in">begin</span>(a);</span><br></pre></td></tr></table></figure></li>
 </ul>
-</li>
-</ul>
-<h2 id="指向函数的指针"><a href="#指向函数的指针" class="headerlink" title="指向函数的指针"></a>指向函数的指针</h2><p>函数在内存中占据空间，因此也有起始地址。</p>
-<p>格式：返回值类型  (*指针变量名)(形参);</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"> <span class="type">int</span> <span class="title function_">sum</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;     </span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> (*p)(<span class="type">int</span> x,<span class="type">int</span> y);</span><br><span class="line">	p=sum;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,(*p)(<span class="number">1</span>,<span class="number">2</span>)); <span class="comment">//打印3</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意：end()和vector类型的子函数.end()不同，end()函数返回的是数组最后一个元素的地址，而vector类型的end子函数返回的是最后一个元素的后一位地址</p>
+<h3 id="单个元素类型"><a href="#单个元素类型" class="headerlink" title="单个元素类型"></a>单个元素类型</h3><p>通常对数组的单个类型定义为size_t型，该类型为一种机器相关的无符号类型，它被设计得足够大以便能表示内存中任意对象的大小</p>
+<p><strong>要使用该类型，应包含cstddef头文件</strong></p>
+<h3 id="C与C-的字符串风格"><a href="#C与C-的字符串风格" class="headerlink" title="C与C++的字符串风格"></a>C与C++的字符串风格</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">char</span> a[<span class="number">10</span>]=<span class="string">&quot;dhk&quot;</span>; <span class="comment">//C风格</span></span><br><span class="line"><span class="function">string <span class="title">a</span><span class="params">(<span class="string">&quot;dhk&quot;</span>)</span></span>;	<span class="comment">//C++风格</span></span><br></pre></td></tr></table></figure>
 
-<ul>
-<li><p>函数指针有以下几点特点：</p>
-<ul>
-<li><p>当把一个<strong>函数名（注意是名字，不带输入参数）</strong>作为一个值使用时，该函数会自动转换成指针，指向该函数的内存地址，因此在对指针初始化时取地址符可选:</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">p=sum;</span><br><span class="line">p=&amp;sum;<span class="comment">//都正确</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>当使用指针调用函数时，解引用也是可选的：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,(*p)(<span class="number">1</span>,<span class="number">2</span>));</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,p(<span class="number">1</span>,<span class="number">2</span>));<span class="comment">//都输出3</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>当函数指针作形参时：</p>
-</li>
-</ul>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdio.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;math.h&quot;</span></span></span><br><span class="line"><span class="type">void</span> <span class="title function_">tran</span><span class="params">(<span class="type">double</span> (*a)(<span class="type">double</span> a1),<span class="type">double</span> (*b)(<span class="type">double</span> b1),<span class="type">double</span> x)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">double</span> x=<span class="number">3.141592</span>;</span><br><span class="line">	tran(<span class="built_in">sin</span>,<span class="built_in">cos</span>,x);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">tran</span><span class="params">(<span class="type">double</span>(*a)(<span class="type">double</span> a1),<span class="type">double</span>(*b)(<span class="type">double</span> b1),<span class="type">double</span> x)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%f\n&quot;</span>,(*a)(x/<span class="number">2</span>));</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%f&quot;</span>,(*b)(x/<span class="number">2</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在C中，通常我们要对字符串进行一些例如比较、拷贝、连接等的操作时，通常使用的是标准库中的相关字符串长度，相较于C++中string类型的变量可以对存放字符串的变量直接进行运算等操作，C的字符串风格更加繁琐，且极容易在数组的内存方面引发严重问题</p>
+<h4 id="混用规则："><a href="#混用规则：" class="headerlink" title="混用规则："></a>混用规则：</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">string <span class="title">a</span><span class="params">(<span class="string">&quot;dhk&quot;</span>)</span></span>;</span><br><span class="line"><span class="type">char</span> *str=a;<span class="comment">//错误，a的类型为string，而str类型为char*，冲突</span></span><br><span class="line"><span class="type">char</span> *str=a.<span class="built_in">c_str</span>();<span class="comment">//正确。c_str()函数返回的是C风格字符串（一个地址）</span></span><br></pre></td></tr></table></figure>
 
-<p>调用函数时直接传入函数名即可。</p>
-<p>同理的，也可以不声明参数为指针（因为会自动转变为指针）</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">tran</span><span class="params">(<span class="type">double</span> a(<span class="type">double</span> a1),<span class="type">double</span> b(<span class="type">double</span> b1),<span class="type">double</span> x)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%f\n&quot;</span>,(*a)(x/<span class="number">2</span>));</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%f&quot;</span>,(*b)(x/<span class="number">2</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述用法相当于是<strong>又</strong>在内存中创建了一个”dhk”字符串，而用于找到该字符串的指针一旦改变，该字符串就将不能再被找到，因此通常对存放该类型的指针进行const操作。其规则类似C中的<code>char *str=&quot;dhk&quot;</code>所遵循的规则。</p>
+<h3 id="使用数组初始化vector类型"><a href="#使用数组初始化vector类型" class="headerlink" title="使用数组初始化vector类型"></a>使用数组初始化vector类型</h3><p>C++不允许用一个数组为另一个数组赋初值，也不允许通过vector类型对象为一个数组初始化，但是允许通过数组为vector对象初始化。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a[]=&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">v</span><span class="params">(begin(a),end(a))</span></span>;</span><br></pre></td></tr></table></figure>
 
+<h2 id="6、多维数组"><a href="#6、多维数组" class="headerlink" title="6、多维数组"></a>6、多维数组</h2><p>一些基础内容同C，详见<u>二维数组复习 | 小董的BLOG (gitee.io)</u></p>
+<p>多维数组可以理解为数组的数组例如<code>int a[3][4]</code>可以理解为a数组包含三个元素，而这三个元素都为大小为4的数组</p>
+<h3 id="下标引用"><a href="#下标引用" class="headerlink" title="下标引用"></a>下标引用</h3><h3 id="使用范围for语句和下标引用处理多维数组"><a href="#使用范围for语句和下标引用处理多维数组" class="headerlink" title="使用范围for语句和下标引用处理多维数组"></a>使用范围for语句和下标引用处理多维数组</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">3</span>][<span class="number">4</span>]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line"><span class="type">size_t</span> x=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> &amp;row : a)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> &amp;col : row)</span><br><span class="line">	&#123;</span><br><span class="line">		col=x;</span><br><span class="line">		x++;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-
-<h2 id="通过形参影响实参"><a href="#通过形参影响实参" class="headerlink" title="通过形参影响实参"></a>通过形参影响实参</h2><p>我们都知道，形参值的改变不能改变对应实参的值，把数据从被调用函数返回到调用函数的唯一途径时通过return。<strong>但如果通过传送地址给被调用函数，再在被调用函数中改变地址中存储的值，也就使通过形参改变对应实参的值成为了可能。</strong></p>
-<p>例如：交换值</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span> *x, <span class="type">int</span> *y)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> c; <span class="comment">// 因为c只是用来存放地址内保存的值，所以为一般变量</span></span><br><span class="line">    c=*x;*x=*y;*y=c;  <span class="comment">//将a、b地址中保存的值互换、地址不变</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a=<span class="number">1</span>,b=<span class="number">2</span>;</span><br><span class="line">    swap(&amp;a,&amp;b);<span class="comment">//将a、b的地址传给形参x、y，此时指针变量x、y内保存的就是a、b的地址</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d  %d&quot;</span>,a,b);<span class="comment">//此时a、b地址内保存的值已经互换</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>但如果swap函数定义成如下，又会怎么样呢</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span> *x, <span class="type">int</span> *y)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> *c; </span><br><span class="line">    c=x;x=y;y=c;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>如果这样定义函数，则程序的流程为：<strong>①调用swap函数时，x内保存的为a的地址，y内保存的为b的地址；②在swap函数中，x内保存的地址改变为b的地址，y内保存的地址改变为为a的地址；③swap函数调用结束，x，y的内存被释放；④此时a、b变量自身的地址并没有任何改变，改变的只用形参x、y所保存的地址，因此无法起到交换作用</strong></p>
-<h2 id="二维数组地址详解-数组指针-重要！！！！！"><a href="#二维数组地址详解-数组指针-重要！！！！！" class="headerlink" title="二维数组地址详解+数组指针(重要！！！！！)"></a>二维数组地址详解+数组指针(重要！！！！！)</h2><p>详见<a href="https://dhkkk.gitee.io/2022/07/28/%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84/">二维数组复习 | 小董的BLOG (gitee.io)</a></p>
 ]]></content>
       <tags>
-        <tag>C语言学习</tag>
+        <tag>C++学习</tag>
       </tags>
   </entry>
   <entry>
@@ -1044,6 +856,196 @@
 <li>需要注意的是，free释放的区域应为malloc或calloc所分配的区域</li>
 <li>free函数的实际功能是告诉系统输入参数对应的内存不再使用，即不再被保护，也就是说其他变量随时会占用占用那个地址。<strong>因此，原则上不再访问已经被free的的内存</strong></li>
 </ul>
+]]></content>
+      <tags>
+        <tag>C语言学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C++_1</title>
+    <url>/2022/09/07/C++-1/</url>
+    <content><![CDATA[<h1 id="输入与输出"><a href="#输入与输出" class="headerlink" title="输入与输出"></a>输入与输出</h1><ul>
+<li><p><strong>iostream库</strong></p>
+<p>在C++中没有专门定义的输入输出（IO）语句，而是使用了一个全面的<strong>标准库</strong>来提供IO机制等功能，也就是iostream库。而在iostream库中包含了两个基础<strong>类型</strong>：</p>
+<ul>
+<li>istream(in stream)：输入流</li>
+<li>ostream(out stream)：输出流</li>
+</ul>
+</li>
+<li><p>流的</p>
+</li>
+<li><p><strong>IO对象</strong></p>
+<p>在标准库中定义了4个IO对象，分别为1个istream型，3个ostream型：</p>
+<ul>
+<li>instream型：<ul>
+<li>cin(发音see in)：标准输入对象</li>
+</ul>
+</li>
+<li>ostream型：<ul>
+<li>cout：标准输出对象</li>
+<li>cerr：输出警告和错误信息</li>
+<li>clog：输出程序运行时的一般性消息</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="输入输出例程："><a href="#输入输出例程：" class="headerlink" title="输入输出例程："></a>输入输出例程：</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;iostream&quot;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> a,b;</span><br><span class="line">	std::cin&gt;&gt;a&gt;&gt;b;<span class="comment">//输入</span></span><br><span class="line">	std::cout&lt;&lt;a+b&lt;&lt;std::endl;<span class="comment">//输出</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面针对这个例程讲解：</p>
+<ul>
+<li><p>前缀std::</p>
+<p>这个前缀指出cin、cout、endl都是定义在名为std的命名空间中的。使用命名空间可以避免与用户定义的名字冲突。且标准库的所有名字都是定义在std中的。</p>
+</li>
+<li><h3 id="从输入流读取数据："><a href="#从输入流读取数据：" class="headerlink" title="从输入流读取数据："></a>从输入流<strong>读取</strong>数据：</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a,b;</span><br><span class="line">std::cin&gt;&gt;a&gt;&gt;b;<span class="comment">//输入</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>输入运算符（&gt;&gt;)</strong></p>
+<p>该运算符接收两个运算对象：</p>
+<ul>
+<li><p>左侧：必须为一个ostream型的对象</p>
+</li>
+<li><p>右侧：存放输入的值的变量</p>
+</li>
+</ul>
+<p>返回值（计算结果）： ostream型的对象（左侧运算对象）</p>
+<p>也就是说下面几种写法是一个意思：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">std::cin&gt;&gt;a&gt;&gt;b;</span><br><span class="line">/****************************/</span><br><span class="line">(std::cin&gt;&gt;a)&gt;&gt;b;</span><br><span class="line">/****************************/</span><br><span class="line">std:cin&gt;&gt;a;</span><br><span class="line">std:cin&gt;&gt;b;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><h3 id="向输出流写入数据："><a href="#向输出流写入数据：" class="headerlink" title="向输出流写入数据："></a>向输出流<strong>写入</strong>数据：</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">std::cout&lt;&lt;a+b&lt;&lt;std::endl;<span class="comment">//输出</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>输出运算符（&lt;&lt;)</strong></p>
+<p>该运算符接收两个运算对象：</p>
+<ul>
+<li>左侧：必须为一个istream型的对象</li>
+<li>右侧：要打印的值</li>
+</ul>
+<p>返回值（计算结果）： 写入给定值的ostream型的对象</p>
+<p>也就是说下面几种写法是一个意思：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">std::cout&lt;&lt;a+b&lt;&lt;std::endl;</span><br><span class="line"><span class="comment">/****************************/</span></span><br><span class="line">(std::cout&lt;&lt;a+b)&lt;&lt;std::endl;</span><br><span class="line"><span class="comment">/****************************/</span></span><br><span class="line">std::cout&lt;&lt;a+b;</span><br><span class="line">std::cout&lt;&lt;std::endl;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>endl操纵符</strong> <em>(小写L,不是1)</em></p>
+<p>endl也是被定义在std中的一个特殊值，写入endl的效果是结束当前行（类似c中的\n)，并将与设备相关联的缓冲区中的内容刷到设备中。</p>
+<p>缓冲刷新操作可以保证目前为止程序中所产生的所有输出都真正的写入到了输出流中，而不仅停留在内存中等待写入流。</p>
+</li>
+<li><p><strong>关于数据缓冲区</strong></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;iostream&quot;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> a,b=<span class="number">1</span>,c;</span><br><span class="line">	<span class="keyword">while</span>(std::cin&gt;&gt;a)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//while (getchar()!= &#x27;\n&#x27;);</span></span><br><span class="line">		std::cout&lt;&lt;<span class="string">&quot;times:&quot;</span>&lt;&lt;b++&lt;&lt;std::endl;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当使用一个istream对象为<strong>条件</strong>时，其效果就是检测输入流当前的状态，如果流是有效的，此时istream对象使条件为真，当遇到以下情况时为假：</p>
+<ul>
+<li>无效输入：例如上方输入不为int型（与a类型不符合）</li>
+<li>当输入流遇到文件结束符，对于window系统，<strong>输入文件结束符的方法是ctrl+z+\n</strong></li>
+</ul>
+<p>在上方程序中（当注释掉第七行时），当输入4 ‘\0’ 5时，time也会对应输出2次，即1 ‘\n’ 2 。这是因为当输入一次性输入两个数时，第一个数存进a，第二个数会被存在数据缓冲区中等待下一次读取输入流的操作；若想清除缓冲区（或者说是清零），只需添加第7行即可。</p>
+</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>C++学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>指针相关复习</title>
+    <url>/2022/07/31/C-%E6%8C%87%E9%92%88/</url>
+    <content><![CDATA[<h1 id="1-基本内容"><a href="#1-基本内容" class="headerlink" title="1.基本内容"></a>1.基本内容</h1><h2 id="什么是指针"><a href="#什么是指针" class="headerlink" title="什么是指针"></a>什么是指针</h2><ul>
+<li>在计算机中所有数据都存储在内存单元中,而每个内存单元都有一个对应的地址, 只要通过这个地址就能找到对应单元中存储的数据.</li>
+<li>由于通过地址能找到所需的变量单元，所以我们说该地址指向了该变量单元。将地址形象化的称为“指针”</li>
+<li>内存单元的指针(地址)和内存单元的内容是两个不同的概念。</li>
+</ul>
+<h2 id="什么是指针变量"><a href="#什么是指针变量" class="headerlink" title="什么是指针变量"></a>什么是指针变量</h2><p>在C语言中,允许用一个变量来存放其它变量的地址, 这种专门用于存储其它变量地址的变量, 我们称之为指针变量。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">char</span> ch = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="type">char</span> *p; <span class="comment">// 一个用于指向字符型变量的指针</span></span><br><span class="line">p = &amp;ch; </span><br></pre></td></tr></table></figure>
+
+<p>*表示这是一个指针变量</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> *p;</span><br><span class="line">p =  <span class="number">250</span>; <span class="comment">// 错误写法</span></span><br><span class="line"><span class="comment">/****************************/</span></span><br><span class="line"><span class="type">int</span> *p;</span><br><span class="line">*p=&amp;a; <span class="comment">//错误写法</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>多个指针变量可以指向同一个地址。</li>
+</ul>
+<h3 id="对指针变量的理解"><a href="#对指针变量的理解" class="headerlink" title="对指针变量的理解"></a>对指针变量的理解</h3><p>指针变量本身的作用是储存一个用户定义的变量的地址，但是其本身作为一个额外的变量，也有自己的地址，<strong>且这个地址不等于其储存的变量的地址；</strong></p>
+<p>例：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a=<span class="number">1</span>;</span><br><span class="line">    <span class="type">int</span> *c;</span><br><span class="line">    c=&amp;a;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;指针变量c自身的地址为：%d&quot;</span>,&amp;c);<span class="comment">//6487568 </span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;指针变量c存储单元内存储的内容(也就是a的地址)为：%d&quot;</span>,c);<span class="comment">//6487576</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;变量a的地址为：%d&quot;</span>,a);<span class="comment">//6487576</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//  c代表c内存放的地址</span></span><br><span class="line"><span class="comment">//  &amp;c代表c自身的地址</span></span><br><span class="line"><span class="comment">//  *c代表c内存放的地址中所存储的值</span></span><br><span class="line"><span class="comment">// (c+1)代表c内存放的地址+1*类型长度</span></span><br><span class="line"><span class="comment">// *c+1代表c内存放的地址中所存储的值本身+1</span></span><br><span class="line"><span class="comment">// *(c+1)代表c内存放的地址+1*类型长度后得到的地址中存储的值</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="取地址运算符（-amp-）与解引用运算符（-）"><a href="#取地址运算符（-amp-）与解引用运算符（-）" class="headerlink" title="取地址运算符（&amp;）与解引用运算符（*）"></a>取地址运算符（&amp;）与解引用运算符（*）</h2><ul>
+<li><p>取地址运算符：&amp;x，其作用为返回操作对象的地址</p>
+</li>
+<li><p>解引用运算符：<code>*x</code>，其作用是<strong>返回x中存储的地址内存储的值</strong></p>
+<p>例： <code>int a,*p1;p1=&amp;a;</code><strong>则此时*p1代表的就是变量a的内容,而不是a的地址</strong></p>
+<p>这也就是为什么使用<code>printf(&quot;%d&quot;,*p);</code>时是用*p而不是p了，因为 *p才是代表a的值，p则存储的变量a的地址</p>
+<p><strong>综上：除开定义时，其余时间*p等同a，p等同&amp;a</strong></p>
+<p>在定义时，<code>int *p1=&amp;a;</code>也是合法的且作用与上相同，个人理解为是一种指针格式的“声明”（？）这也解释了当某个函数参数定义为为<code>int *a</code>时实际使用时传入的也是&amp;的取地址变量了（个人理解）</p>
+</li>
+</ul>
+<h1 id="2-一些用法"><a href="#2-一些用法" class="headerlink" title="2.一些用法"></a>2.一些用法</h1><h2 id="二级指针"><a href="#二级指针" class="headerlink" title="二级指针"></a>二级指针</h2><ul>
+<li><p>如果一个指针变量存放的又是另一个指针变量的地址,则称这个指针变量为指向指针的指针￼变量。也称为“二级指针”。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">char</span> c = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="type">char</span> *cp;</span><br><span class="line">cp = &amp;c;</span><br><span class="line"><span class="type">char</span> **cp2;</span><br><span class="line">cp2 = &amp;cp;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;c = %c&quot;</span>, **cp2);<span class="comment">//  c=a</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="指针访问数组元素"><a href="#指针访问数组元素" class="headerlink" title="指针访问数组元素"></a>指针访问数组元素</h2><ul>
+<li><p>在指针指向数组元素时,允许以下运算:</p>
+<ul>
+<li>加一个整数(用+或+&#x3D;),如p+1</li>
+<li>减一个整数(用-或-&#x3D;),如p-1</li>
+<li>自加运算,如p++,++p</li>
+<li>自减运算,如p–,–p</li>
+</ul>
+<p>如果指针变量p已指向数组中的一个元素,则p+1<code>指向</code>同一数组中的下一个元素,p-1<code>指向</code>同 一数组中的上一个元素。【*(p+1)】</p>
+<p>(p+N)在地址上的变化为<code>p内存放的地址+数组元素类型长度*N</code></p>
+<ul>
+<li>其对p所有的基本运算均符合上述规律</li>
+</ul>
+</li>
+</ul>
+<h2 id="指针与字符串"><a href="#指针与字符串" class="headerlink" title="指针与字符串"></a>指针与字符串</h2><p>定义字符串除了使用字符数组存放之外，还可以通过字符串指针的方式指向字符串。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 数组名保存的是数组第0个元素的地址, 指针也可以保存第0个元素的地址</span></span><br><span class="line"><span class="type">char</span> *str = <span class="string">&quot;abc&quot;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>使用注意事项</p>
+<ul>
+<li><p>此方法不可修改字符串内容</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//使用字符数组来保存的字符串是保存栈里的,保存栈里面东西是可读可写,所有可以修改字符串中的的字符</span></span><br><span class="line"><span class="comment">//使用字符指针来保存字符串,它保存的是字符串常量地址,常量区是只读的,所以我们不可以修改字符串中的字符</span></span><br><span class="line"><span class="type">char</span> *str = <span class="string">&quot;lnj&quot;</span>;</span><br><span class="line">*(str+<span class="number">2</span>) = <span class="string">&#x27;y&#x27;</span>; <span class="comment">// 错误</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>不能够直接接收键盘输入</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 错误的原因是:str是一个野指针,他并没有指向某一块内存空间</span></span><br><span class="line"><span class="comment">// 所以不允许这样写如果给str分配内存空间是可以这样用 的</span></span><br><span class="line"><span class="type">char</span> *str;</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>, str);</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h2 id="指向函数的指针"><a href="#指向函数的指针" class="headerlink" title="指向函数的指针"></a>指向函数的指针</h2><p>函数在内存中占据空间，因此也有起始地址。</p>
+<p>格式：返回值类型  (*指针变量名)(形参);</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"> <span class="type">int</span> <span class="title function_">sum</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;     </span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> (*p)(<span class="type">int</span> x,<span class="type">int</span> y);</span><br><span class="line">	p=sum;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,(*p)(<span class="number">1</span>,<span class="number">2</span>)); <span class="comment">//打印3</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>函数指针有以下几点特点：</p>
+<ul>
+<li><p>当把一个<strong>函数名（注意是名字，不带输入参数）</strong>作为一个值使用时，该函数会自动转换成指针，指向该函数的内存地址，因此在对指针初始化时取地址符可选:</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">p=sum;</span><br><span class="line">p=&amp;sum;<span class="comment">//都正确</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>当使用指针调用函数时，解引用也是可选的：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,(*p)(<span class="number">1</span>,<span class="number">2</span>));</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,p(<span class="number">1</span>,<span class="number">2</span>));<span class="comment">//都输出3</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>当函数指针作形参时：</p>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdio.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;math.h&quot;</span></span></span><br><span class="line"><span class="type">void</span> <span class="title function_">tran</span><span class="params">(<span class="type">double</span> (*a)(<span class="type">double</span> a1),<span class="type">double</span> (*b)(<span class="type">double</span> b1),<span class="type">double</span> x)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">double</span> x=<span class="number">3.141592</span>;</span><br><span class="line">	tran(<span class="built_in">sin</span>,<span class="built_in">cos</span>,x);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">tran</span><span class="params">(<span class="type">double</span>(*a)(<span class="type">double</span> a1),<span class="type">double</span>(*b)(<span class="type">double</span> b1),<span class="type">double</span> x)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%f\n&quot;</span>,(*a)(x/<span class="number">2</span>));</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%f&quot;</span>,(*b)(x/<span class="number">2</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>调用函数时直接传入函数名即可。</p>
+<p>同理的，也可以不声明参数为指针（因为会自动转变为指针）</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">tran</span><span class="params">(<span class="type">double</span> a(<span class="type">double</span> a1),<span class="type">double</span> b(<span class="type">double</span> b1),<span class="type">double</span> x)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%f\n&quot;</span>,(*a)(x/<span class="number">2</span>));</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%f&quot;</span>,(*b)(x/<span class="number">2</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="通过形参影响实参"><a href="#通过形参影响实参" class="headerlink" title="通过形参影响实参"></a>通过形参影响实参</h2><p>我们都知道，形参值的改变不能改变对应实参的值，把数据从被调用函数返回到调用函数的唯一途径时通过return。<strong>但如果通过传送地址给被调用函数，再在被调用函数中改变地址中存储的值，也就使通过形参改变对应实参的值成为了可能。</strong></p>
+<p>例如：交换值</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span> *x, <span class="type">int</span> *y)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> c; <span class="comment">// 因为c只是用来存放地址内保存的值，所以为一般变量</span></span><br><span class="line">    c=*x;*x=*y;*y=c;  <span class="comment">//将a、b地址中保存的值互换、地址不变</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a=<span class="number">1</span>,b=<span class="number">2</span>;</span><br><span class="line">    swap(&amp;a,&amp;b);<span class="comment">//将a、b的地址传给形参x、y，此时指针变量x、y内保存的就是a、b的地址</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d  %d&quot;</span>,a,b);<span class="comment">//此时a、b地址内保存的值已经互换</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但如果swap函数定义成如下，又会怎么样呢</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span> *x, <span class="type">int</span> *y)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> *c; </span><br><span class="line">    c=x;x=y;y=c;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果这样定义函数，则程序的流程为：<strong>①调用swap函数时，x内保存的为a的地址，y内保存的为b的地址；②在swap函数中，x内保存的地址改变为b的地址，y内保存的地址改变为为a的地址；③swap函数调用结束，x，y的内存被释放；④此时a、b变量自身的地址并没有任何改变，改变的只用形参x、y所保存的地址，因此无法起到交换作用</strong></p>
+<h2 id="二维数组地址详解-数组指针-重要！！！！！"><a href="#二维数组地址详解-数组指针-重要！！！！！" class="headerlink" title="二维数组地址详解+数组指针(重要！！！！！)"></a>二维数组地址详解+数组指针(重要！！！！！)</h2><p>详见<a href="https://dhkkk.gitee.io/2022/07/28/%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84/">二维数组复习 | 小董的BLOG (gitee.io)</a></p>
 ]]></content>
       <tags>
         <tag>C语言学习</tag>
@@ -1400,134 +1402,6 @@
       </tags>
   </entry>
   <entry>
-    <title>FreeRTOS的任务相关</title>
-    <url>/2022/08/23/FreeRTOS-2/</url>
-    <content><![CDATA[<h1 id="任务相关"><a href="#任务相关" class="headerlink" title="任务相关"></a>任务相关</h1><h2 id="1、RTOS调度器"><a href="#1、RTOS调度器" class="headerlink" title="1、RTOS调度器"></a>1、RTOS调度器</h2><p>在任何时刻，只有一个任务得到运行，RTOS调度器决定运行哪个任务。调度器会不断的启动、停止每一个任务，宏观看上去就像整个应用程序都在执行。作为任务，不需要对调度器的活动有所了解，在任务切入切出时保存上下文环境（寄存器值、堆栈内容）是调度器主要的职责。为了实现这点，每个任务都需要有自己的堆栈。当任务切出时，它的执行环境会被保存在该任务的堆栈中，这样当再次运行时，就能从堆栈中正确的恢复上次的运行环境。</p>
-<h2 id="2、任务状态"><a href="#2、任务状态" class="headerlink" title="2、任务状态"></a>2、任务状态</h2><img src="/images/loading.png" data-original="/2022/08/23/FreeRTOS-2/%E4%BB%BB%E5%8A%A1.jpg" class title="This is an image"> 
-
-<h2 id="3、任务例子（用户）"><a href="#3、任务例子（用户）" class="headerlink" title="3、任务例子（用户）"></a>3、任务例子（用户）</h2><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vATaskFunction</span><span class="params">( <span class="type">void</span> *pvParameters )</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">/*-- 应用程序代码放在这里. --*/</span></span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* 任务不可以从这个函数返回或退出。在较新的FreeRTOS移植包中，如果</span></span><br><span class="line"><span class="comment">    试图从一个任务中返回，将会调用configASSERT()（如果定义的话）。</span></span><br><span class="line"><span class="comment">    如果一个任务确实要退出函数，那么这个任务应调用vTaskDelete(NULL)</span></span><br><span class="line"><span class="comment">    函数，以便处理一些清理工作。*/</span></span><br><span class="line">    vTaskDelete( <span class="literal">NULL</span> );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>例如步兵v2.6中底盘任务</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">chassis_task</span><span class="params">(<span class="type">void</span> *pvParameters)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//空闲一段时间</span></span><br><span class="line">    vTaskDelay(CHASSIS_TASK_INIT_TIME);</span><br><span class="line">    <span class="comment">//底盘初始化</span></span><br><span class="line">    chassis_init(&amp;chassis_move);</span><br><span class="line">	<span class="comment">//判断遥控器在线状态</span></span><br><span class="line">    <span class="keyword">while</span> (toe_is_error(DBUSTOE))</span><br><span class="line">	&#123;</span><br><span class="line">      vTaskDelay(CHASSIS_CONTROL_TIME_MS);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//底盘循环代码</span></span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">	  <span class="comment">//底盘模式设置</span></span><br><span class="line">      chassis_set_mode(&amp;chassis_move);</span><br><span class="line">      <span class="comment">//状态切换数据保存与处理</span></span><br><span class="line">      chassis_mode_change_control_transit(&amp;chassis_move);</span><br><span class="line">      <span class="comment">//底盘相关反馈数据更新</span></span><br><span class="line">      chassis_feedback_update(&amp;chassis_move);</span><br><span class="line">        。。。。。。。。</span><br><span class="line">	  <span class="comment">//系统延时</span></span><br><span class="line">	  vTaskDelay(CHASSIS_CONTROL_TIME_MS);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;	</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>任务函数决不应该返回，因此通常任务函数都是一个死循环。</p>
-</li>
-<li><p>任务由xTaskCreate()函数创建，由vTaskDelete()函数删除。（后面会详细讲到）</p>
-</li>
-</ul>
-<h2 id="4、空闲任务"><a href="#4、空闲任务" class="headerlink" title="4、空闲任务"></a>4、空闲任务</h2><p> 空闲任务是启动RTOS调度器时由内核自动创建的任务，这样可以确保至少有一个任务在运行。空闲任务具有最低任务优先级，这样如果有其它更高优先级的任务进入就绪态就可以立刻让出CPU。</p>
-<h3 id="空闲任务钩子函数"><a href="#空闲任务钩子函数" class="headerlink" title="空闲任务钩子函数"></a>空闲任务钩子函数</h3><p>空闲任务钩子是一个函数，每一个空闲任务周期被调用一次。</p>
-<ul>
-<li><strong>因为FreeRTOS必须至少有一个任务处于就绪或运行状态，因此钩子函数不可以调用可能引起空闲任务阻塞的API函数（比如vTaskDelay()或者带有超时事件的队列或信号量函数）。</strong></li>
-</ul>
-<p>创建一个空闲钩子步骤如下：</p>
-<ul>
-<li><p>在FreeRTOSConfig.h头文件中设置configUSE_IDLE_HOOK为1；</p>
-</li>
-<li><p>定义一个函数，名字和参数原型如下所示：</p>
-</li>
-</ul>
-  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vApplicationIdleHook</span><span class="params">( <span class="type">void</span> )</span>;</span><br></pre></td></tr></table></figure>
-
-<p>  通常，<strong>使用这个空闲钩子函数设置CPU进入低功耗模式</strong>。</p>
-<h2 id="5、任务的创建"><a href="#5、任务的创建" class="headerlink" title="5、任务的创建"></a>5、任务的创建</h2><p>任务创建和删除API函数位于文件task.c中，需要包含task.h头文件</p>
-<p>具体函数定义如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">BaseType_t xTaskCreate(</span><br><span class="line">           TaskFunction_t pvTaskCode,</span><br><span class="line">           const char * const pcName,</span><br><span class="line">           unsigned short usStackDepth,</span><br><span class="line">           void *pvParameters,</span><br><span class="line">           UBaseType_t uxPriority,</span><br><span class="line">           TaskHandle_t * pvCreatedTask</span><br><span class="line">            );</span><br><span class="line">  例：          </span><br><span class="line">    xTaskCreate( (TaskFunction_t)chassis_task,//底盘任务</span><br><span class="line">                 (const char *)&quot;chassis_task&quot;,</span><br><span class="line">                 (uint16_t)CHASSIS_STK_SIZE,</span><br><span class="line">                 (void *)NULL,</span><br><span class="line">                 (UBaseType_t)CHASSIS_TASK_PRIO,</span><br><span class="line">                 (TaskHandle_t *)&amp;CHASSISTask_Handler</span><br><span class="line">               );</span><br></pre></td></tr></table></figure>
-
-<h3 id="参数描述"><a href="#参数描述" class="headerlink" title="参数描述"></a>参数描述</h3><ul>
-<li><p>pvTaskCode：指针，指向任务函数的入口。</p>
-<p>追溯到TaskFunction_t的定义可以找到</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="title function_">void</span> <span class="params">(*TaskFunction_t)</span><span class="params">( <span class="type">void</span> * )</span>;</span><br></pre></td></tr></table></figure>
-
-<p>此处涉及C语言中typedef的一个使用方法</p>
-<p>​	void (<em>TaskFunction_t)( void * )意为定义了一个名为TaskFunction_t，入口参数类型为void</em>型，返回值为void型的函数指针变量；而在使用typedef后再进行TaskFunction_t  pvTaskCode的操作，则意为TaskFunction_t在这里作为类的别名，而 pvTaskCode作为类的变量。也就是说，在使用typedef后，可以将此处的TaskFunction_t理解为一个类似于int，void之类的类型</p>
-<p>做个总结：此处</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="title function_">void</span> <span class="params">(*TaskFunction_t)</span><span class="params">( <span class="type">void</span> * )</span>;</span><br><span class="line">TaskFunction_t pvTaskCode;</span><br></pre></td></tr></table></figure>
-
-<p>等同于：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void (*pvTaskCode)( void * );</span><br></pre></td></tr></table></figure>
-
-<p><strong>也就是说，pvTaskCode其实就是一个函数指针</strong></p>
-<p>（此用法同步收录于“C语言学习-一些关键字-typedef-指针”一栏）</p>
-</li>
-<li><p>pcName：任务描述，名字。字符串的最大长度由宏configMAX_TASK_NAME_LEN指定</p>
-</li>
-<li><p>usStackDepth：指定任务堆栈大小，能够支持的堆栈变量数量，而<strong>不是字节数</strong>。</p>
-</li>
-</ul>
-<ul>
-<li>pvParameters：指针，当任务创建时，作为一个参数传递给任务。</li>
-</ul>
-<ul>
-<li><p>uxPriority：任务的优先级。</p>
-</li>
-<li><p>pvCreatedTask：用于回传一个句柄（ID），创建任务后可以使用这个句柄引用任务</p>
-</li>
-</ul>
-<h3 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h3><p> 如果任务成功创建并加入就绪列表函数返回pdPASS，否则函数返回错误码，具体参见projdefs.h。</p>
-<h3 id="用法（个人）"><a href="#用法（个人）" class="headerlink" title="用法（个人）"></a>用法（个人）</h3><ul>
-<li>创建任务具体内容，例如上面的chassis_task</li>
-<li>创建针对freertos的任务（xTaskCreate）</li>
-<li>使用freertos调度任务</li>
-</ul>
-<h2 id="6-任务的删除"><a href="#6-任务的删除" class="headerlink" title="6.任务的删除"></a>6.任务的删除</h2><p>函数定义：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vTaskDelete</span><span class="params">( TaskHandle_t xTask )</span>;</span><br></pre></td></tr></table></figure>
-
-<p>从RTOS内核管理器中删除一个任务。任务删除后将会从就绪、阻塞、暂停和事件列表中移除。在配置头文件中，必须定义宏INCLUDE_vTaskDelete 为1，本函数才有效。被删除的任务，其在任务创建时由内核分配的存储空间，会由空闲任务释放。如果有应用程序调用xTaskDelete()，必须保证空闲任务获取一定的微控制器处理时间。任务代码自己分配的内存是不会自动释放的，因此删除任务前，应该将这些内存释放。</p>
-<h1 id="任务控制"><a href="#任务控制" class="headerlink" title="任务控制"></a>任务控制</h1><h2 id="延时（阻塞）"><a href="#延时（阻塞）" class="headerlink" title="延时（阻塞）"></a>延时（阻塞）</h2><h3 id="1-相对延时"><a href="#1-相对延时" class="headerlink" title="1.相对延时"></a>1.相对延时</h3><ul>
-<li><p>void vTaskDelay( portTickType xTicksToDelay )；</p>
-<p>参数描述：xTicksToDelay：延时时间总数，单位是系统时钟节拍周期</p>
-</li>
-</ul>
-<p>vTaskDelay()指定的延时时间是从调用vTaskDelay()后开始计算的相对时间。比如vTaskDelay(100)，那么从调用vTaskDelay()后，任务进入阻塞状态，经过100个系统时钟节拍周期，任务解除阻塞。因此，vTaskDelay()并不适用与周期性执行任务的场合。因为调用vTaskDelay()到任务解除阻塞的时间不总是固定的并且该任务下一次调用vTaskDelay()函数的时间也不总是固定的（两次执行同一任务的时间间隔本身就不固定，中断或高优先级任务抢占也可能会改变每一次执行时间）。</p>
-<p>在文件FreeRTOSConfig.h中，宏INCLUDE_vTaskDelay 必须设置成1，此函数才能有效。</p>
-<h3 id="2-绝对延时"><a href="#2-绝对延时" class="headerlink" title="2.绝对延时"></a>2.绝对延时</h3><ul>
-<li>void vTaskDelayUntil( TickType_t *pxPreviousWakeTime, const TickType_tx TimeIncrement );</li>
-</ul>
-<p>  参数描述：</p>
-<ul>
-<li>pxPreviousWakeTime：指针，指向一个变量，该变量保存任务最后一次解除阻塞的时间。第一次使用前，<strong>该变量必须初始化为当前时间</strong>。之后这个变量会在vTaskDelayUntil()函数内<strong>自动更新</strong>。</li>
-<li>xTimeIncrement：周期循环时间。当<strong>当前时间</strong>等于pxPreviousWakeTime+xTimeIncrement时任务会解除阻塞。</li>
-</ul>
-<p>应当指出的是，如果指定的唤醒时间已经达到，vTaskDelayUntil()立刻返回（不会有阻塞）。因此，使用vTaskDelayUntil()周期性执行的任务，无论任何原因（比如，任务临时进入挂起状态）停止了周期性执行，使得任务少运行了一个或多个执行周期，<strong>那么需要重新计算所需要的唤醒时间</strong>。（例如任务挂起态结束后，当前的绝对时间已经超过指定的唤醒时间，vTaskDelayUntil()会立刻返回，且此时需要重新获得当前时间）这可以通过传递给函数的指针参数pxPreviousWake指向的值与当前系统时钟计数值比较来检测。<br>例：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//每10次系统节拍执行一次</span></span><br><span class="line"> <span class="type">void</span> <span class="title function_">vTaskFunction</span><span class="params">( <span class="type">void</span> * pvParameters )</span></span><br><span class="line"> &#123;</span><br><span class="line">     <span class="type">static</span> portTickType xLastWakeTime;</span><br><span class="line">     <span class="type">const</span> portTickType xFrequency = <span class="number">10</span>;</span><br><span class="line"> </span><br><span class="line">     <span class="comment">// 使用当前时间初始化变量xLastWakeTime</span></span><br><span class="line">     xLastWakeTime = xTaskGetTickCount();</span><br><span class="line"> </span><br><span class="line">     <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">     &#123;</span><br><span class="line">     	<span class="comment">// 需要周期性执行代码放在这里</span></span><br><span class="line">     	.........</span><br><span class="line">     	<span class="comment">//等待下一个周期</span></span><br><span class="line">         vTaskDelayUntil( &amp;xLastWakeTime,xFrequency ); </span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-
-<p>在文件FreeRTOSConfig.h中，宏INCLUDE_vTaskDelayUntil 必须设置成1，此函数才有效。</p>
-<h2 id="获取优先级"><a href="#获取优先级" class="headerlink" title="获取优先级"></a>获取优先级</h2><ul>
-<li><p>UBaseType_t uxTaskPriorityGet(TaskHandle_t xTask )；</p>
-<p>参数描述：</p>
-<ul>
-<li>xTask：任务句柄。NULL表示获取当前任务的优先级。</li>
-</ul>
-</li>
-</ul>
-<p>例：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vAFunction</span><span class="params">( <span class="type">void</span> )</span></span><br><span class="line"> &#123;</span><br><span class="line">    xTaskHandle xHandle;</span><br><span class="line">    <span class="comment">// 创建另一个任务，并保存任务句柄</span></span><br><span class="line">    xTaskCreate( vTaskCode, <span class="string">&quot;NAME&quot;</span>,STACK_SIZE, <span class="literal">NULL</span>, tskIDLE_PRIORITY, &amp;xHandle );</span><br><span class="line">    <span class="comment">// 当前任务优先级比新创建的任务优先级高？</span></span><br><span class="line">    <span class="keyword">if</span>( uxTaskPriorityGet( xHandle ) &lt;uxTaskPriorityGet( <span class="literal">NULL</span> ) )</span><br><span class="line">    &#123;</span><br><span class="line">         <span class="comment">// 当前优先级较高</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">      ......</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-
-<p>在文件FreeRTOSConfig.h中，宏INCLUDE_vTaskPrioritySet 必须设置成1，此函数才有效。</p>
-<h2 id="任务挂起"><a href="#任务挂起" class="headerlink" title="任务挂起"></a>任务挂起</h2><ul>
-<li><p>void vTaskSuspend( TaskHandle_txTaskToSuspend );</p>
-<p><strong>被挂起的任务绝不会得到处理器时间，不管该任务具有什么优先级。</strong></p>
-<p>参数描述：</p>
-<ul>
-<li>xTask：任务句柄。NULL表示表示挂起当前任务。</li>
-</ul>
-</li>
-</ul>
-<p>在文件FreeRTOSConfig.h中，宏INCLUDE_vTaskSuspend必须设置成1，此函数才有效。</p>
-<h2 id="解除任务挂起状态"><a href="#解除任务挂起状态" class="headerlink" title="解除任务挂起状态"></a>解除任务挂起状态</h2><ul>
-<li>void vTaskResume( TaskHandle_txTaskToResume );</li>
-</ul>
-<p>宏INCLUDE_vTaskSuspend必须置1，此函数才有效。</p>
-<h2 id="解除任务挂起状态（用于中断服务函数）"><a href="#解除任务挂起状态（用于中断服务函数）" class="headerlink" title="解除任务挂起状态（用于中断服务函数）"></a>解除任务挂起状态（用于中断服务函数）</h2><p>还在学习中，暂不记录。</p>
-<h1 id="任务辅助调试类函数"><a href="#任务辅助调试类函数" class="headerlink" title="任务辅助调试类函数"></a>任务辅助调试类函数</h1><p>这类函数主要用于调试信息输出、获取任务句柄、获取任务状态、操作任务标签值等等，种类繁多，不再单独总结，具体可跳至<a href="https://freertos.blog.csdn.net/article/details/50498173">FreeRTOS任务应用函数_研究是为了理解的博客-CSDN博客</a>中讲解的很详细。</p>
-]]></content>
-      <tags>
-        <tag>嵌入式学习</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>FreeRTOS_基本框架</title>
     <url>/2022/08/18/FreeRTOS-1/</url>
     <content><![CDATA[<h1 id="1、基础内容"><a href="#1、基础内容" class="headerlink" title="1、基础内容"></a>1、基础内容</h1><h2 id="状态"><a href="#状态" class="headerlink" title="状态"></a>状态</h2><ul>
@@ -1631,6 +1505,33 @@
 ]]></content>
       <tags>
         <tag>嵌入式学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>guitar-1</title>
+    <url>/2022/07/30/guitar-1/</url>
+    <content><![CDATA[<h1 id="1-自由节奏"><a href="#1-自由节奏" class="headerlink" title="1.自由节奏"></a>1.自由节奏</h1><img src="/images/loading.png" data-original="/2022/07/30/guitar-1/1.jpg" class title="This is an image"> 
+
+<p>Rubato标志</p>
+<h1 id="2-延续"><a href="#2-延续" class="headerlink" title="2.延续"></a>2.延续</h1><img src="/images/loading.png" data-original="/2022/07/30/guitar-1/2.jpg" class title="This is an image"> 
+
+<p>此时不要再次触碰相对弦（下弧线 ）</p>
+<h1 id="三连音"><a href="#三连音" class="headerlink" title="三连音"></a>三连音</h1><img src="/images/loading.png" data-original="/2022/07/30/guitar-1/3.jpg" class title="This is an image"> 
+
+<p>击弦+勾弦三连音，上弧线代表只弹第一个音</p>
+<h1 id="装饰音"><a href="#装饰音" class="headerlink" title="装饰音"></a>装饰音</h1><img src="/images/loading.png" data-original="/2022/07/30/guitar-1/4.jpg" class title="This is an image"> 
+
+<p>此次主要为听到后一个音</p>
+<p>（若单有上斜线则会从低位到高位滑音（无头&#x2F;无尾滑音））</p>
+<h1 id="左手抹弦"><a href="#左手抹弦" class="headerlink" title="左手抹弦"></a>左手抹弦</h1><img src="/images/loading.png" data-original="/2022/07/30/guitar-1/5.jpg" class title="This is an image"> 
+
+<p>L.H.Stroke +左手拍弦</p>
+<h1 id="点弦"><a href="#点弦" class="headerlink" title="点弦"></a>点弦</h1><img src="/images/loading.png" data-original="/2022/07/30/guitar-1/6.jpg" class title="This is an image"> 
+
+<p>正上方表有L.H,此处（）为幽灵音</p>
+]]></content>
+      <tags>
+        <tag>guitar</tag>
       </tags>
   </entry>
   <entry>
@@ -2260,6 +2161,169 @@
       </tags>
   </entry>
   <entry>
+    <title>关于hexo本地图片无法上传</title>
+    <url>/2022/07/30/hexo-2/</url>
+    <content><![CDATA[<h1 id="关于hexo本地图片无法上传"><a href="#关于hexo本地图片无法上传" class="headerlink" title="关于hexo本地图片无法上传"></a>关于hexo本地图片无法上传</h1><h2 id="1-安装插件"><a href="#1-安装插件" class="headerlink" title="1.安装插件"></a>1.安装插件</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install https://github.com/CodeFalling/hexo-asset-image --save</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-配置插件（可以先跳过看看）"><a href="#2-配置插件（可以先跳过看看）" class="headerlink" title="2.配置插件（可以先跳过看看）"></a>2.配置插件（可以先跳过看看）</h2><p>打开&#x2F;node_modules&#x2F;hexo-asset-image&#x2F;index.js，将内容更换为下面的代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;use strict&#x27;</span>;</span><br><span class="line"><span class="type">var</span> <span class="variable">cheerio</span> <span class="operator">=</span> require(<span class="string">&#x27;cheerio&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// http://stackoverflow.com/questions/14480345/how-to-get-the-nth-occurrence-in-a-string</span></span><br><span class="line">function <span class="title function_">getPosition</span><span class="params">(str, m, i)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> str.split(m, i).join(m).length;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">var</span> <span class="variable">version</span> <span class="operator">=</span> String(hexo.version).split(<span class="string">&#x27;.&#x27;</span>);</span><br><span class="line">hexo.extend.filter.register(<span class="string">&#x27;after_post_render&#x27;</span>, function(data)&#123;</span><br><span class="line">  <span class="type">var</span> <span class="variable">config</span> <span class="operator">=</span> hexo.config;</span><br><span class="line">  <span class="keyword">if</span>(config.post_asset_folder)&#123;</span><br><span class="line">    	<span class="type">var</span> <span class="variable">link</span> <span class="operator">=</span> data.permalink;</span><br><span class="line">	<span class="keyword">if</span>(version.length &gt; <span class="number">0</span> &amp;&amp; Number(version[<span class="number">0</span>]) == <span class="number">3</span>)</span><br><span class="line">	   <span class="type">var</span> <span class="variable">beginPos</span> <span class="operator">=</span> getPosition(link, <span class="string">&#x27;/&#x27;</span>, <span class="number">1</span>) + <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	   <span class="type">var</span> <span class="variable">beginPos</span> <span class="operator">=</span> getPosition(link, <span class="string">&#x27;/&#x27;</span>, <span class="number">3</span>) + <span class="number">1</span>;</span><br><span class="line">	<span class="comment">// In hexo 3.1.1, the permalink of &quot;about&quot; page is like &quot;.../about/index.html&quot;.</span></span><br><span class="line">	<span class="type">var</span> <span class="variable">endPos</span> <span class="operator">=</span> link.lastIndexOf(<span class="string">&#x27;/&#x27;</span>) + <span class="number">1</span>;</span><br><span class="line">    link = link.substring(beginPos, endPos);</span><br><span class="line"></span><br><span class="line">    <span class="type">var</span> <span class="variable">toprocess</span> <span class="operator">=</span> [<span class="string">&#x27;excerpt&#x27;</span>, <span class="string">&#x27;more&#x27;</span>, <span class="string">&#x27;content&#x27;</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">var</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; toprocess.length; i++)&#123;</span><br><span class="line">      <span class="type">var</span> <span class="variable">key</span> <span class="operator">=</span> toprocess[i];</span><br><span class="line"> </span><br><span class="line">      <span class="type">var</span> <span class="variable">$</span> <span class="operator">=</span> cheerio.load(data[key], &#123;</span><br><span class="line">        ignoreWhitespace: <span class="literal">false</span>,</span><br><span class="line">        xmlMode: <span class="literal">false</span>,</span><br><span class="line">        lowerCaseTags: <span class="literal">false</span>,</span><br><span class="line">        decodeEntities: <span class="literal">false</span></span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">      $(<span class="string">&#x27;img&#x27;</span>).each(function()&#123;</span><br><span class="line">		<span class="keyword">if</span> ($(<span class="built_in">this</span>).attr(<span class="string">&#x27;src&#x27;</span>))&#123;</span><br><span class="line">			<span class="comment">// For windows style path, we replace &#x27;\&#x27; to &#x27;/&#x27;.</span></span><br><span class="line">			<span class="type">var</span> <span class="variable">src</span> <span class="operator">=</span> $(<span class="built_in">this</span>).attr(<span class="string">&#x27;src&#x27;</span>).replace(<span class="string">&#x27;\\&#x27;</span>, <span class="string">&#x27;/&#x27;</span>);</span><br><span class="line">			<span class="keyword">if</span>(!/http[s]*.*|\/\/.*/.test(src) &amp;&amp;</span><br><span class="line">			   !/^\s*\<span class="comment">//.test(src)) &#123;</span></span><br><span class="line">			  <span class="comment">// For &quot;about&quot; page, the first part of &quot;src&quot; can&#x27;t be removed.</span></span><br><span class="line">			  <span class="comment">// In addition, to support multi-level local directory.</span></span><br><span class="line">			  <span class="type">var</span> <span class="variable">linkArray</span> <span class="operator">=</span> link.split(<span class="string">&#x27;/&#x27;</span>).filter(function(elem)&#123;</span><br><span class="line">				<span class="keyword">return</span> elem != <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">			  &#125;);</span><br><span class="line">			  <span class="type">var</span> <span class="variable">srcArray</span> <span class="operator">=</span> src.split(<span class="string">&#x27;/&#x27;</span>).filter(function(elem)&#123;</span><br><span class="line">				<span class="keyword">return</span> elem != <span class="string">&#x27;&#x27;</span> &amp;&amp; elem != <span class="string">&#x27;.&#x27;</span>;</span><br><span class="line">			  &#125;);</span><br><span class="line">			  <span class="keyword">if</span>(srcArray.length &gt; <span class="number">1</span>)</span><br><span class="line">				srcArray.shift();</span><br><span class="line">			  src = srcArray.join(<span class="string">&#x27;/&#x27;</span>);</span><br><span class="line">			  $(<span class="built_in">this</span>).attr(<span class="string">&#x27;src&#x27;</span>, config.root + link + src);</span><br><span class="line">			  console.info&amp;&amp;console.info(<span class="string">&quot;update link as:--&gt;&quot;</span>+config.root + link + src);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			console.info&amp;&amp;console.info(<span class="string">&quot;no src attr, skipped...&quot;</span>);</span><br><span class="line">			console.info&amp;&amp;console.info($(<span class="built_in">this</span>));</span><br><span class="line">		&#125;</span><br><span class="line">      &#125;);</span><br><span class="line">      data[key] = $.html();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-修改根配置文件"><a href="#3-修改根配置文件" class="headerlink" title="3.修改根配置文件"></a>3.修改根配置文件</h2><p>post_asset_folder: true</p>
+<h2 id="4-引入图片（可能无法使用markdown语法-“！“）"><a href="#4-引入图片（可能无法使用markdown语法-“！“）" class="headerlink" title="4.引入图片（可能无法使用markdown语法 “！“）"></a>4.引入图片（可能无法使用markdown语法 “！<a href></a>“）</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;% asset_img 1.jpg This is an image %&#125; </span><br></pre></td></tr></table></figure>
+
+<p>“1.jpg”为图片名字</p>
+<h1 id="注：上传至github时png格式无法使用，最好用jpg格式"><a href="#注：上传至github时png格式无法使用，最好用jpg格式" class="headerlink" title="注：上传至github时png格式无法使用，最好用jpg格式"></a>注：上传至github时png格式无法使用，最好用jpg格式</h1>]]></content>
+      <tags>
+        <tag>hexo的一些问题</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>FreeRTOS的任务相关</title>
+    <url>/2022/08/23/FreeRTOS-2/</url>
+    <content><![CDATA[<h1 id="任务相关"><a href="#任务相关" class="headerlink" title="任务相关"></a>任务相关</h1><h2 id="1、RTOS调度器"><a href="#1、RTOS调度器" class="headerlink" title="1、RTOS调度器"></a>1、RTOS调度器</h2><p>在任何时刻，只有一个任务得到运行，RTOS调度器决定运行哪个任务。调度器会不断的启动、停止每一个任务，宏观看上去就像整个应用程序都在执行。作为任务，不需要对调度器的活动有所了解，在任务切入切出时保存上下文环境（寄存器值、堆栈内容）是调度器主要的职责。为了实现这点，每个任务都需要有自己的堆栈。当任务切出时，它的执行环境会被保存在该任务的堆栈中，这样当再次运行时，就能从堆栈中正确的恢复上次的运行环境。</p>
+<h2 id="2、任务状态"><a href="#2、任务状态" class="headerlink" title="2、任务状态"></a>2、任务状态</h2><img src="/images/loading.png" data-original="/2022/08/23/FreeRTOS-2/%E4%BB%BB%E5%8A%A1.jpg" class title="This is an image"> 
+
+<h2 id="3、任务例子（用户）"><a href="#3、任务例子（用户）" class="headerlink" title="3、任务例子（用户）"></a>3、任务例子（用户）</h2><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vATaskFunction</span><span class="params">( <span class="type">void</span> *pvParameters )</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">/*-- 应用程序代码放在这里. --*/</span></span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* 任务不可以从这个函数返回或退出。在较新的FreeRTOS移植包中，如果</span></span><br><span class="line"><span class="comment">    试图从一个任务中返回，将会调用configASSERT()（如果定义的话）。</span></span><br><span class="line"><span class="comment">    如果一个任务确实要退出函数，那么这个任务应调用vTaskDelete(NULL)</span></span><br><span class="line"><span class="comment">    函数，以便处理一些清理工作。*/</span></span><br><span class="line">    vTaskDelete( <span class="literal">NULL</span> );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>例如步兵v2.6中底盘任务</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">chassis_task</span><span class="params">(<span class="type">void</span> *pvParameters)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//空闲一段时间</span></span><br><span class="line">    vTaskDelay(CHASSIS_TASK_INIT_TIME);</span><br><span class="line">    <span class="comment">//底盘初始化</span></span><br><span class="line">    chassis_init(&amp;chassis_move);</span><br><span class="line">	<span class="comment">//判断遥控器在线状态</span></span><br><span class="line">    <span class="keyword">while</span> (toe_is_error(DBUSTOE))</span><br><span class="line">	&#123;</span><br><span class="line">      vTaskDelay(CHASSIS_CONTROL_TIME_MS);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//底盘循环代码</span></span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">	  <span class="comment">//底盘模式设置</span></span><br><span class="line">      chassis_set_mode(&amp;chassis_move);</span><br><span class="line">      <span class="comment">//状态切换数据保存与处理</span></span><br><span class="line">      chassis_mode_change_control_transit(&amp;chassis_move);</span><br><span class="line">      <span class="comment">//底盘相关反馈数据更新</span></span><br><span class="line">      chassis_feedback_update(&amp;chassis_move);</span><br><span class="line">        。。。。。。。。</span><br><span class="line">	  <span class="comment">//系统延时</span></span><br><span class="line">	  vTaskDelay(CHASSIS_CONTROL_TIME_MS);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;	</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>任务函数决不应该返回，因此通常任务函数都是一个死循环。</p>
+</li>
+<li><p>任务由xTaskCreate()函数创建，由vTaskDelete()函数删除。（后面会详细讲到）</p>
+</li>
+</ul>
+<h2 id="4、空闲任务"><a href="#4、空闲任务" class="headerlink" title="4、空闲任务"></a>4、空闲任务</h2><p> 空闲任务是启动RTOS调度器时由内核自动创建的任务，这样可以确保至少有一个任务在运行。空闲任务具有最低任务优先级，这样如果有其它更高优先级的任务进入就绪态就可以立刻让出CPU。</p>
+<h3 id="空闲任务钩子函数"><a href="#空闲任务钩子函数" class="headerlink" title="空闲任务钩子函数"></a>空闲任务钩子函数</h3><p>空闲任务钩子是一个函数，每一个空闲任务周期被调用一次。</p>
+<ul>
+<li><strong>因为FreeRTOS必须至少有一个任务处于就绪或运行状态，因此钩子函数不可以调用可能引起空闲任务阻塞的API函数（比如vTaskDelay()或者带有超时事件的队列或信号量函数）。</strong></li>
+</ul>
+<p>创建一个空闲钩子步骤如下：</p>
+<ul>
+<li><p>在FreeRTOSConfig.h头文件中设置configUSE_IDLE_HOOK为1；</p>
+</li>
+<li><p>定义一个函数，名字和参数原型如下所示：</p>
+</li>
+</ul>
+  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vApplicationIdleHook</span><span class="params">( <span class="type">void</span> )</span>;</span><br></pre></td></tr></table></figure>
+
+<p>  通常，<strong>使用这个空闲钩子函数设置CPU进入低功耗模式</strong>。</p>
+<h2 id="5、任务的创建"><a href="#5、任务的创建" class="headerlink" title="5、任务的创建"></a>5、任务的创建</h2><p>任务创建和删除API函数位于文件task.c中，需要包含task.h头文件</p>
+<p>具体函数定义如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">BaseType_t xTaskCreate(</span><br><span class="line">           TaskFunction_t pvTaskCode,</span><br><span class="line">           const char * const pcName,</span><br><span class="line">           unsigned short usStackDepth,</span><br><span class="line">           void *pvParameters,</span><br><span class="line">           UBaseType_t uxPriority,</span><br><span class="line">           TaskHandle_t * pvCreatedTask</span><br><span class="line">            );</span><br><span class="line">  例：          </span><br><span class="line">    xTaskCreate( (TaskFunction_t)chassis_task,//底盘任务</span><br><span class="line">                 (const char *)&quot;chassis_task&quot;,</span><br><span class="line">                 (uint16_t)CHASSIS_STK_SIZE,</span><br><span class="line">                 (void *)NULL,</span><br><span class="line">                 (UBaseType_t)CHASSIS_TASK_PRIO,</span><br><span class="line">                 (TaskHandle_t *)&amp;CHASSISTask_Handler</span><br><span class="line">               );</span><br></pre></td></tr></table></figure>
+
+<h3 id="参数描述"><a href="#参数描述" class="headerlink" title="参数描述"></a>参数描述</h3><ul>
+<li><p>pvTaskCode：指针，指向任务函数的入口。</p>
+<p>追溯到TaskFunction_t的定义可以找到</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="title function_">void</span> <span class="params">(*TaskFunction_t)</span><span class="params">( <span class="type">void</span> * )</span>;</span><br></pre></td></tr></table></figure>
+
+<p>此处涉及C语言中typedef的一个使用方法</p>
+<p>​	void (<em>TaskFunction_t)( void * )意为定义了一个名为TaskFunction_t，入口参数类型为void</em>型，返回值为void型的函数指针变量；而在使用typedef后再进行TaskFunction_t  pvTaskCode的操作，则意为TaskFunction_t在这里作为类的别名，而 pvTaskCode作为类的变量。也就是说，在使用typedef后，可以将此处的TaskFunction_t理解为一个类似于int，void之类的类型</p>
+<p>做个总结：此处</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="title function_">void</span> <span class="params">(*TaskFunction_t)</span><span class="params">( <span class="type">void</span> * )</span>;</span><br><span class="line">TaskFunction_t pvTaskCode;</span><br></pre></td></tr></table></figure>
+
+<p>等同于：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void (*pvTaskCode)( void * );</span><br></pre></td></tr></table></figure>
+
+<p><strong>也就是说，pvTaskCode其实就是一个函数指针</strong></p>
+<p>（此用法同步收录于“C语言学习-一些关键字-typedef-指针”一栏）</p>
+</li>
+<li><p>pcName：任务描述，名字。字符串的最大长度由宏configMAX_TASK_NAME_LEN指定</p>
+</li>
+<li><p>usStackDepth：指定任务堆栈大小，能够支持的堆栈变量数量，而<strong>不是字节数</strong>。</p>
+</li>
+</ul>
+<ul>
+<li>pvParameters：指针，当任务创建时，作为一个参数传递给任务。</li>
+</ul>
+<ul>
+<li><p>uxPriority：任务的优先级。</p>
+</li>
+<li><p>pvCreatedTask：用于回传一个句柄（ID），创建任务后可以使用这个句柄引用任务</p>
+</li>
+</ul>
+<h3 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h3><p> 如果任务成功创建并加入就绪列表函数返回pdPASS，否则函数返回错误码，具体参见projdefs.h。</p>
+<h3 id="用法（个人）"><a href="#用法（个人）" class="headerlink" title="用法（个人）"></a>用法（个人）</h3><ul>
+<li>创建任务具体内容，例如上面的chassis_task</li>
+<li>创建针对freertos的任务（xTaskCreate）</li>
+<li>使用freertos调度任务</li>
+</ul>
+<h2 id="6-任务的删除"><a href="#6-任务的删除" class="headerlink" title="6.任务的删除"></a>6.任务的删除</h2><p>函数定义：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vTaskDelete</span><span class="params">( TaskHandle_t xTask )</span>;</span><br></pre></td></tr></table></figure>
+
+<p>从RTOS内核管理器中删除一个任务。任务删除后将会从就绪、阻塞、暂停和事件列表中移除。在配置头文件中，必须定义宏INCLUDE_vTaskDelete 为1，本函数才有效。被删除的任务，其在任务创建时由内核分配的存储空间，会由空闲任务释放。如果有应用程序调用xTaskDelete()，必须保证空闲任务获取一定的微控制器处理时间。任务代码自己分配的内存是不会自动释放的，因此删除任务前，应该将这些内存释放。</p>
+<h1 id="任务控制"><a href="#任务控制" class="headerlink" title="任务控制"></a>任务控制</h1><h2 id="延时（阻塞）"><a href="#延时（阻塞）" class="headerlink" title="延时（阻塞）"></a>延时（阻塞）</h2><h3 id="1-相对延时"><a href="#1-相对延时" class="headerlink" title="1.相对延时"></a>1.相对延时</h3><ul>
+<li><p>void vTaskDelay( portTickType xTicksToDelay )；</p>
+<p>参数描述：xTicksToDelay：延时时间总数，单位是系统时钟节拍周期</p>
+</li>
+</ul>
+<p>vTaskDelay()指定的延时时间是从调用vTaskDelay()后开始计算的相对时间。比如vTaskDelay(100)，那么从调用vTaskDelay()后，任务进入阻塞状态，经过100个系统时钟节拍周期，任务解除阻塞。因此，vTaskDelay()并不适用与周期性执行任务的场合。因为调用vTaskDelay()到任务解除阻塞的时间不总是固定的并且该任务下一次调用vTaskDelay()函数的时间也不总是固定的（两次执行同一任务的时间间隔本身就不固定，中断或高优先级任务抢占也可能会改变每一次执行时间）。</p>
+<p>在文件FreeRTOSConfig.h中，宏INCLUDE_vTaskDelay 必须设置成1，此函数才能有效。</p>
+<h3 id="2-绝对延时"><a href="#2-绝对延时" class="headerlink" title="2.绝对延时"></a>2.绝对延时</h3><ul>
+<li>void vTaskDelayUntil( TickType_t *pxPreviousWakeTime, const TickType_tx TimeIncrement );</li>
+</ul>
+<p>  参数描述：</p>
+<ul>
+<li>pxPreviousWakeTime：指针，指向一个变量，该变量保存任务最后一次解除阻塞的时间。第一次使用前，<strong>该变量必须初始化为当前时间</strong>。之后这个变量会在vTaskDelayUntil()函数内<strong>自动更新</strong>。</li>
+<li>xTimeIncrement：周期循环时间。当<strong>当前时间</strong>等于pxPreviousWakeTime+xTimeIncrement时任务会解除阻塞。</li>
+</ul>
+<p>应当指出的是，如果指定的唤醒时间已经达到，vTaskDelayUntil()立刻返回（不会有阻塞）。因此，使用vTaskDelayUntil()周期性执行的任务，无论任何原因（比如，任务临时进入挂起状态）停止了周期性执行，使得任务少运行了一个或多个执行周期，<strong>那么需要重新计算所需要的唤醒时间</strong>。（例如任务挂起态结束后，当前的绝对时间已经超过指定的唤醒时间，vTaskDelayUntil()会立刻返回，且此时需要重新获得当前时间）这可以通过传递给函数的指针参数pxPreviousWake指向的值与当前系统时钟计数值比较来检测。<br>例：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//每10次系统节拍执行一次</span></span><br><span class="line"> <span class="type">void</span> <span class="title function_">vTaskFunction</span><span class="params">( <span class="type">void</span> * pvParameters )</span></span><br><span class="line"> &#123;</span><br><span class="line">     <span class="type">static</span> portTickType xLastWakeTime;</span><br><span class="line">     <span class="type">const</span> portTickType xFrequency = <span class="number">10</span>;</span><br><span class="line"> </span><br><span class="line">     <span class="comment">// 使用当前时间初始化变量xLastWakeTime</span></span><br><span class="line">     xLastWakeTime = xTaskGetTickCount();</span><br><span class="line"> </span><br><span class="line">     <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">     &#123;</span><br><span class="line">     	<span class="comment">// 需要周期性执行代码放在这里</span></span><br><span class="line">     	.........</span><br><span class="line">     	<span class="comment">//等待下一个周期</span></span><br><span class="line">         vTaskDelayUntil( &amp;xLastWakeTime,xFrequency ); </span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>在文件FreeRTOSConfig.h中，宏INCLUDE_vTaskDelayUntil 必须设置成1，此函数才有效。</p>
+<h2 id="获取优先级"><a href="#获取优先级" class="headerlink" title="获取优先级"></a>获取优先级</h2><ul>
+<li><p>UBaseType_t uxTaskPriorityGet(TaskHandle_t xTask )；</p>
+<p>参数描述：</p>
+<ul>
+<li>xTask：任务句柄。NULL表示获取当前任务的优先级。</li>
+</ul>
+</li>
+</ul>
+<p>例：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vAFunction</span><span class="params">( <span class="type">void</span> )</span></span><br><span class="line"> &#123;</span><br><span class="line">    xTaskHandle xHandle;</span><br><span class="line">    <span class="comment">// 创建另一个任务，并保存任务句柄</span></span><br><span class="line">    xTaskCreate( vTaskCode, <span class="string">&quot;NAME&quot;</span>,STACK_SIZE, <span class="literal">NULL</span>, tskIDLE_PRIORITY, &amp;xHandle );</span><br><span class="line">    <span class="comment">// 当前任务优先级比新创建的任务优先级高？</span></span><br><span class="line">    <span class="keyword">if</span>( uxTaskPriorityGet( xHandle ) &lt;uxTaskPriorityGet( <span class="literal">NULL</span> ) )</span><br><span class="line">    &#123;</span><br><span class="line">         <span class="comment">// 当前优先级较高</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">      ......</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>在文件FreeRTOSConfig.h中，宏INCLUDE_vTaskPrioritySet 必须设置成1，此函数才有效。</p>
+<h2 id="任务挂起"><a href="#任务挂起" class="headerlink" title="任务挂起"></a>任务挂起</h2><ul>
+<li><p>void vTaskSuspend( TaskHandle_txTaskToSuspend );</p>
+<p><strong>被挂起的任务绝不会得到处理器时间，不管该任务具有什么优先级。</strong></p>
+<p>参数描述：</p>
+<ul>
+<li>xTask：任务句柄。NULL表示表示挂起当前任务。</li>
+</ul>
+</li>
+</ul>
+<p>在文件FreeRTOSConfig.h中，宏INCLUDE_vTaskSuspend必须设置成1，此函数才有效。</p>
+<h2 id="解除任务挂起状态"><a href="#解除任务挂起状态" class="headerlink" title="解除任务挂起状态"></a>解除任务挂起状态</h2><ul>
+<li>void vTaskResume( TaskHandle_txTaskToResume );</li>
+</ul>
+<p>宏INCLUDE_vTaskSuspend必须置1，此函数才有效。</p>
+<h2 id="解除任务挂起状态（用于中断服务函数）"><a href="#解除任务挂起状态（用于中断服务函数）" class="headerlink" title="解除任务挂起状态（用于中断服务函数）"></a>解除任务挂起状态（用于中断服务函数）</h2><p>还在学习中，暂不记录。</p>
+<h1 id="任务辅助调试类函数"><a href="#任务辅助调试类函数" class="headerlink" title="任务辅助调试类函数"></a>任务辅助调试类函数</h1><p>这类函数主要用于调试信息输出、获取任务句柄、获取任务状态、操作任务标签值等等，种类繁多，不再单独总结，具体可跳至<a href="https://freertos.blog.csdn.net/article/details/50498173">FreeRTOS任务应用函数_研究是为了理解的博客-CSDN博客</a>中讲解的很详细。</p>
+]]></content>
+      <tags>
+        <tag>嵌入式学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2022/07/27/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
     <title>FreeRTOS任务间的交互方法</title>
     <url>/2022/08/30/freertos%E4%BB%BB%E5%8A%A1%E9%80%9A%E7%9F%A5%E4%B8%8E%E4%BF%A1%E5%8F%B7%E9%87%8F/</url>
     <content><![CDATA[<h1 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h1><p>本来是打算在<a href="https://www.dhksblog.top/2022/08/25/FreeRTOS-3/">FreeRTOS在CubeMX中的使用</a>就把这些内容给讲了的，但是学习的过程中发现网络上很多教程都存在着一些差异，所以为了更系统地学习，同时也方便日后查阅，就单独开一篇文章总结一下相关内容</p>
@@ -2513,68 +2577,6 @@
       </tags>
   </entry>
   <entry>
-    <title>guitar-1</title>
-    <url>/2022/07/30/guitar-1/</url>
-    <content><![CDATA[<h1 id="1-自由节奏"><a href="#1-自由节奏" class="headerlink" title="1.自由节奏"></a>1.自由节奏</h1><img src="/images/loading.png" data-original="/2022/07/30/guitar-1/1.jpg" class title="This is an image"> 
-
-<p>Rubato标志</p>
-<h1 id="2-延续"><a href="#2-延续" class="headerlink" title="2.延续"></a>2.延续</h1><img src="/images/loading.png" data-original="/2022/07/30/guitar-1/2.jpg" class title="This is an image"> 
-
-<p>此时不要再次触碰相对弦（下弧线 ）</p>
-<h1 id="三连音"><a href="#三连音" class="headerlink" title="三连音"></a>三连音</h1><img src="/images/loading.png" data-original="/2022/07/30/guitar-1/3.jpg" class title="This is an image"> 
-
-<p>击弦+勾弦三连音，上弧线代表只弹第一个音</p>
-<h1 id="装饰音"><a href="#装饰音" class="headerlink" title="装饰音"></a>装饰音</h1><img src="/images/loading.png" data-original="/2022/07/30/guitar-1/4.jpg" class title="This is an image"> 
-
-<p>此次主要为听到后一个音</p>
-<p>（若单有上斜线则会从低位到高位滑音（无头&#x2F;无尾滑音））</p>
-<h1 id="左手抹弦"><a href="#左手抹弦" class="headerlink" title="左手抹弦"></a>左手抹弦</h1><img src="/images/loading.png" data-original="/2022/07/30/guitar-1/5.jpg" class title="This is an image"> 
-
-<p>L.H.Stroke +左手拍弦</p>
-<h1 id="点弦"><a href="#点弦" class="headerlink" title="点弦"></a>点弦</h1><img src="/images/loading.png" data-original="/2022/07/30/guitar-1/6.jpg" class title="This is an image"> 
-
-<p>正上方表有L.H,此处（）为幽灵音</p>
-]]></content>
-      <tags>
-        <tag>guitar</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>关于hexo本地图片无法上传</title>
-    <url>/2022/07/30/hexo-2/</url>
-    <content><![CDATA[<h1 id="关于hexo本地图片无法上传"><a href="#关于hexo本地图片无法上传" class="headerlink" title="关于hexo本地图片无法上传"></a>关于hexo本地图片无法上传</h1><h2 id="1-安装插件"><a href="#1-安装插件" class="headerlink" title="1.安装插件"></a>1.安装插件</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install https://github.com/CodeFalling/hexo-asset-image --save</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-配置插件（可以先跳过看看）"><a href="#2-配置插件（可以先跳过看看）" class="headerlink" title="2.配置插件（可以先跳过看看）"></a>2.配置插件（可以先跳过看看）</h2><p>打开&#x2F;node_modules&#x2F;hexo-asset-image&#x2F;index.js，将内容更换为下面的代码</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;use strict&#x27;</span>;</span><br><span class="line"><span class="type">var</span> <span class="variable">cheerio</span> <span class="operator">=</span> require(<span class="string">&#x27;cheerio&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// http://stackoverflow.com/questions/14480345/how-to-get-the-nth-occurrence-in-a-string</span></span><br><span class="line">function <span class="title function_">getPosition</span><span class="params">(str, m, i)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> str.split(m, i).join(m).length;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">var</span> <span class="variable">version</span> <span class="operator">=</span> String(hexo.version).split(<span class="string">&#x27;.&#x27;</span>);</span><br><span class="line">hexo.extend.filter.register(<span class="string">&#x27;after_post_render&#x27;</span>, function(data)&#123;</span><br><span class="line">  <span class="type">var</span> <span class="variable">config</span> <span class="operator">=</span> hexo.config;</span><br><span class="line">  <span class="keyword">if</span>(config.post_asset_folder)&#123;</span><br><span class="line">    	<span class="type">var</span> <span class="variable">link</span> <span class="operator">=</span> data.permalink;</span><br><span class="line">	<span class="keyword">if</span>(version.length &gt; <span class="number">0</span> &amp;&amp; Number(version[<span class="number">0</span>]) == <span class="number">3</span>)</span><br><span class="line">	   <span class="type">var</span> <span class="variable">beginPos</span> <span class="operator">=</span> getPosition(link, <span class="string">&#x27;/&#x27;</span>, <span class="number">1</span>) + <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	   <span class="type">var</span> <span class="variable">beginPos</span> <span class="operator">=</span> getPosition(link, <span class="string">&#x27;/&#x27;</span>, <span class="number">3</span>) + <span class="number">1</span>;</span><br><span class="line">	<span class="comment">// In hexo 3.1.1, the permalink of &quot;about&quot; page is like &quot;.../about/index.html&quot;.</span></span><br><span class="line">	<span class="type">var</span> <span class="variable">endPos</span> <span class="operator">=</span> link.lastIndexOf(<span class="string">&#x27;/&#x27;</span>) + <span class="number">1</span>;</span><br><span class="line">    link = link.substring(beginPos, endPos);</span><br><span class="line"></span><br><span class="line">    <span class="type">var</span> <span class="variable">toprocess</span> <span class="operator">=</span> [<span class="string">&#x27;excerpt&#x27;</span>, <span class="string">&#x27;more&#x27;</span>, <span class="string">&#x27;content&#x27;</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">var</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; toprocess.length; i++)&#123;</span><br><span class="line">      <span class="type">var</span> <span class="variable">key</span> <span class="operator">=</span> toprocess[i];</span><br><span class="line"> </span><br><span class="line">      <span class="type">var</span> <span class="variable">$</span> <span class="operator">=</span> cheerio.load(data[key], &#123;</span><br><span class="line">        ignoreWhitespace: <span class="literal">false</span>,</span><br><span class="line">        xmlMode: <span class="literal">false</span>,</span><br><span class="line">        lowerCaseTags: <span class="literal">false</span>,</span><br><span class="line">        decodeEntities: <span class="literal">false</span></span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">      $(<span class="string">&#x27;img&#x27;</span>).each(function()&#123;</span><br><span class="line">		<span class="keyword">if</span> ($(<span class="built_in">this</span>).attr(<span class="string">&#x27;src&#x27;</span>))&#123;</span><br><span class="line">			<span class="comment">// For windows style path, we replace &#x27;\&#x27; to &#x27;/&#x27;.</span></span><br><span class="line">			<span class="type">var</span> <span class="variable">src</span> <span class="operator">=</span> $(<span class="built_in">this</span>).attr(<span class="string">&#x27;src&#x27;</span>).replace(<span class="string">&#x27;\\&#x27;</span>, <span class="string">&#x27;/&#x27;</span>);</span><br><span class="line">			<span class="keyword">if</span>(!/http[s]*.*|\/\/.*/.test(src) &amp;&amp;</span><br><span class="line">			   !/^\s*\<span class="comment">//.test(src)) &#123;</span></span><br><span class="line">			  <span class="comment">// For &quot;about&quot; page, the first part of &quot;src&quot; can&#x27;t be removed.</span></span><br><span class="line">			  <span class="comment">// In addition, to support multi-level local directory.</span></span><br><span class="line">			  <span class="type">var</span> <span class="variable">linkArray</span> <span class="operator">=</span> link.split(<span class="string">&#x27;/&#x27;</span>).filter(function(elem)&#123;</span><br><span class="line">				<span class="keyword">return</span> elem != <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">			  &#125;);</span><br><span class="line">			  <span class="type">var</span> <span class="variable">srcArray</span> <span class="operator">=</span> src.split(<span class="string">&#x27;/&#x27;</span>).filter(function(elem)&#123;</span><br><span class="line">				<span class="keyword">return</span> elem != <span class="string">&#x27;&#x27;</span> &amp;&amp; elem != <span class="string">&#x27;.&#x27;</span>;</span><br><span class="line">			  &#125;);</span><br><span class="line">			  <span class="keyword">if</span>(srcArray.length &gt; <span class="number">1</span>)</span><br><span class="line">				srcArray.shift();</span><br><span class="line">			  src = srcArray.join(<span class="string">&#x27;/&#x27;</span>);</span><br><span class="line">			  $(<span class="built_in">this</span>).attr(<span class="string">&#x27;src&#x27;</span>, config.root + link + src);</span><br><span class="line">			  console.info&amp;&amp;console.info(<span class="string">&quot;update link as:--&gt;&quot;</span>+config.root + link + src);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			console.info&amp;&amp;console.info(<span class="string">&quot;no src attr, skipped...&quot;</span>);</span><br><span class="line">			console.info&amp;&amp;console.info($(<span class="built_in">this</span>));</span><br><span class="line">		&#125;</span><br><span class="line">      &#125;);</span><br><span class="line">      data[key] = $.html();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="3-修改根配置文件"><a href="#3-修改根配置文件" class="headerlink" title="3.修改根配置文件"></a>3.修改根配置文件</h2><p>post_asset_folder: true</p>
-<h2 id="4-引入图片（可能无法使用markdown语法-“！“）"><a href="#4-引入图片（可能无法使用markdown语法-“！“）" class="headerlink" title="4.引入图片（可能无法使用markdown语法 “！“）"></a>4.引入图片（可能无法使用markdown语法 “！<a href></a>“）</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;% asset_img 1.jpg This is an image %&#125; </span><br></pre></td></tr></table></figure>
-
-<p>“1.jpg”为图片名字</p>
-<h1 id="注：上传至github时png格式无法使用，最好用jpg格式"><a href="#注：上传至github时png格式无法使用，最好用jpg格式" class="headerlink" title="注：上传至github时png格式无法使用，最好用jpg格式"></a>注：上传至github时png格式无法使用，最好用jpg格式</h1>]]></content>
-      <tags>
-        <tag>hexo的一些问题</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2022/07/27/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
     <title>python_1</title>
     <url>/2022/09/14/python-1/</url>
     <content><![CDATA[<h1 id="1、基本数据类型"><a href="#1、基本数据类型" class="headerlink" title="1、基本数据类型"></a>1、基本数据类型</h1><ul>
@@ -2799,6 +2801,25 @@
       </tags>
   </entry>
   <entry>
+    <title>使用说明</title>
+    <url>/2022/09/08/%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/</url>
+    <content><![CDATA[<h1 id="欢迎访问DHK的个人博客！以下是一些使用说明："><a href="#欢迎访问DHK的个人博客！以下是一些使用说明：" class="headerlink" title="欢迎访问DHK的个人博客！以下是一些使用说明："></a>欢迎访问DHK的个人博客！以下是一些使用说明：</h1><h2 id="1-写的目的"><a href="#1-写的目的" class="headerlink" title="1.写的目的"></a>1.写的目的</h2><p>主要是为了记录自己在一些学习中的笔记和感想，方便日后回忆与查阅，仅供内部学习，未经同意请勿转载！</p>
+<p>由于大部分是将自己的理解总结出来，所以有些地方不一定正确，也欢迎读者随时给予斧正，一些联系方式也已经放在侧边栏。</p>
+<h2 id="2-如何查找需要内容"><a href="#2-如何查找需要内容" class="headerlink" title="2.如何查找需要内容"></a>2.如何查找需要内容</h2><ul>
+<li>左侧目录有相关分类tag，以供查找</li>
+<li>也可以通过左侧搜索功能搜索想要的内容</li>
+<li>左侧我的GitHub仓库中也上传过之前使用过的一些例程模板</li>
+</ul>
+<h2 id="3-注意事项"><a href="#3-注意事项" class="headerlink" title="3.注意事项"></a>3.注意事项</h2><ul>
+<li><u>如果你曾经打开过此博客网站，<strong>请务必在阅读相关博客之前先Ctrl+F5</strong>强制清理之前的缓存，不然你可能会看不到最新更新的内容！！！</u><em>（感觉是gitee的问题，之前部署到GitHub时并未遇见此问题）</em></li>
+<li>如果想定位到想查找的内容的具体位置，建议先用博客的搜索功能定位到文章，再通过ctrl F搜索关键字即可。</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>杂项</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>python_2</title>
     <url>/2022/09/16/python-2/</url>
     <content><![CDATA[<h1 id="开始编程"><a href="#开始编程" class="headerlink" title="开始编程"></a>开始编程</h1><h2 id="1、条件控制"><a href="#1、条件控制" class="headerlink" title="1、条件控制"></a>1、条件控制</h2><p>一般形式：</p>
@@ -3000,25 +3021,6 @@
 ]]></content>
       <tags>
         <tag>C语言学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>使用说明</title>
-    <url>/2022/09/08/%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/</url>
-    <content><![CDATA[<h1 id="欢迎访问DHK的个人博客！以下是一些使用说明："><a href="#欢迎访问DHK的个人博客！以下是一些使用说明：" class="headerlink" title="欢迎访问DHK的个人博客！以下是一些使用说明："></a>欢迎访问DHK的个人博客！以下是一些使用说明：</h1><h2 id="1-写的目的"><a href="#1-写的目的" class="headerlink" title="1.写的目的"></a>1.写的目的</h2><p>主要是为了记录自己在一些学习中的笔记和感想，方便日后回忆与查阅，仅供内部学习，未经同意请勿转载！</p>
-<p>由于大部分是将自己的理解总结出来，所以有些地方不一定正确，也欢迎读者随时给予斧正，一些联系方式也已经放在侧边栏。</p>
-<h2 id="2-如何查找需要内容"><a href="#2-如何查找需要内容" class="headerlink" title="2.如何查找需要内容"></a>2.如何查找需要内容</h2><ul>
-<li>左侧目录有相关分类tag，以供查找</li>
-<li>也可以通过左侧搜索功能搜索想要的内容</li>
-<li>左侧我的GitHub仓库中也上传过之前使用过的一些例程模板</li>
-</ul>
-<h2 id="3-注意事项"><a href="#3-注意事项" class="headerlink" title="3.注意事项"></a>3.注意事项</h2><ul>
-<li><u>如果你曾经打开过此博客网站，<strong>请务必在阅读相关博客之前先Ctrl+F5</strong>强制清理之前的缓存，不然你可能会看不到最新更新的内容！！！</u><em>（感觉是gitee的问题，之前部署到GitHub时并未遇见此问题）</em></li>
-<li>如果想定位到想查找的内容的具体位置，建议先用博客的搜索功能定位到文章，再通过ctrl F搜索关键字即可。</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>杂项</tag>
       </tags>
   </entry>
   <entry>
