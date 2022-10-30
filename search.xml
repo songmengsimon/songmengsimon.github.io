@@ -222,7 +222,80 @@
   <entry>
     <title>C++的语句与函数</title>
     <url>/2022/10/11/C++-5/</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<h1 id="1、try语句与异常处理"><a href="#1、try语句与异常处理" class="headerlink" title="1、try语句与异常处理"></a>1、try语句与异常处理</h1><p>通常的异常处理包括三部分：</p>
+<ul>
+<li>throw表达式：使用throw表达式表示当前程序遇到了某个问题（异常声明）</li>
+<li>try语句块：与catch子句配合用于处理各类异常声明</li>
+<li>一套异常类：用于传递具体的异常信息（异常声明的含义）</li>
+</ul>
+<h2 id="例程"><a href="#例程" class="headerlink" title="例程"></a>例程</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdexcept&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> std::vector;</span><br><span class="line"><span class="keyword">using</span> std::string;</span><br><span class="line"><span class="keyword">using</span> std::cin;</span><br><span class="line"><span class="keyword">using</span> std::cout;</span><br><span class="line"><span class="keyword">using</span> std::endl;</span><br><span class="line"><span class="keyword">using</span> std::runtime_error;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> a,b;</span><br><span class="line">    cin&gt;&gt;a&gt;&gt;b;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(a!=b) <span class="keyword">throw</span> <span class="built_in">runtime_error</span>(<span class="string">&quot;ERROR!!!&quot;</span>);</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;good&quot;</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">catch</span>(runtime_error err)</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;err.<span class="built_in">what</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="throw表达式"><a href="#throw表达式" class="headerlink" title="throw表达式"></a>throw表达式</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(a!=b) <span class="keyword">throw</span> <span class="built_in">runtime_error</span>(<span class="string">&quot;ERROR!!!&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>格式：throw+异常类+初始化异常类对象</p>
+<ul>
+<li><p>该初始化的对象只用于提供一些关于异常的辅助信息（用户自行定义）</p>
+</li>
+<li><p>异常类为一系列在库中定义的类型，使用时需要声明其命名空间，以下是几种常用的异常类，在头文件stdexcept中</p>
+<table>
+<thead>
+<tr>
+<th align="center">exception</th>
+<th align="center">一般错误</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">runtime_error</td>
+<td align="center">运行时才能检测出的任务</td>
+</tr>
+<tr>
+<td align="center">range_error</td>
+<td align="center">运行时：生成结果超出有意义的值域范围的错误</td>
+</tr>
+<tr>
+<td align="center">overflow_error</td>
+<td align="center">运行时：计算上溢错误</td>
+</tr>
+<tr>
+<td align="center">underflow_error</td>
+<td align="center">运行时：计算下溢错误</td>
+</tr>
+<tr>
+<td align="center">logic_error</td>
+<td align="center">程序逻辑错误</td>
+</tr>
+<tr>
+<td align="center">domain_error</td>
+<td align="center">逻辑错误：参数对应的结果不存在</td>
+</tr>
+<tr>
+<td align="center">invalid_error</td>
+<td align="center">逻辑错误：无效参数</td>
+</tr>
+<tr>
+<td align="center">length_error</td>
+<td align="center">逻辑错误：超出对象类型长度</td>
+</tr>
+<tr>
+<td align="center">out_of_range</td>
+<td align="center">逻辑错误：超出有效范围</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>除exception外其他类型都<strong>必须</strong>用一个字符串初始化，而exception则不允许这种初始化</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(a!=b) <span class="keyword">throw</span> <span class="built_in">exception</span>();</span><br><span class="line">	cout&lt;&lt;<span class="string">&quot;good&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">catch</span>(exception)</span><br><span class="line">&#123;</span><br><span class="line">   cout&lt;&lt;<span class="string">&quot;ERROR!!&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h2 id="try语句块"><a href="#try语句块" class="headerlink" title="try语句块"></a>try语句块</h2><p>格式：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;<span class="comment">/*程序正常逻辑，异常类在此处通过throw表达式抛出 */</span> &#125;</span><br><span class="line"><span class="built_in">catch</span>(异常声明)</span><br><span class="line">&#123;&#125;</span><br><span class="line"><span class="built_in">catch</span>(异常声明)</span><br><span class="line">&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>当try内一旦抛出异常类时，就不再执行该throw表达式后的内容；反之，若没有抛出任何异常，则不会触发任何catch语句，程序正常执行完try语句。</li>
+<li>catch()括号中需定义一个对象，类型为触发的异常类，这些异常类只有一个子函数what，用于输出初始化时的字符串（不能用于exception类）</li>
+</ul>
+<p>当有多个try语句块嵌套时，当最内部try抛出了一个异常，会由内到外执行catch，若最终都没有对应catch，则程序转到terminate的标准库函数，该函数行为与系统有关，通常执行该函数会导致程序非正常退出。</p>
+]]></content>
       <tags>
         <tag>C++学习</tag>
       </tags>
