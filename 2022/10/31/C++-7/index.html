@@ -22,25 +22,28 @@
     var CONFIG = {"hostname":"dhkkk.gitee.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="记录一些学习日常">
-<meta property="og:type" content="website">
-<meta property="og:title" content="小董的BLOG">
-<meta property="og:url" content="https://dhkkk.gitee.io/index.html">
+  <meta name="description" content="IO类在之前的一些用到输入与输出的程序都是用户对流的读写，也就是使用的iostream类，但是C++中的IO处理并不止通过流进行读写，为了支持不同的IO操作，标准库中还定义了其他的一些IO类，他们被包含在不同的头文件中：    头文件 类 作用    iostream (w)istream(w)ostream(w)iostream 从普通流中读写数据   fstream (w)ifstream(w">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++_IO库">
+<meta property="og:url" content="https://dhkkk.gitee.io/2022/10/31/C++-7/index.html">
 <meta property="og:site_name" content="小董的BLOG">
-<meta property="og:description" content="记录一些学习日常">
+<meta property="og:description" content="IO类在之前的一些用到输入与输出的程序都是用户对流的读写，也就是使用的iostream类，但是C++中的IO处理并不止通过流进行读写，为了支持不同的IO操作，标准库中还定义了其他的一些IO类，他们被包含在不同的头文件中：    头文件 类 作用    iostream (w)istream(w)ostream(w)iostream 从普通流中读写数据   fstream (w)ifstream(w">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-10-31T11:05:26.000Z">
+<meta property="article:modified_time" content="2022-10-31T13:58:26.049Z">
 <meta property="article:author" content="dhk">
+<meta property="article:tag" content="C++学习">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://dhkkk.gitee.io/">
+<link rel="canonical" href="https://dhkkk.gitee.io/2022/10/31/C++-7/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
@@ -58,7 +61,7 @@
   padding: 1px 4px;
 }
 </style>
-  <title>小董的BLOG</title>
+  <title>C++_IO库 | 小董的BLOG</title>
   
 
 
@@ -189,90 +192,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkk.gitee.io/2022/09/08/%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/09/08/%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/" class="post-title-link" itemprop="url">使用说明</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-    <i class="fa fa-thumb-tack"></i>
-    <font color=green>TOP</font>
-    <span class="post-meta-divider">|</span>
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-09-08 18:51:12" itemprop="dateCreated datePublished" datetime="2022-09-08T18:51:12+08:00">2022-09-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-09-20 21:57:48" itemprop="dateModified" datetime="2022-09-20T21:57:48+08:00">2022-09-20</time>
-              </span>
-
-          
-
-        </div>
-      </header>
 
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="欢迎访问DHK的个人博客！以下是一些使用说明："><a href="#欢迎访问DHK的个人博客！以下是一些使用说明：" class="headerlink" title="欢迎访问DHK的个人博客！以下是一些使用说明："></a>欢迎访问DHK的个人博客！以下是一些使用说明：</h1><h2 id="1-写的目的"><a href="#1-写的目的" class="headerlink" title="1.写的目的"></a>1.写的目的</h2><p>主要是为了记录自己在一些学习中的笔记和感想，方便日后回忆与查阅，仅供内部学习，未经同意请勿转载！</p>
-<p>由于大部分是将自己的理解总结出来，所以有些地方不一定正确，也欢迎读者随时给予斧正，一些联系方式也已经放在侧边栏。</p>
-<h2 id="2-如何查找需要内容"><a href="#2-如何查找需要内容" class="headerlink" title="2.如何查找需要内容"></a>2.如何查找需要内容</h2><ul>
-<li>左侧目录有相关分类tag，以供查找</li>
-<li>也可以通过左侧搜索功能搜索想要的内容</li>
-<li>左侧我的GitHub仓库中也上传过之前使用过的一些例程模板</li>
-</ul>
-<h2 id="3-注意事项"><a href="#3-注意事项" class="headerlink" title="3.注意事项"></a>3.注意事项</h2><ul>
-<li><u>如果你曾经打开过此博客网站，<strong>请务必在阅读相关博客之前先Ctrl+F5</strong>强制清理之前的缓存，不然你可能会看不到最新更新的内容！！！</u><em>（感觉是gitee的问题，之前部署到GitHub时并未遇见此问题）</em></li>
-<li>如果想定位到想查找的内容的具体位置，建议先用博客的搜索功能定位到文章，再通过ctrl F搜索关键字即可。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -288,10 +211,9 @@
       <meta itemprop="name" content="小董的BLOG">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/10/31/C++-7/" class="post-title-link" itemprop="url">C++_IO库</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          C++_IO库
+        </h1>
 
         <div class="post-meta">
 		  
@@ -317,7 +239,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="IO类"><a href="#IO类" class="headerlink" title="IO类"></a>IO类</h1><p>在之前的一些用到输入与输出的程序都是用户对流的读写，也就是使用的iostream类，但是C++中的IO处理并不止通过流进行读写，为了支持不同的IO操作，标准库中还定义了其他的一些IO类，他们被包含在不同的头文件中：</p>
+        <h1 id="IO类"><a href="#IO类" class="headerlink" title="IO类"></a>IO类</h1><p>在之前的一些用到输入与输出的程序都是用户对流的读写，也就是使用的iostream类，但是C++中的IO处理并不止通过流进行读写，为了支持不同的IO操作，标准库中还定义了其他的一些IO类，他们被包含在不同的头文件中：</p>
 <table>
 <thead>
 <tr>
@@ -448,94 +370,41 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cin&gt;&gt;std::ival;<span class="comment">//默认情况下cin和cerr都关联到了cout</span></span><br></pre></td></tr></table></figure>
 
 
-      
     </div>
 
     
     
-    
+    <div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
+          <div class="post-tags">
+              <a href="/tags/C-%E5%AD%A6%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i># C++学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/10/30/C-%E6%9D%82%E9%A1%B9/" rel="prev" title="C_杂项">
+      <i class="fa fa-chevron-left"></i> C_杂项
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
       </footer>
+    
   </article>
   
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkk.gitee.io/2022/10/30/C-%E6%9D%82%E9%A1%B9/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/10/30/C-%E6%9D%82%E9%A1%B9/" class="post-title-link" itemprop="url">C_杂项</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2022-10-30 19:41:19 / 修改时间：22:07:35" itemprop="dateCreated datePublished" datetime="2022-10-30T19:41:19+08:00">2022-10-30</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="位域结构体"><a href="#位域结构体" class="headerlink" title="位域结构体"></a>位域结构体</h1><p>有时候，信息存储的时候，并不需要一个完整的字节，而只需占几个或一个二进制位就能满足需求。例如存放一个bool类型的变量，只需要true或者false即可，这种情况下，只需要0或者1一位二进制位即可。为了节省存储空间，并使处理简便，C语言又提供了一种数据结构，称为“位域”或“位段”。<strong>所谓“位域”是把一个字节中的二进位划分为几个不同的区域，并说明每个区域的位数。</strong>每个域有一个域名，允许在程序中按域名进行操作。<strong>这样就可以把几个不同的对象用一个字节的二进制位域来表示。</strong></p>
-<p>格式：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> _<span class="title">net_pro_cdu</span>  </span></span><br><span class="line"><span class="class">&#123;</span> </span><br><span class="line">    <span class="type">unsigned</span>  <span class="type">char</span> acs:<span class="number">4</span> </span><br><span class="line">    <span class="type">unsigned</span>  <span class="type">char</span> :<span class="number">0</span>  </span><br><span class="line">    <span class="type">unsigned</span>  <span class="type">char</span> ace:<span class="number">4</span>  </span><br><span class="line">    <span class="type">unsigned</span>  <span class="type">char</span> dve:<span class="number">4</span> </span><br><span class="line">&#125; Ncdu;</span><br></pre></td></tr></table></figure>
-
-<p>注意：</p>
-<ul>
-<li>无位域名的位域不能使用，仅用来填充、调整尾置（如第四行）</li>
-<li>位大小不能超过定义用的类型（如上述例子位数不能超过8）</li>
-</ul>
-<h1 id="volatile关键字"><a href="#volatile关键字" class="headerlink" title="volatile关键字"></a>volatile关键字</h1><p>声明一个变量是易变的，可以防止编译器对程序一些变量运算的过度优化。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
 
 
           </div>
@@ -586,6 +455,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#IO%E7%B1%BB"><span class="nav-number">1.</span> <span class="nav-text">IO类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IO%E7%B1%BB%E5%9E%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">1.1.</span> <span class="nav-text">IO类型间的关系</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IO%E7%B1%BB%E5%9E%8B%E7%9A%84%E7%89%B9%E6%80%A7"><span class="nav-number">2.</span> <span class="nav-text">IO类型的特性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IO%E5%AF%B9%E8%B1%A1%E4%B8%8D%E8%83%BD%E6%8B%B7%E8%B4%9D"><span class="nav-number">2.1.</span> <span class="nav-text">IO对象不能拷贝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E7%8A%B6%E6%80%81"><span class="nav-number">2.2.</span> <span class="nav-text">条件状态</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%A1%E7%90%86%E6%9D%A1%E4%BB%B6%E7%8A%B6%E6%80%81"><span class="nav-number">2.2.1.</span> <span class="nav-text">管理条件状态</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E6%B5%81%E7%9A%84%E7%BC%93%E5%86%B2"><span class="nav-number">2.3.</span> <span class="nav-text">输出流的缓冲</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%B7%E6%96%B0%E7%BC%93%E5%86%B2%E5%8C%BA"><span class="nav-number">2.3.1.</span> <span class="nav-text">刷新缓冲区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%B7%E6%96%B0%E7%BC%93%E5%86%B2%E5%8C%BA%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">2.3.2.</span> <span class="nav-text">刷新缓冲区的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#unitbuf%E6%93%8D%E4%BD%9C%E7%AC%A6"><span class="nav-number">2.3.3.</span> <span class="nav-text">unitbuf操作符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E8%81%94%E8%BE%93%E5%85%A5%E5%92%8C%E8%BE%93%E5%87%BA%E6%B5%81"><span class="nav-number">2.3.4.</span> <span class="nav-text">关联输入和输出流</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
