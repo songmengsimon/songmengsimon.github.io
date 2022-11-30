@@ -309,7 +309,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-11-30 20:54:14" itemprop="dateModified" datetime="2022-11-30T20:54:14+08:00">2022-11-30</time>
+                <time title="修改时间：2022-11-30 21:21:21" itemprop="dateModified" datetime="2022-11-30T21:21:21+08:00">2022-11-30</time>
               </span>
 
           
@@ -689,8 +689,21 @@
 <td align="center">奇偶效验</td>
 </tr>
 </tbody></table>
-<h2 id="中断允许寄存器IE-1"><a href="#中断允许寄存器IE-1" class="headerlink" title="中断允许寄存器IE"></a>中断允许寄存器IE</h2><p>用于管理所有中断</p>
+<h2 id="中断允许寄存器IE（管理中断允许）E开头"><a href="#中断允许寄存器IE（管理中断允许）E开头" class="headerlink" title="中断允许寄存器IE（管理中断允许）E开头"></a>中断允许寄存器IE（管理中断允许）E开头</h2><p>用于管理所有中断</p>
 <img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/ie.jpg" class title="This is an image"> 
+
+<h2 id="中断优先级寄存器IP（管理中断优先级）P开头"><a href="#中断优先级寄存器IP（管理中断优先级）P开头" class="headerlink" title="中断优先级寄存器IP（管理中断优先级）P开头"></a>中断优先级寄存器IP（管理中断优先级）P开头</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/ip.jpg" class title="This is an image"> 
+
+<p>外部中断2位，定时器2位，串口1位，共5位</p>
+<h2 id="定时器工作模式寄存器TMOD（管理定时器工作模式）"><a href="#定时器工作模式寄存器TMOD（管理定时器工作模式）" class="headerlink" title="定时器工作模式寄存器TMOD（管理定时器工作模式）"></a>定时器工作模式寄存器TMOD（管理定时器工作模式）</h2><p>8位，下4位控制T0，上4位控制T1</p>
+<h2 id="定时器中断控制寄存器TCON（管理定时器启动、定时器和外部中断的中断标志位）"><a href="#定时器中断控制寄存器TCON（管理定时器启动、定时器和外部中断的中断标志位）" class="headerlink" title="定时器中断控制寄存器TCON（管理定时器启动、定时器和外部中断的中断标志位）"></a>定时器中断控制寄存器TCON（管理定时器启动、定时器和外部中断的中断标志位）</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/tcon.jpg" class title="This is an image"> 
+
+<p>其中IT和IE为控制外部中断的位</p>
+<p>需要操作的位只有IT和TR，其他都会自动复位</p>
+<h2 id="串行控制寄存器SCON（管理串口中断位和串口配置）"><a href="#串行控制寄存器SCON（管理串口中断位和串口配置）" class="headerlink" title="串行控制寄存器SCON（管理串口中断位和串口配置）"></a>串行控制寄存器SCON（管理串口中断位和串口配置）</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/scon2.jpg" class title="This is an image"> 
+
+<h2 id="电源控制寄存器PCON（波特率翻倍）"><a href="#电源控制寄存器PCON（波特率翻倍）" class="headerlink" title="电源控制寄存器PCON（波特率翻倍）"></a>电源控制寄存器PCON（波特率翻倍）</h2><p>仅串口中需使用其第七位翻倍波特率</p>
+
       
     </div>
 
@@ -1045,11 +1058,11 @@
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
 </html>
