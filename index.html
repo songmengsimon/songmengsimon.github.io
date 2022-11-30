@@ -309,7 +309,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-11-29 22:24:18" itemprop="dateModified" datetime="2022-11-29T22:24:18+08:00">2022-11-29</time>
+                <time title="修改时间：2022-11-30 20:54:14" itemprop="dateModified" datetime="2022-11-30T20:54:14+08:00">2022-11-30</time>
               </span>
 
           
@@ -527,11 +527,12 @@
 <h1 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h1><h2 id="中断请求标志寄存器"><a href="#中断请求标志寄存器" class="headerlink" title="中断请求标志寄存器"></a>中断请求标志寄存器</h2><h3 id="定时器-x2F-计数器控制寄存器TCON"><a href="#定时器-x2F-计数器控制寄存器TCON" class="headerlink" title="定时器&#x2F;计数器控制寄存器TCON"></a>定时器&#x2F;计数器控制寄存器TCON</h3><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/tcon.jpg" class title="This is an image"> 
 
 <ul>
-<li>IT 0&#x2F;1:中断触发方式，0低电平触发，1下降沿触发</li>
+<li>IT 0&#x2F;1:外部中断触发方式，0低电平触发，1下降沿触发</li>
 <li>IE 0&#x2F;1:中断请求标志位，触发中断后硬件自动清零</li>
 <li>TF 0&#x2F;1:定时器&#x2F;计数器溢出中断标志位，触发中断后自动清零</li>
 <li>TR 0&#x2F;1:启停定时器</li>
 </ul>
+<p>一般就只需设置IT和TR</p>
 <h3 id="串行口控制寄存器SCON"><a href="#串行口控制寄存器SCON" class="headerlink" title="串行口控制寄存器SCON"></a>串行口控制寄存器SCON</h3><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/scon.jpg" class title="This is an image"> 
 
 <ul>
@@ -548,7 +549,148 @@
 </ul>
 <p>都是置1允许</p>
 <p>若要使用某个中断，必须先开启中断允许位，复位后清零</p>
+<h3 id="总结：-1"><a href="#总结：-1" class="headerlink" title="总结："></a>总结：</h3><ul>
+<li>I开头为TCON寄存器，控制<strong>定时器</strong>中断触发的方法和标志位</li>
+<li>RI和TI为SCON寄存器，控制<strong>串口</strong>相关</li>
+<li>E开头为中断允许寄存器IE</li>
+</ul>
+<h2 id="中断优先级"><a href="#中断优先级" class="headerlink" title="中断优先级"></a>中断优先级</h2><p>由中断优先级寄存器IP控制</p>
+<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/ip.jpg" class title="This is an image"> 
 
+<ul>
+<li>PX:外部中断优先级设置</li>
+<li>PT:定时器中断优先级设置</li>
+<li>PS:串口中断优先级设置</li>
+</ul>
+<h2 id="中断响应过程"><a href="#中断响应过程" class="headerlink" title="中断响应过程"></a>中断响应过程</h2><h3 id="中断请求"><a href="#中断请求" class="headerlink" title="中断请求"></a>中断请求</h3><p>硬件完成，请求完成后对应标志位置1</p>
+<h3 id="中断查询"><a href="#中断查询" class="headerlink" title="中断查询"></a>中断查询</h3><p>CPU检测TCON和SCON中各标志位状态，确定是哪个中断</p>
+<h3 id="中断响应"><a href="#中断响应" class="headerlink" title="中断响应"></a>中断响应</h3><p>响应条件：</p>
+<ul>
+<li><strong>EA使能</strong></li>
+<li><strong>该中断允许位也使能</strong></li>
+<li>有中断请求</li>
+<li>无同级或高级中断正在运行</li>
+</ul>
+<h3 id="中断处理"><a href="#中断处理" class="headerlink" title="中断处理"></a>中断处理</h3><p>中断服务程序</p>
+<h3 id="中断返回"><a href="#中断返回" class="headerlink" title="中断返回"></a>中断返回</h3><p>复位置位的标志位，重新执行原程序（PC被弹出堆栈）</p>
+<h1 id="定时器-x2F-计数器"><a href="#定时器-x2F-计数器" class="headerlink" title="定时器&#x2F;计数器"></a>定时器&#x2F;计数器</h1><h2 id="基本结构"><a href="#基本结构" class="headerlink" title="基本结构"></a>基本结构</h2><p>T1、T2分别由两个8位特殊功能寄存器TH和TL组成。当它对外部事件进行计数时，作为计数器使用；当对内部固<strong>定频率的机器周期进行计数时</strong>，便可以达到定时的目的。</p>
+<h2 id="两种工作模式"><a href="#两种工作模式" class="headerlink" title="两种工作模式"></a>两种工作模式</h2><ul>
+<li><p>计数器工作模式</p>
+<p>对外部事件进行计数，计数脉冲来自P3中的对应引脚。</p>
+<p>下降沿触发</p>
+<p><strong>最高频率为振荡频率的1&#x2F;24，因为识别下降沿需要2个机器周期，即24个振荡周期</strong></p>
+</li>
+<li><p>定时器工作模式</p>
+<p>计数脉冲为内部时钟脉冲，也就是每个机器周期+1，<strong>因此计数频率为振荡频率的1&#x2F;12</strong>，得到的时间：定时器计数值*机器周期时间</p>
+</li>
+</ul>
+<p>当设置好定时器后，定时器就将独立工作，不再占用CPU，只有溢出时才会申请中断。</p>
+<h2 id="控制寄存器"><a href="#控制寄存器" class="headerlink" title="控制寄存器"></a>控制寄存器</h2><h3 id="工作模式寄存器TMOD"><a href="#工作模式寄存器TMOD" class="headerlink" title="工作模式寄存器TMOD"></a>工作模式寄存器TMOD</h3><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/tmod.jpg" class title="This is an image"> 
+
+<ul>
+<li>GATE：门控位，使用外部中断引脚的高电平来启动定时器（前提是该定时器已被置位运行）</li>
+<li>C&#x2F;(&#x2F;T)：1为计数器模式，0为定时器模式</li>
+<li>M1，M0：同时控制定时器的工作模式，同PSW中的RS用法</li>
+</ul>
+<h3 id="控制寄存器TCON"><a href="#控制寄存器TCON" class="headerlink" title="控制寄存器TCON"></a>控制寄存器TCON</h3><p>上一节中断中已讲过，控制定时器的开启。</p>
+<h2 id="定时器的工作方式"><a href="#定时器的工作方式" class="headerlink" title="定时器的工作方式"></a>定时器的工作方式</h2><h3 id="方式0"><a href="#方式0" class="headerlink" title="方式0"></a>方式0</h3><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/mod0.jpg" class title="This is an image"> 
+
+<p>易得其定时时间为：(2^13 - 初值)*机器周期</p>
+<p>计算后的值低5位赋给TL，高8位赋给TH</p>
+<h3 id="方式1"><a href="#方式1" class="headerlink" title="方式1"></a>方式1</h3><p>16位计数器，其余与方式0一样。</p>
+<h3 id="方式2"><a href="#方式2" class="headerlink" title="方式2"></a>方式2</h3><p>方式2为8位定时器</p>
+<ul>
+<li>TL用作定时，TH用于保存初值。当TL溢出后，中断标志置位，<strong>同时自动将TH中的值重新装载进TL</strong>，无需用户再手动重新装入初值。</li>
+</ul>
+<p>更加精准，但计时范围小。</p>
+<h3 id="方式3"><a href="#方式3" class="headerlink" title="方式3"></a>方式3</h3><ul>
+<li>只有T0能被设置为模式3，T1若为模式3，则停止计数，保存原样。</li>
+</ul>
+<h4 id="T0为模式3时"><a href="#T0为模式3时" class="headerlink" title="T0为模式3时"></a>T0为模式3时</h4><p>TH和TL分别单独工作</p>
+<ul>
+<li>TL：使用T0的状态控制位，同方式2，但是溢出后需用户手动装入初值</li>
+<li>TH：<strong>被固定为一个内部定时器</strong>，受T1控制位的TR1控制启停，同上占用T1的中断请求TF1</li>
+</ul>
+<h4 id="T0为模式3时，T1的设置"><a href="#T0为模式3时，T1的设置" class="headerlink" title="T0为模式3时，T1的设置"></a>T0为模式3时，T1的设置</h4><p>T1仍可设置为方式0、1、2，但由于中断被占用，只能将输出送往串口</p>
+<h3 id="使用总结"><a href="#使用总结" class="headerlink" title="使用总结"></a>使用总结</h3><ul>
+<li><p>设置模式TMOD</p>
+</li>
+<li><p>赋初值TL、TH</p>
+</li>
+<li><p>开启中断ET、EA</p>
+</li>
+<li><p>开启定时器TR</p>
+</li>
+</ul>
+<h1 id="串口通信"><a href="#串口通信" class="headerlink" title="串口通信"></a>串口通信</h1><p>串行通信：数据的各位在同一根数据线上逐位发送、接收。</p>
+<p>串行通信按同步方式分为异步通信和同步通信</p>
+<h2 id="同步通信"><a href="#同步通信" class="headerlink" title="同步通信"></a>同步通信</h2><p>数据传输速率高，但是要求发送时钟和接收时钟严格同步</p>
+<h2 id="异步通信"><a href="#异步通信" class="headerlink" title="异步通信"></a>异步通信</h2><p>数据组成数据帧方式，收、发端相互独立、互不同步，只需规定收发数据的帧格式即可相互识别。</p>
+<h3 id="数据帧格式"><a href="#数据帧格式" class="headerlink" title="数据帧格式"></a>数据帧格式</h3><ul>
+<li>起始位：低电平有效</li>
+<li>数据位：5~8位</li>
+<li>奇偶校验位</li>
+<li>停止位：高电平有效</li>
+</ul>
+<h3 id="波特率"><a href="#波特率" class="headerlink" title="波特率"></a>波特率</h3><p>每秒传输二进制数码的位数，每位的传输时间为1&#x2F;波特率</p>
+<h2 id="51单片机的串口通信"><a href="#51单片机的串口通信" class="headerlink" title="51单片机的串口通信"></a>51单片机的串口通信</h2><p>51内部有一个可编程全双工串口。</p>
+<h3 id="串口相关寄存器"><a href="#串口相关寄存器" class="headerlink" title="串口相关寄存器"></a>串口相关寄存器</h3><h4 id="串行数据缓冲器SBUF"><a href="#串行数据缓冲器SBUF" class="headerlink" title="串行数据缓冲器SBUF"></a>串行数据缓冲器SBUF</h4><p>包括发送和接收寄存器，但在逻辑上只有一个SBUF，在使用时可用作发送和接收。（物理上有两个完全独立的SBUF，但是他们地址是一样的）</p>
+<h4 id="串行控制寄存器SCON"><a href="#串行控制寄存器SCON" class="headerlink" title="串行控制寄存器SCON"></a>串行控制寄存器SCON</h4><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/scon2.jpg" class title="This is an image"> 
+
+<ul>
+<li><p>SM0、1工作方式选择位</p>
+<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/smod.jpg" class title="This is an image"> 
+</li>
+<li><p>SM2:多机通信控制位</p>
+</li>
+<li><p>REN：<strong>允许接收控制位</strong></p>
+</li>
+<li><p>TB8：方式2、3的<strong>发送</strong>第九位</p>
+</li>
+<li><p>RB8：方式2、3的接收第九位</p>
+</li>
+</ul>
+<h4 id="电源控制寄存器PCON"><a href="#电源控制寄存器PCON" class="headerlink" title="电源控制寄存器PCON"></a>电源控制寄存器PCON</h4><p>其中第七位SMOD为1波特率加倍</p>
+<h1 id="常用的一些寄存器"><a href="#常用的一些寄存器" class="headerlink" title="常用的一些寄存器"></a>常用的一些寄存器</h1><h2 id="程序状态寄存器PSW"><a href="#程序状态寄存器PSW" class="headerlink" title="程序状态寄存器PSW"></a>程序状态寄存器PSW</h2><p>用于表示运算结果的状态</p>
+<table>
+<thead>
+<tr>
+<th align="center">位</th>
+<th align="center">7</th>
+<th align="center">6</th>
+<th align="center">5</th>
+<th align="center">4</th>
+<th align="center">3</th>
+<th align="center">2</th>
+<th align="center">1</th>
+<th align="center">0</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">位名</td>
+<td align="center">Cy</td>
+<td align="center">AC</td>
+<td align="center">F0</td>
+<td align="center">RS1</td>
+<td align="center">RS0</td>
+<td align="center">OV</td>
+<td align="center">F1</td>
+<td align="center">P</td>
+</tr>
+<tr>
+<td align="center">作用</td>
+<td align="center">进位&#x2F;借位</td>
+<td align="center">辅助进位</td>
+<td align="center">自定义</td>
+<td align="center">寄存器选择</td>
+<td align="center">寄存器选择</td>
+<td align="center">溢出</td>
+<td align="center">自定义</td>
+<td align="center">奇偶效验</td>
+</tr>
+</tbody></table>
+<h2 id="中断允许寄存器IE-1"><a href="#中断允许寄存器IE-1" class="headerlink" title="中断允许寄存器IE"></a>中断允许寄存器IE</h2><p>用于管理所有中断</p>
+<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/ie.jpg" class title="This is an image"> 
       
     </div>
 
@@ -903,11 +1045,11 @@
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
+<script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
 </html>
