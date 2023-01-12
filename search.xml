@@ -20,6 +20,137 @@
       </tags>
   </entry>
   <entry>
+    <title>C++-顺序容器</title>
+    <url>/2023/01/12/C++-8/</url>
+    <content><![CDATA[<h1 id="顺序容器概述"><a href="#顺序容器概述" class="headerlink" title="顺序容器概述"></a>顺序容器概述</h1><p>容器：一些特定类型对象的集合。顺序容器提供了控制元素存储和访问顺序的能力，且该顺序与元素的内容无关，而与元素加入容器时的位置相关</p>
+<h2 id="标准库中的顺序容器"><a href="#标准库中的顺序容器" class="headerlink" title="标准库中的顺序容器"></a>标准库中的顺序容器</h2><p>C++中提供了多种多种顺序容器，这些容器根据下两方面性能的选择都有不同的折中：</p>
+<ul>
+<li>向容器中不同位置添加、删除元素的代价</li>
+<li>非顺序访问容器中的元素的代价</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>vector</th>
+<th>可变大小数组；支持快速任意元素随机访问；在尾部之外插入元素代价较大</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>deque</td>
+<td>双端队列；支持快速任意元素随机访问；<strong>在头、尾部之外</strong>插入元素代价较大</td>
+</tr>
+<tr>
+<td>list</td>
+<td>双向链表；只支持双向<strong>顺序访问</strong>，不支持随机访问；任何位置插入元素速度都快</td>
+</tr>
+<tr>
+<td>forward_list</td>
+<td>单向链表，只支持单向顺序访问，其余同双向链表</td>
+</tr>
+<tr>
+<td>array</td>
+<td>固定大小数组；支持快速任意元素随机访问；不能添加、删除元素</td>
+</tr>
+<tr>
+<td>string</td>
+<td>字符串，与vector相似，专门用于保存字符；在尾部之外插入元素代价较大</td>
+</tr>
+</tbody></table>
+<p>array是C++新标准添加的类型，比内置的数组更加安全、更容易使用</p>
+<h2 id="选择顺序容器的原则"><a href="#选择顺序容器的原则" class="headerlink" title="选择顺序容器的原则"></a>选择顺序容器的原则</h2><ul>
+<li><p>通常，使用vector是最好的选择</p>
+</li>
+<li><p>如果需存放的元素很多、元素很小，并且空间的开销很重要，则<strong>不要选择</strong>list或forward_list</p>
+</li>
+<li><p>其余原则根据：</p>
+<ul>
+<li>程序是否要随机访问元素</li>
+<li>程序是否要在中间、头部、尾部插入元素</li>
+</ul>
+<p>进行选择</p>
+</li>
+<li><p>如果程序只在读取输入时才需要在中间位置插入元素，随后只需要随机访问元素：</p>
+<p>可以在输入阶段使用list，输入完成后将元素拷贝至一个vector</p>
+</li>
+</ul>
+<p>如果目前不确定使用哪种容器，可以先选定一个容器类型，在程序中只使用vector和list的公共操作：使用迭代器，而不是使用下标。这样后续改变容器类型会很方便</p>
+<h1 id="容器操作"><a href="#容器操作" class="headerlink" title="容器操作"></a>容器操作</h1><p>一般来说，每个容器都定义在对应的头文件中，且文件名与类型名相同</p>
+<h2 id="类型别名"><a href="#类型别名" class="headerlink" title="类型别名"></a>类型别名</h2><p>每个容器都定义了多个类型，我们可以通过这些类型的类型别名来定义一个变量以供使用，例如：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">vector&lt;<span class="type">int</span>&gt; a&#123;<span class="number">1</span>&#125;;</span><br><span class="line"><span class="keyword">auto</span> i=a.<span class="built_in">begin</span>();</span><br></pre></td></tr></table></figure>
+
+<p>通常我们使用auto来创建一个容器内的类型对象，因为通常这样更方便，但是同时可以通过类型别名具体地定义这些变量的类型，例如这里的i类型实际上是:<code>vector&lt;int&gt;::iterator</code>这里的iterator就是一个类型别名，所以这里还可以：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">vector&lt;<span class="type">int</span>&gt; a&#123;<span class="number">1</span>&#125;;</span><br><span class="line">vector&lt;<span class="type">int</span>&gt;::iterator i=a.<span class="built_in">begin</span>();</span><br></pre></td></tr></table></figure>
+
+<p>像这样的类型别名还有：</p>
+<table>
+<thead>
+<tr>
+<th align="center">iterator</th>
+<th align="center">此容器的迭代器类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">const_iterator</td>
+<td align="center">只读迭代器类型</td>
+</tr>
+<tr>
+<td align="center">size_type</td>
+<td align="center">无符号整数类型，用于保存容器长度，可用于索引</td>
+</tr>
+<tr>
+<td align="center">difference_type</td>
+<td align="center">带符号整数类型，用于保存两迭代器之间的距离</td>
+</tr>
+<tr>
+<td align="center">value_type</td>
+<td align="center">容器的元素类型</td>
+</tr>
+<tr>
+<td align="center">reference</td>
+<td align="center">元素的左值类型</td>
+</tr>
+<tr>
+<td align="center">const_reference</td>
+<td align="center">只读左值类型</td>
+</tr>
+</tbody></table>
+<h2 id="容器定义和初始化"><a href="#容器定义和初始化" class="headerlink" title="容器定义和初始化"></a>容器定义和初始化</h2><p>为方便理解，我们先像这样定义<strong>容器元素</strong>的类型：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">person</span></span><br><span class="line">&#123;   </span><br><span class="line">    <span class="built_in">person</span>() =<span class="keyword">default</span>;</span><br><span class="line">    <span class="built_in">person</span>(string s) &#123;name=s;&#125;</span><br><span class="line">    <span class="built_in">person</span>(string s1, string s2)  &#123;name=s1;addr=s2;&#125;</span><br><span class="line">   </span><br><span class="line">    string name;</span><br><span class="line">    string addr;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，该类有三个默认构造函数，接下来对容器的定义和初始化的元素均是该类型对象。</p>
+<p>容器的定义与初始化有以下方式（均已vector为例）：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">vector&lt;person&gt; men;</span><br><span class="line"><span class="function">vector&lt;person&gt; <span class="title">men1</span><span class="params">(<span class="number">10</span>)</span></span>;</span><br><span class="line"><span class="function">vector&lt;person&gt; <span class="title">men2</span><span class="params">(men1)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function">string <span class="title">a</span><span class="params">(<span class="string">&quot;dhk&quot;</span>)</span>,<span class="title">b</span><span class="params">(<span class="string">&quot;aca&quot;</span>)</span></span>;</span><br><span class="line"><span class="function">vector&lt;person&gt; <span class="title">men3</span><span class="params">(<span class="number">10</span>,a)</span></span>;</span><br><span class="line"><span class="function">vector&lt;person&gt; <span class="title">men3</span><span class="params">(<span class="number">10</span>,a)</span></span>;</span><br><span class="line"><span class="function">vector&lt;person&gt; <span class="title">men4</span><span class="params">(<span class="number">10</span>,&#123;a,b&#125;)</span></span>;</span><br><span class="line"></span><br><span class="line">vector&lt;person&gt; men5&#123;a,b,a,b&#125;;</span><br><span class="line">vector&lt;person&gt; men6&#123;&#123;a,b&#125;,&#123;b,a&#125;&#125;;</span><br><span class="line"></span><br><span class="line">vector&lt;person&gt;::iterator i=men1.<span class="built_in">begin</span>(), e=men1.<span class="built_in">end</span>();</span><br><span class="line"><span class="function">vector&lt;person&gt; <span class="title">men7</span><span class="params">(i,e)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>men为经过<strong>默认容器构造函数</strong>定义的容器对象，每个容器类型都定义了一个默认的构造函数，除了array容器之外，其他容器的默认构造函数都会创建一个<strong>指定类型的空容器</strong>。而对于array来说，用C中数组思维理解，由于在创建时长度已经给定，因此array中<strong>每个元素都会被初始化</strong>。</p>
+</li>
+<li><p>men1为创建一个含有10个person类元素的vector容器，这些元素都已经经过初始化，并且全部相同。</p>
+</li>
+<li><p>men2为创建一个vector容器，其含有的元素未men1的拷贝，这就要求men1和men2必须是相同的类型，且元素也为相同的类型。对于array容器而言，长度还必须相等。</p>
+</li>
+<li><p>men3为创建一个含有10个person类元素的vector容器，而这些元素<strong>通过person的第二个构造函数进行了初始化</strong>，而不是像men1一样进行默认初始化。也就是说，<strong>现在men3内有10个name为”dhk”，addr为默认初始化值的相同元素。</strong></p>
+</li>
+<li><p>men4为创建一个含有10个person类元素的vector容器，而这些元素经过person的第三个构造函数进行了初始化。也就是说，<strong>现在men3内有10个name为”dhk”，addr为”aca”的相同元素。</strong></p>
+<p>到此可以看出，当使用小括号进行容器初始化时，且当第一个值为一个整数n时，代表初始化n个相同的元素，而第二个参数<strong>可以为元素的构造函数参数</strong>，但这个参数<strong>有且只能有1个！！！</strong>，因为这n个元素是相同的，不能在这里对其中两个元素使用不同的构造函数参数，<strong>因此，<code>vector&lt;person&gt; men3(10,a,b);</code>是错误的写法！</strong></p>
+<p>而如果当元素的构造函数参数有多个时，只需要像men4一样将这些参数通过大括号括起来即可。</p>
+</li>
+<li><p>men5为创建一个含有<strong>4个</strong>person类元素的vector容器，这些元素通过person的第二个构造函数进行初始化，分别是name为”dhk”,”aca”,”dhk”,”aca”；addr为默认初始化值的person对象。</p>
+</li>
+<li><p>men6为创建一个含有<strong>2个</strong>person类元素的vector容器，而这些元素经过person的第三个构造函数进行了初始化，分别是<u>name为”dhk”，addr为”aca”</u>和<u>name为”dhk”，addr为”aca”</u>的<strong>两个元素</strong></p>
+</li>
+<li><p>men7为迭代器i和e指定范围内中元素的拷贝，这些元素类型也需和men7中的元素类型相同</p>
+</li>
+</ul>
+<h3 id="array类型的初始化"><a href="#array类型的初始化" class="headerlink" title="array类型的初始化"></a>array类型的初始化</h3><p>array类型由于需指定大小，初始化方式稍微有一点不一样：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">array&lt;person,10&gt; men=&#123;a,b,a&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>并且初始化时不能像men6一样使用大括号实现多个构造函数参数初始化</p>
+]]></content>
+      <tags>
+        <tag>C++学习</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>FreeRTOS任务延时分析</title>
     <url>/2022/12/14/FreeRTOS%E4%BB%BB%E5%8A%A1%E5%BB%B6%E6%97%B6%E5%88%86%E6%9E%90/</url>
     <content><![CDATA[<p>前几章中都有涉及FreeRTOS的列表相关内容，在学习过程中，我们也能看出来列表与任务的状态（就绪、延时、堵塞）与任务调度息息相关，本文就针对任务延时进行<strong>列表运行机制</strong>的进一步学习</p>
@@ -2484,7 +2615,6 @@
 
 <h3 id="下标问题"><a href="#下标问题" class="headerlink" title="下标问题"></a>下标问题</h3><p>C++支持对字符串使用下标运算符<code>[]</code>访问字符串的单个字符，规则同python，但貌似C++不支持截取。</p>
 <h2 id="3、vector类型"><a href="#3、vector类型" class="headerlink" title="3、vector类型"></a>3、vector类型</h2><p>要想使用vector，需包含<code>&lt;vector&gt;</code>头文件。<strong>类型vector表示对象的集合</strong></p>
-<p>与python中的class意义类似。</p>
 <p>实例化：</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">vector&lt;<span class="type">int</span>&gt; a;</span><br><span class="line">vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; b;</span><br></pre></td></tr></table></figure>
 
