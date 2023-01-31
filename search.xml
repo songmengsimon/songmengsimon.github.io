@@ -20,6 +20,11 @@
       </tags>
   </entry>
   <entry>
+    <title>Cjj-9</title>
+    <url>/2023/01/28/C++-9/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>C++-顺序容器</title>
     <url>/2023/01/12/C++-8/</url>
     <content><![CDATA[<h1 id="顺序容器概述"><a href="#顺序容器概述" class="headerlink" title="顺序容器概述"></a>顺序容器概述</h1><p>容器：一些特定类型对象的集合。顺序容器提供了控制元素存储和访问顺序的能力，且该顺序与元素的内容无关，而与元素加入容器时的位置相关</p>
@@ -418,6 +423,191 @@
 <ul>
 <li>capacity和reserve只适用于vector和string</li>
 </ul>
+<h1 id="额外的string操作"><a href="#额外的string操作" class="headerlink" title="额外的string操作"></a>额外的string操作</h1><h2 id="构造string的其他方法"><a href="#构造string的其他方法" class="headerlink" title="构造string的其他方法"></a>构造string的其他方法</h2><table>
+<thead>
+<tr>
+<th align="center">函数</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">string s(cp,n)</td>
+<td align="center">s是cp指向的数组前n个字符的拷贝</td>
+</tr>
+<tr>
+<td align="center">string s(s2,pos2)</td>
+<td align="center">s是string变量s2从下标pos2开始的字符的拷贝</td>
+</tr>
+<tr>
+<td align="center">string s(s2,pos2,len2)</td>
+<td align="center">同上，len的长度可以超过s2长度，此时至多拷贝size-pos2个字符</td>
+</tr>
+</tbody></table>
+<h2 id="子字符串操作"><a href="#子字符串操作" class="headerlink" title="子字符串操作"></a>子字符串操作</h2><table>
+<thead>
+<tr>
+<th align="center">函数</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">substr(pos,n)</td>
+<td align="center">返回一个string，返回值同第二个构造函数</td>
+</tr>
+</tbody></table>
+<h1 id="关联容器"><a href="#关联容器" class="headerlink" title="关联容器"></a>关联容器</h1><p>关联容器和顺序容器有根本的区别，简单来说，关联容器通过关键字来保存、访问元素；而顺序容器是通过元素在容器中的位置来操作元素的。</p>
+<p>标准库提供了8个关联容器：</p>
+<table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">map</td>
+<td align="center">关联数组：关键字与值一一对应</td>
+</tr>
+<tr>
+<td align="center">set</td>
+<td align="center">关键字即值，只保存关键字的容器</td>
+</tr>
+<tr>
+<td align="center">multimap</td>
+<td align="center">关键字可重复出现，允许多个元素对应一个关键字的map</td>
+</tr>
+<tr>
+<td align="center">multiset</td>
+<td align="center">关键字可重复出现的set</td>
+</tr>
+<tr>
+<td align="center"><strong>下方为无序容器</strong></td>
+<td align="center">~</td>
+</tr>
+<tr>
+<td align="center">unordered_map</td>
+<td align="center">用哈希函数组织的map</td>
+</tr>
+<tr>
+<td align="center">unordered_set</td>
+<td align="center">用哈希函数组织的set</td>
+</tr>
+<tr>
+<td align="center">unordered_multimap</td>
+<td align="center">~</td>
+</tr>
+<tr>
+<td align="center">unordered_multiset</td>
+<td align="center">~</td>
+</tr>
+</tbody></table>
+<p>使用它们需包含对应的头文件</p>
+<h2 id="关联容器概述"><a href="#关联容器概述" class="headerlink" title="关联容器概述"></a>关联容器概述</h2><p>关联容器支持上面讲的容器通用操作，不支持顺序容器操作，且关联容器的迭代器都是双向的</p>
+<h3 id="关联容器定义"><a href="#关联容器定义" class="headerlink" title="关联容器定义"></a>关联容器定义</h3><p>没什么需要特别讲的，基本可以看明白</p>
+<ul>
+<li><p>map：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">map&lt;string, <span class="type">int</span>&gt; test=&#123;&#123;<span class="string">&quot;dhk&quot;</span>,<span class="number">1</span>&#125;,&#123;<span class="string">&quot;aca&quot;</span>,<span class="number">2</span>&#125;&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>set：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">set&lt;<span class="type">int</span>&gt; test=&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="关键字类型要求"><a href="#关键字类型要求" class="headerlink" title="关键字类型要求"></a>关键字类型要求</h3><p>对于关键字的类型必须是可以比较的。</p>
+<h2 id="关联容器操作"><a href="#关联容器操作" class="headerlink" title="关联容器操作"></a>关联容器操作</h2><h3 id="关联容器特有类型别名"><a href="#关联容器特有类型别名" class="headerlink" title="关联容器特有类型别名"></a>关联容器特有类型别名</h3><ul>
+<li>key_type：容器的关键字类型</li>
+<li>mapped_type：关键字对应值的类型，只适用于map</li>
+<li>value_type：对于set，于key_type相同；对于map，为<code>pair&lt;const key_type,mapped_type&gt;</code></li>
+</ul>
+<p>(pair可以简单理解为一个类似小容器的类型，每个对象只允许有两个成员)</p>
+<h3 id="关联容器迭代器"><a href="#关联容器迭代器" class="headerlink" title="关联容器迭代器"></a>关联容器迭代器</h3><p>对于顺序容器，迭代器的解引用为元素的值；而对于关联容器：</p>
+<ul>
+<li><p>set的迭代器解引用对象为key_type</p>
+</li>
+<li><p>map的迭代器解引用对象为一个pair类型，因此：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">map&lt;string,<span class="type">int</span>&gt; <span class="title">test</span><span class="params">(&#123;<span class="string">&quot;dhk&quot;</span>,<span class="number">1</span>&#125;,&#123;<span class="string">&quot;aca&quot;</span>,<span class="number">2</span>&#125;)</span></span>;</span><br><span class="line"><span class="keyword">auto</span> i=test.<span class="built_in">begin</span>();</span><br><span class="line">string a=(*i).first;</span><br><span class="line"><span class="type">int</span> b=i-&gt;second;</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，关联容器的关键字是const的，不可修改</p>
+<p><strong>同时，对于关联容器，begin函数返回的不一定是初始化时的第一个元素，而是经过关键字比较过后最小的元素</strong></p>
+</li>
+</ul>
+<h3 id="插入元素"><a href="#插入元素" class="headerlink" title="插入元素"></a>插入元素</h3><p>对于map，以下几种方式都可以</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">test.<span class="built_in">insert</span>(&#123;<span class="string">&quot;dhk&quot;</span>,<span class="number">1</span>&#125;);</span><br><span class="line">test.<span class="built_in">insert</span>(<span class="built_in">makepair</span>(<span class="string">&quot;dhk&quot;</span>,<span class="number">1</span>));<span class="comment">//makepair为现场构造一个pair</span></span><br><span class="line">test.<span class="built_in">insert</span>(<span class="built_in">pair</span>&lt;string,<span class="type">int</span>&gt;(<span class="string">&quot;dhk&quot;</span>,<span class="number">1</span>));</span><br><span class="line">test.<span class="built_in">insert</span>(map&lt;string,<span class="type">int</span>&gt;::<span class="built_in">value_type</span>(<span class="string">&quot;dhk&quot;</span>,<span class="number">1</span>));</span><br></pre></td></tr></table></figure>
+
+<p>同时也可以使用emplace函数，同顺序容器</p>
+<h3 id="删除元素-1"><a href="#删除元素-1" class="headerlink" title="删除元素"></a>删除元素</h3><p>使用erase函数，参数可以为关键字或迭代器</p>
+<h3 id="map的下标操作"><a href="#map的下标操作" class="headerlink" title="map的下标操作"></a>map的下标操作</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">map&lt;string,<span class="type">int</span>&gt; <span class="title">test</span><span class="params">(&#123;<span class="string">&quot;dhk&quot;</span>,<span class="number">1</span>&#125;)</span></span>;</span><br><span class="line">map[<span class="string">&quot;dhk&quot;</span>]=<span class="number">2</span>;</span><br><span class="line">map[<span class="string">&quot;aca&quot;</span>]=<span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+
+<p>map的下标接受一个关键字，会获取该关键字关联的值</p>
+<p>如果容器中未存在该关键字，则会创建一个新的元素插入容器中，因此下标操作只能对非const容器使用</p>
+<h3 id="通用访问操作"><a href="#通用访问操作" class="headerlink" title="通用访问操作"></a>通用访问操作</h3><table>
+<thead>
+<tr>
+<th align="center">函数</th>
+<th align="center">功能</th>
+<th align="center">返回值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">find(k)</td>
+<td align="center">访问容器中第一次出现的关键字为k的元素</td>
+<td align="center">该元素迭代器</td>
+</tr>
+<tr>
+<td align="center">count(k)</td>
+<td align="center">关键字为k的元素数量</td>
+<td align="center">数量</td>
+</tr>
+<tr>
+<td align="center">lower_bound(k)</td>
+<td align="center">访问第一次出现的关键字≤k的元素</td>
+<td align="center">该元素迭代器</td>
+</tr>
+<tr>
+<td align="center">upper_bound(k)</td>
+<td align="center">访问第一次出现的关键字＞k的元素</td>
+<td align="center">该元素迭代器</td>
+</tr>
+<tr>
+<td align="center">equal_range(k)</td>
+<td align="center">关键字为k的所有元素的范围</td>
+<td align="center">一个pair，两个成员均为迭代器</td>
+</tr>
+</tbody></table>
+<p>对于允许关键字重复的容器，关键字相同的元素会在容器中相邻存储，也就是可以通过迭代器递增的方式依次访问</p>
+<p><strong>这些操作与下标操作不同的是不能创建新元素</strong></p>
+<h2 id="单词转换程序"><a href="#单词转换程序" class="headerlink" title="单词转换程序"></a>单词转换程序</h2><p>根据书上的思路写了一个简化版的拼音转汉字程序</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;fstream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;sstream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;array&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;unordered_map&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;map&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*将文件流绑定的文件数据导入到本程序的map中,文件数据格式如下*/</span></span><br><span class="line"><span class="comment">/*拼音 对应汉字*/</span></span><br><span class="line"><span class="function">map&lt;string,string&gt; <span class="title">bulidmap</span><span class="params">(ifstream &amp;map_file)</span><span class="comment">//返回值为一个map&lt;string,string&gt;</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    map&lt;string,string&gt; the_map;</span><br><span class="line">    string key,value;</span><br><span class="line">    <span class="keyword">while</span>(map_file&gt;&gt;key &amp;&amp; <span class="built_in">getline</span>(map_file,value))</span><br><span class="line">    <span class="comment">//将拼音存入key变量中，该行剩下的内容存入value中</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//如果value有值，则删除开头的空格</span></span><br><span class="line">        <span class="keyword">if</span>(value.<span class="built_in">size</span>()&gt;<span class="number">1</span>)  the_map[key]=value.<span class="built_in">substr</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> the_map;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ifstream mapfile;<span class="comment">//创建一个读取文件流用于读取文件</span></span><br><span class="line">    <span class="function">stringstream <span class="title">str</span><span class="params">(<span class="string">&quot;cy shi wo die&quot;</span>)</span></span>;<span class="comment">//字符串流用于程序输入</span></span><br><span class="line">    mapfile.<span class="built_in">open</span>(<span class="string">&quot;c++\\ass_container\\map.txt&quot;</span>);</span><br><span class="line">    <span class="keyword">auto</span> trans_map=<span class="built_in">bulidmap</span>(mapfile);<span class="comment">//将文件流内容导入新创建的map类型变量中</span></span><br><span class="line">    <span class="keyword">auto</span> end=trans_map.<span class="built_in">end</span>();<span class="comment">//指向map末端之后的一个迭代器</span></span><br><span class="line">    string s,s1;</span><br><span class="line">    <span class="keyword">while</span>(str&gt;&gt;s)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">auto</span> i= trans_map.<span class="built_in">find</span>(s);<span class="comment">//将字符串流中的每一个单词取出，在map中寻找有无对应的key</span></span><br><span class="line">        <span class="keyword">if</span> (i !=end)<span class="comment">//如果未寻找到，迭代器i会等于end</span></span><br><span class="line">        &#123;</span><br><span class="line">            s=i-&gt;second;<span class="comment">//用寻找到的key对应的value（拼音对应汉字）覆盖s中原有的拼音</span></span><br><span class="line">        &#125;</span><br><span class="line">        s1=s1+s;<span class="comment">//s1用于存储全部的转换结果</span></span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;s1&lt;&lt;endl;</span><br><span class="line">    <span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>21行：字符串删除函数，可以删除字符串中指定数量的字符</li>
+<li>38行：find函数如果未找到对应关键字则会返回队尾之后的迭代器</li>
+</ul>
+<h1 id="无序容器"><a href="#无序容器" class="headerlink" title="无序容器"></a>无序容器</h1><p>无序容器也属于关联容器的一种，但无序容器不是使用比较关键字的方式来组织元素顺序，而是通过一个哈希函数算法进行组织元素，简单地来说，该算法就是用比普通关联容器组织方式代价更小的方式进行元素组织，<strong>通常用于关键字没有明显的序关系等情况下使用，也许可以节省性能的占用</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">unordered_map</td>
+<td align="center">用哈希函数组织的map</td>
+</tr>
+<tr>
+<td align="center">unordered_set</td>
+<td align="center">用哈希函数组织的set</td>
+</tr>
+<tr>
+<td align="center">unordered_multimap</td>
+<td align="center">~</td>
+</tr>
+<tr>
+<td align="center">unordered_multiset</td>
+<td align="center">~</td>
+</tr>
+</tbody></table>
+<h2 id="无序容器的管理措施"><a href="#无序容器的管理措施" class="headerlink" title="无序容器的管理措施"></a>无序容器的管理措施</h2><p>无序容器在存储上组织为一组“桶”，哈希函数会计算每个元素的哈希值，具有相同哈希值的元素会被存入一个桶中，对于桶的维护，标准库也给出了一系列函数，但是我觉得用处不大，就先不写在这里了</p>
+<h2 id="无序容器对关键字类型的要求"><a href="#无序容器对关键字类型的要求" class="headerlink" title="无序容器对关键字类型的要求"></a>无序容器对关键字类型的要求</h2><p>无序容器中有一个hash<key_type>类型用于存储哈希值，内置类型和string等标准库类型均定义了hash类型，均可以作为关键字。不能作为无序容器关键字的是另一个自定义的无序容器，原因与模板有关。</key_type></p>
 ]]></content>
       <tags>
         <tag>C++学习</tag>
