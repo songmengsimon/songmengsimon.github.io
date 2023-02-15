@@ -309,7 +309,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-02-11 00:01:12" itemprop="dateModified" datetime="2023-02-11T00:01:12+08:00">2023-02-11</time>
+                <time title="修改时间：2023-02-15 23:17:46" itemprop="dateModified" datetime="2023-02-15T23:17:46+08:00">2023-02-15</time>
               </span>
 
           
@@ -342,9 +342,9 @@
 <p>其中：</p>
 <ul>
 <li>fck为USART的时钟，而不同的USART挂载在不同的时钟总线上，例如USART1就是挂载在APB2总线上</li>
-<li>USARTDIV是一个存放在波特率寄存器（USART_BRR）中的一个无符号定点数：</li>
+<li><strong>USARTDIV是一个存放在波特率寄存器（USART_BRR）中的一个无符号定点数</strong>：</li>
 </ul>
-<img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/1.jpg" class title="image2">
+<img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/2.jpg" class title="image2">
 
 <p>​	其中， DIV_Mantissa[15:4] 位定义 USARTDIV 的整数部分，DIV_Fraction[3:0] 位定义 USARTDIV 的小数部分</p>
 <p>​	对于小数部分，寄存器中存储的值为<strong>实际小数*16</strong>，若不为整数则取近似值；整数部分则直接取16进制</p>
@@ -365,7 +365,7 @@
 <table>
 <thead>
 <tr>
-<th align="center"></th>
+<th align="center">STM32F10x</th>
 <th align="center">USART1</th>
 <th align="center">USART2</th>
 <th align="center">USART3</th>
@@ -465,6 +465,92 @@
 <td align="center">EIE</td>
 </tr>
 </tbody></table>
+<h1 id="IIC"><a href="#IIC" class="headerlink" title="IIC"></a>IIC</h1><p>I2C 通讯协议 (Inter － Integrated Circuit) 是由 Phiilps 公司开发的，由于它引脚少，硬件实现简单， 可扩展性强，不需要 USART、CAN 等通讯协议的外部收发设备，现在被广泛地使用在系统内多 个集成电路 (IC) 间的通讯</p>
+<h2 id="物理层"><a href="#物理层" class="headerlink" title="物理层"></a>物理层</h2><p>物理层不是本篇重点，就简单讲一下。</p>
+<img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/5.jpg" class title="image5">
+
+<p>IIC是一个支持多设备的总线，在一个IIC通讯总线中，可以连接多个通讯设备，它们都可以是主机或从机（主机可以简单理解为发送数据的一端，从机则为接收一端）</p>
+<p>一个 IIC总线只使用两条总线线路，一条双向串行数据线 (SDA) ，一条串行时钟线 (SCL)。 数据线即用来表示数据，时钟线用于数据收发同步，且每个连接到总线的设备都有一个独立的地址，主机可以利用这个地址进行不同设备之间的访问。</p>
+<h2 id="协议层"><a href="#协议层" class="headerlink" title="协议层"></a>协议层</h2><h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>在IIC总线空闲（初始）时，SCL和SDA都为高电平</p>
+<h3 id="特殊信号"><a href="#特殊信号" class="headerlink" title="特殊信号"></a>特殊信号</h3><img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/6.jpg" class title="image6">
+
+<p>I2C 总线在传送数据过程中共有三种类型信号， 它们分别是：<strong>开始信号、结束信号和应答信号</strong></p>
+<ul>
+<li><p>起始信号：SCL 为<strong>高电平</strong>时，SDA 由<strong>高电平向低电平跳变</strong>，开始传送数据。</p>
+</li>
+<li><p>停止信号：SCL 为<strong>高电平</strong>时，<strong>SDA 由低电平向高电平跳变</strong>，结束传送数据。</p>
+</li>
+<li><p>应答信号：接收数据的设备<strong>在接收到8位数据后</strong>，<strong>向发送数据的设备发出特定的低电平脉冲</strong>，表示已收到数据。应答信号的出现次数与数据长度有关，每接收8位数据后接收端都会向发送端发出一个应答信号</p>
+<ul>
+<li>有效应答位：SCL为高电平时，SDA为低电平</li>
+<li>非应答位：~，SDA为高电平</li>
+</ul>
+<p><strong>当一个字节按数据位从高位到低位的顺序传输完后，紧接着从设备将拉低SDA线，回传给主设备一个应答位ACK， 此时才认为一个数据帧真正地被传输完成</strong></p>
+</li>
+</ul>
+<p>为确保稳定性，每次电平转换的时间要&gt;4.7us</p>
+<h3 id="数据有效性"><a href="#数据有效性" class="headerlink" title="数据有效性"></a>数据有效性</h3><img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/7.jpg" class title="image7">
+
+<p>为了不将刚刚讲到的起始、停止信号误识别为数据内容，IIC协议规定了在数据传输过程中，<strong>当SCL&#x3D;1高电平时，数据线SDA必须保持稳定状态，不允许有电平跳变</strong>，而起始、停止信号则刚好是在SCL&#x3D;1高电平时在SDA上发生电平跳变，这样起始、停止信号就和数据传输很好的区分开了。并且当<strong>SCL&#x3D;1时，数据线SDA的任何电平变换会看做是总线的起始信号或者停止信号而不是数据内容。</strong>只有在时钟线上的信号为低电平期间，数据线上的高电平或低电平状态才允许变化，因为SCL为低时，SDA的数据是无效的，不读取的。</p>
+<p>这样就可以理解为，当SCL&#x3D;1高电平时为读取SDA也就是数据的过程，每一次SCL的高电平读取1位SDA数据，在SCL&#x3D;0低电平时，SDA可以改变，为下一次SCL高电平的读取做准备</p>
+<h3 id="地址"><a href="#地址" class="headerlink" title="地址"></a>地址</h3><p>多数IIC设备的地址为7位或10位，通常位7位。在地址最后还要加上1位的读&#x2F;写地址，<strong>所以设备地址为8位</strong></p>
+<p>对于读&#x2F;写地址位：</p>
+<ul>
+<li>0表示主设备向从设备<strong>写数据</strong></li>
+<li>1表示主设备从从设备<strong>读数据</strong></li>
+</ul>
+<p>例如，对于手势识别模块PAJ7620，当我们要向模块发送数据时，就要先向该模块的地址发送指定数据内容将其读&#x2F;写地址位设置为0.次数该设备才可以接收主设备写来的数据</p>
+<h3 id="整体流程"><a href="#整体流程" class="headerlink" title="整体流程"></a>整体流程</h3><ul>
+<li>主机先产生<strong>起始信号</strong></li>
+<li>紧接着发送一个<strong>设备地址</strong>，该设备地址由7位从机地址+1位数据方向位组成，此时方向位为0</li>
+<li>主机将地址发送到总线上的过程中，总线上的其他设备会同时将地址逐位<strong>与自己的地址相比较</strong>，当7位从机地址匹配成功后，根据第八位数据方向位将该设备确定为发送&#x2F;接收器。</li>
+<li>由于地址数据也算作一帧数据，所以在设备匹配成功后，从机将会发送1个应答信号</li>
+<li>对于PAJ7620，此时需要对其寄存器进行初始化，初始化成功后从机会返回1个应答信号</li>
+<li>此后主机、从机之间便可正常通讯</li>
+<li>若要停止该通信，需要主机发送<strong>1个停止信号</strong></li>
+<li>若要改变数据传输方向，在从机初始化完成后，主机需要再重新产生1个起始信号；之后发送设备地址，此时方向位应为1；最后主机将自身SDA的IO口设置为输入模式；</li>
+</ul>
+<h2 id="STM32的IIC硬件"><a href="#STM32的IIC硬件" class="headerlink" title="STM32的IIC硬件"></a>STM32的IIC硬件</h2><p>STM32 的 I2C 外设可用作通讯的主机及从机，支持 100Kbit&#x2F;s 和 400Kbit&#x2F;s 的速率，支持 7 位、10 位设备地址，支持 DMA 数据传输，并具有数据校验功能</p>
+<table>
+<thead>
+<tr>
+<th align="center">STM32F10x</th>
+<th align="center">IIC1</th>
+<th align="center">IIC2</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">SCL</td>
+<td align="center">PB6&#x2F;PB8（重映射）</td>
+<td align="center">PB10</td>
+</tr>
+<tr>
+<td align="center">SDA</td>
+<td align="center">PB7&#x2F;PB9（重映射）</td>
+<td align="center">PB11</td>
+</tr>
+</tbody></table>
+<img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/8.jpg" class title="image8">
+
+<h3 id="时钟逻辑"><a href="#时钟逻辑" class="headerlink" title="时钟逻辑"></a>时钟逻辑</h3><p>STM32 的I2C外设都挂载在APB1总线上，使用APB1的时钟源 PCLK1，具体的SCL时钟计算不细讲了</p>
+<h3 id="数据控制逻辑"><a href="#数据控制逻辑" class="headerlink" title="数据控制逻辑"></a>数据控制逻辑</h3><p>I2C 的 SDA 信号主要连接到数据移位寄存器上，数据移位寄存器的数据来源及目标是数据寄存器 (DR)、地址寄存器 (OAR)、PEC 寄存器以及 SDA 数据线。</p>
+<h4 id="数据寄存器DR-1"><a href="#数据寄存器DR-1" class="headerlink" title="数据寄存器DR"></a>数据寄存器DR</h4><p>当向外发送数据的时候，数据移位寄存器以DR为数据源，把数据一位一位地通过 SDA 信号线发送出去；当从外部接收数据的时候，数据移位寄存器把 SDA 信号线采样到的数据一位一位地存储到DR中。 </p>
+<h4 id="帧错误校验计算PEC"><a href="#帧错误校验计算PEC" class="headerlink" title="帧错误校验计算PEC"></a>帧错误校验计算PEC</h4><p>若使能了数据校验，接收到的数据会经过 PCE 计算器运算，运算结果存储在“PEC 寄存器”中。 </p>
+<h4 id="比较器"><a href="#比较器" class="headerlink" title="比较器"></a>比较器</h4><p>当 STM32 的 I2C 工作在<strong>从机模式</strong>的时候，接收到设备地址信号时，数据移位寄存器会把接收到 的地址与 STM32 的自身的“I2C 地址寄存器”的值作比较，以便响应主机的寻址。STM32 的自 身 I2C 地址可通过修改“自身地址寄存器”修改，<strong>支持同时使用两个 I2C 设备地址，两个地址分别存储在 OAR1 和 OAR2 中</strong></p>
+<h3 id="整体控制逻辑"><a href="#整体控制逻辑" class="headerlink" title="整体控制逻辑"></a>整体控制逻辑</h3><p>整体控制逻辑负责协调整个 I2C 外设，控制逻辑的工作模式根据我们配置的“控制寄存器 (CR1&#x2F;CR2)”的参数而改变。在外设工作时，控制逻辑会根据外设的工作状态修改“状态寄存器 (SR1 和 SR2)”，我们只要读取这些寄存器相关的寄存器位，就可以了解 I2C 的工作状态。除此之外，控制逻辑还根据要求，负责控制产生 I2C 中断信号、DMA 请求及各种 I2C 的通讯信号 (起始、停止、响应信号等)。</p>
+<h3 id="硬件通讯过程"><a href="#硬件通讯过程" class="headerlink" title="硬件通讯过程"></a>硬件通讯过程</h3><h4 id="发送器-1"><a href="#发送器-1" class="headerlink" title="发送器"></a>发送器</h4><img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/9.jpg" class title="image9">
+
+<p>发送流程：</p>
+<ul>
+<li>当发生起始信号后，它产生事件“EV5”，并会对 SR1 寄存器的“SB” 位置 1，表示起始信号已经发送</li>
+<li>紧接着发送设备地址并等待应答信号，若有从机应答，则产生事件“EV6”及“EV8”，这 时 SR1 寄存器的“ADDR”位及“TXE”位被置 1，<strong>ADDR 为 1 表示地址已经发送，TXE 为 1 表示数据寄存器为空</strong></li>
+<li>以上步骤正常执行并对 ADDR 位清零后，我们往 I2C 的“数据寄存器 DR”写入要发送的数据，这时 TXE 位会被重置 0，表示数据寄存器非空，I2C 外设通过 SDA 信号线一位位把数据发送 出去后，又会产生“EV8”事件，即 TXE 位被置 1，重复这个过程，就可以发送多个字节数据了</li>
+<li>发送数据完成后，控制 I2C 设备产生一个停止信号 (P)，这个时候会产生 EV8_2 事件，SR1 的 TXE 位及 BTF 位都被置 1，表示通讯结束</li>
+</ul>
+<h4 id="接收器-1"><a href="#接收器-1" class="headerlink" title="接收器"></a>接收器</h4><img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/10.jpg" class title="image10">
+
+<p>可以参考发送器，应该可以推测出来</p>
+<h2 id="软件IIC和硬件IIC的选择"><a href="#软件IIC和硬件IIC的选择" class="headerlink" title="软件IIC和硬件IIC的选择"></a>软件IIC和硬件IIC的选择</h2><p>由硬件处理IIC可以减轻CPU的负担，但是配置和使用起来都较为复杂；软件模拟IIC由于是由CPU控制整个通讯时序和引脚状态，CPU占用会更多，但是相对的使用起来会比较方便，且便于移植。</p>
 
       
     </div>
