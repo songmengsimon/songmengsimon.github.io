@@ -195,6 +195,365 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkk.gitee.io/2022/10/14/51%E5%8D%95%E7%89%87%E6%9C%BA%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/10/14/51%E5%8D%95%E7%89%87%E6%9C%BA%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/" class="post-title-link" itemprop="url">51单片机汇编指令查询</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-10-14 10:13:19" itemprop="dateCreated datePublished" datetime="2022-10-14T10:13:19+08:00">2022-10-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-01 17:45:28" itemprop="dateModified" datetime="2022-12-01T17:45:28+08:00">2022-12-01</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1、寻址"><a href="#1、寻址" class="headerlink" title="1、寻址"></a>1、寻址</h1><h2 id="寻址方式"><a href="#寻址方式" class="headerlink" title="寻址方式"></a>寻址方式</h2><p>寻找操作数的地址的各种方式。</p>
+<h3 id="1-立即寻址"><a href="#1-立即寻址" class="headerlink" title="1.立即寻址"></a>1.立即寻址</h3><p>直接使用操作数将操作数存入相关地址中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MOV R0,#26H</span><br><span class="line">MOV DPTR,#2000H</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>立即数可以是8位或16位</li>
+<li>立即数前必须加<code>#</code></li>
+</ul>
+<h3 id="2-直接寻址"><a href="#2-直接寻址" class="headerlink" title="2.直接寻址"></a>2.直接寻址</h3><p>将操作数视为地址，并将该地址存储的数据转递到相关地址中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MOV A,30H //相当于对30H进行解引用，将30H值传入A中</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-寄存器寻址"><a href="#3-寄存器寻址" class="headerlink" title="3.寄存器寻址"></a>3.寄存器寻址</h3><p>直接使用寄存器名字作为地址并对进行解引用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MOV A,R1 //*R1</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-寄存器间接寻址"><a href="#4-寄存器间接寻址" class="headerlink" title="4.寄存器间接寻址"></a>4.寄存器间接寻址</h3><p>指定寄存器的内容为操作数的地址，该地址存储的内容才是操作数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MOV A,@R0 // @R0相当于**R0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>需使用间址符<code>@</code></li>
+<li>对外部RAM进行读取时必须采用该方式</li>
+</ul>
+<h3 id="5-变址寻址"><a href="#5-变址寻址" class="headerlink" title="5.变址寻址"></a>5.变址寻址</h3><p>通过对基地址进行偏移获得当前操作数地址</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MOV A,#06H</span><br><span class="line">MOVC A,@A+PC</span><br></pre></td></tr></table></figure>
+
+<p>由于这里（@A+PC）整体应为一个地址，所以这里要对<strong>A使用间址符取06H作为地址</strong>的偏移量，因此该两行指令的意思为：将（@A+PC）地址中存储的数据传入A中</p>
+<h3 id="6-相对寻址"><a href="#6-相对寻址" class="headerlink" title="6.相对寻址"></a>6.相对寻址</h3><p>直接以PC作为基地址，只写出相对偏移量，有两种方式：</p>
+<h4 id="无条件转移："><a href="#无条件转移：" class="headerlink" title="无条件转移："></a>无条件转移：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SJMP 08H //使PC转移至当前PC值+08H（当前PC为下一指令地址）</span><br></pre></td></tr></table></figure>
+
+<h4 id="条件转移："><a href="#条件转移：" class="headerlink" title="条件转移："></a>条件转移：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JZ LOP //仅当（A）=0时执行，LOP为标号</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-位寻址"><a href="#7-位寻址" class="headerlink" title="7.位寻址"></a>7.位寻址</h3><h1 id="2、指令系统"><a href="#2、指令系统" class="headerlink" title="2、指令系统"></a>2、指令系统</h1><h2 id="1-数据传送指令"><a href="#1-数据传送指令" class="headerlink" title="1.数据传送指令"></a>1.数据传送指令</h2><ul>
+<li>片内数据传送：MOV	访问内部RAM</li>
+<li>片外数据传送：MOVX    访问外部RAM</li>
+<li>程序存储器数据传送：MOVC    访问内外ROM</li>
+</ul>
+<h2 id="2-数据交换指令"><a href="#2-数据交换指令" class="headerlink" title="2.数据交换指令"></a>2.数据交换指令</h2><ul>
+<li><p>字节交换（全部）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">XCH A,Rn</span><br><span class="line">XCH A,@Ri //寄存器区只有R0和R1可用作间接寻址</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>字节交换（低四位）：XCHD</p>
+</li>
+<li><p>字节交换（高低互换）：SWAP</p>
+</li>
+</ul>
+<h2 id="3-堆栈操作指令"><a href="#3-堆栈操作指令" class="headerlink" title="3.堆栈操作指令"></a>3.堆栈操作指令</h2><ul>
+<li>入栈：PUSH	SP先变化再压栈</li>
+<li>出栈：POP      先出栈再变化SP</li>
+</ul>
+<h2 id="4-算术运算指令"><a href="#4-算术运算指令" class="headerlink" title="4.算术运算指令"></a>4.算术运算指令</h2><ul>
+<li>加法<ul>
+<li>不带进位： ADD</li>
+<li>带进位（Cy）：ADDC</li>
+<li>加一：INC</li>
+</ul>
+</li>
+<li>减法<ul>
+<li>不带进位：SUB</li>
+<li>带进位：SUBB</li>
+<li>减一：DEC</li>
+</ul>
+</li>
+<li>乘法：MUL</li>
+<li>除法：DIV</li>
+</ul>
+<h2 id="5-逻辑运算指令"><a href="#5-逻辑运算指令" class="headerlink" title="5.逻辑运算指令"></a>5.逻辑运算指令</h2><ul>
+<li>逻辑与：ANL</li>
+<li>逻辑或：ORL</li>
+<li>逻辑异或：XRL</li>
+<li>取反：CPL</li>
+<li>清零：CLR</li>
+<li>移位<ul>
+<li>不带进位：RL&#x2F;RR 左移&#x2F;右移1位</li>
+<li>带进位：RLC&#x2F;RRC ~</li>
+</ul>
+</li>
+</ul>
+<h2 id="6-位运算"><a href="#6-位运算" class="headerlink" title="6.位运算"></a>6.位运算</h2><p>该运算对象仅针对Cy和bit型对象</p>
+<ul>
+<li>位传送：MOV</li>
+<li>置1：SETB</li>
+<li>清0：CLR</li>
+<li>取非：CPL</li>
+<li>取与：ANL</li>
+<li>取或：ORL</li>
+</ul>
+<h2 id="7-控制转移类指令"><a href="#7-控制转移类指令" class="headerlink" title="7.控制转移类指令"></a>7.控制转移类指令</h2><ul>
+<li><p>无条件转移：LJMP  3字节，直接转移至该16位地址</p>
+</li>
+<li><p>相对转移：SJMP</p>
+</li>
+<li><p>条件转移：**(条件转移皆为相对PC的转移)**</p>
+<ul>
+<li><p>累加器<u><strong>判0</strong></u>：JZ&#x2F;JNZ</p>
+</li>
+<li><p>进位Cy判断：JC&#x2F;JNC</p>
+</li>
+<li><p>任意位判断：JB&#x2F;JNB&#x2F;JBC</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">JB bit,rel</span><br><span class="line">// bit: 判断位  rel：偏移量</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>比较<strong>不相等</strong>判断（不相等为满足条件）:CJNE</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CJNE A,#data,rel</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>减1<strong>不为0</strong>判断转移：DJNZ</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkk.gitee.io/2022/10/11/C++-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/10/11/C++-5/" class="post-title-link" itemprop="url">C++的语句与函数</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-10-11 16:00:25" itemprop="dateCreated datePublished" datetime="2022-10-11T16:00:25+08:00">2022-10-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 19:06:41" itemprop="dateModified" datetime="2022-10-30T19:06:41+08:00">2022-10-30</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="try语句与异常处理"><a href="#try语句与异常处理" class="headerlink" title="try语句与异常处理"></a>try语句与异常处理</h1><p>通常的异常处理包括三部分：</p>
+<ul>
+<li>throw表达式：使用throw表达式表示当前程序遇到了某个问题（异常声明）</li>
+<li>try语句块：与catch配合用于处理各类异常声明</li>
+<li>一套异常类：用于传递具体的异常信息（异常声明的含义）</li>
+</ul>
+<h2 id="例程"><a href="#例程" class="headerlink" title="例程"></a>例程</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdexcept&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> std::vector;</span><br><span class="line"><span class="keyword">using</span> std::string;</span><br><span class="line"><span class="keyword">using</span> std::cin;</span><br><span class="line"><span class="keyword">using</span> std::cout;</span><br><span class="line"><span class="keyword">using</span> std::endl;</span><br><span class="line"><span class="keyword">using</span> std::runtime_error;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> a,b;</span><br><span class="line">    cin&gt;&gt;a&gt;&gt;b;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(a!=b) <span class="keyword">throw</span> <span class="built_in">runtime_error</span>(<span class="string">&quot;ERROR!!!&quot;</span>);</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;good&quot;</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">catch</span>(runtime_error err)</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;err.<span class="built_in">what</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="throw表达式"><a href="#throw表达式" class="headerlink" title="throw表达式"></a>throw表达式</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(a!=b) <span class="keyword">throw</span> <span class="built_in">runtime_error</span>(<span class="string">&quot;ERROR!!!&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>格式：throw+异常类+初始化异常类对象</p>
+<ul>
+<li><p>该初始化的对象只用于提供一些关于异常的辅助信息（用户自行定义）</p>
+</li>
+<li><p>异常类为一系列在库中定义的类型，使用时需要声明其命名空间，以下是几种常用的异常类，在头文件stdexcept中</p>
+<table>
+<thead>
+<tr>
+<th align="center">exception</th>
+<th align="center">一般错误</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">runtime_error</td>
+<td align="center">运行时才能检测出的任务</td>
+</tr>
+<tr>
+<td align="center">range_error</td>
+<td align="center">运行时：生成结果超出有意义的值域范围的错误</td>
+</tr>
+<tr>
+<td align="center">overflow_error</td>
+<td align="center">运行时：计算上溢错误</td>
+</tr>
+<tr>
+<td align="center">underflow_error</td>
+<td align="center">运行时：计算下溢错误</td>
+</tr>
+<tr>
+<td align="center">logic_error</td>
+<td align="center">程序逻辑错误</td>
+</tr>
+<tr>
+<td align="center">domain_error</td>
+<td align="center">逻辑错误：参数对应的结果不存在</td>
+</tr>
+<tr>
+<td align="center">invalid_error</td>
+<td align="center">逻辑错误：无效参数</td>
+</tr>
+<tr>
+<td align="center">length_error</td>
+<td align="center">逻辑错误：超出对象类型长度</td>
+</tr>
+<tr>
+<td align="center">out_of_range</td>
+<td align="center">逻辑错误：超出有效范围</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>除exception外其他类型都<strong>必须</strong>用一个字符串初始化，而exception则不允许这种初始化</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(a!=b) <span class="keyword">throw</span> <span class="built_in">exception</span>();</span><br><span class="line">	cout&lt;&lt;<span class="string">&quot;good&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">catch</span>(exception)</span><br><span class="line">&#123;</span><br><span class="line">   cout&lt;&lt;<span class="string">&quot;ERROR!!&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h2 id="try语句块"><a href="#try语句块" class="headerlink" title="try语句块"></a>try语句块</h2><p>格式：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123; &#125;<span class="comment">//程序正常逻辑，异常类在此throw出 </span></span><br><span class="line"><span class="built_in">catch</span>(异常声明)</span><br><span class="line">&#123;&#125;</span><br><span class="line"><span class="built_in">catch</span>(异常声明)</span><br><span class="line">&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>当try内一旦提出异常类时，就不再执行该throw表达式后的内容；反之，若没有throw任何异常，则不会触发任何catch语句，程序正常执行完try语句。</li>
+<li>catch括号中需定义一个对象，类型为触发的异常类，这些异常类只有一个子函数what，用于输出初始化时的字符串（不能用于exception类）</li>
+</ul>
+<p>当有多个try语句块嵌套时，当最内部try提出了一个异常，会由内到外执行catch，若最终都没有对应catch，则程序转到terminate的标准库函数，该函数行为与系统有关，通常执行该函数会导致程序非正常退出。</p>
+<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><h2 id="参数传递"><a href="#参数传递" class="headerlink" title="参数传递"></a>参数传递</h2><ul>
+<li>形参实参之间的转递为值拷贝</li>
+<li>C++中建议用引用类型的形参代替指针形参，引用类型同样可以达到修改值的内容，并且可以避免拷贝，因为引用是与实参绑定的。</li>
+</ul>
+<h2 id="数组的传递"><a href="#数组的传递" class="headerlink" title="数组的传递"></a>数组的传递</h2><p>以下三种对形参的定义是等价的：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">a</span><span class="params">(<span class="type">const</span> <span class="type">int</span>*)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">b</span><span class="params">(<span class="type">const</span> <span class="type">int</span>[])</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">c</span><span class="params">(<span class="type">const</span> <span class="type">int</span>[<span class="number">10</span>])</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>编译器在编译时只会检查传入的参数类型是否为const int*型，甚至不会检查传入数组的长度是否超出形参大小。</p>
+<h3 id="数组的引用形参"><a href="#数组的引用形参" class="headerlink" title="数组的引用形参"></a>数组的引用形参</h3><p>可以使用数组的引用作为形参：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">test</span><span class="params">(<span class="type">int</span> (&amp;arr)[<span class="number">10</span>])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">for</span>(<span class="keyword">auto</span> elem : arr)</span><br><span class="line">      cout&lt;&lt;elem&lt;&lt;endl;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>使用数组的引用作为形参需要注意：</p>
+<ul>
+<li>初始化时必须使用括号括起&amp;arr</li>
+<li>输入的实参<strong>必须为一个int [10]类型</strong>的对象</li>
+</ul>
+<h2 id="函数的返回类型"><a href="#函数的返回类型" class="headerlink" title="函数的返回类型"></a>函数的返回类型</h2><h3 id="返回引用"><a href="#返回引用" class="headerlink" title="返回引用"></a>返回引用</h3><p>函数返回引用可以理解为返回的为一个地址</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">char</span> <span class="title">test1</span><span class="params">(string s ,string::size_type num)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">return</span> s[num];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">char</span> &amp;<span class="title">test2</span><span class="params">(string &amp;s ,string::size_type num)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">return</span> s[num];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="function">srting <span class="title">s</span><span class="params">(<span class="string">&quot;test&quot;</span>)</span></span>;</span><br><span class="line">   cout&lt;&lt;<span class="built_in">test1</span>(s,<span class="number">0</span>)&lt;&lt;endl; <span class="comment">//t</span></span><br><span class="line">   <span class="built_in">test2</span>(s,<span class="number">0</span>)=<span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">   cout&lt;&lt;s[<span class="number">0</span>]&lt;&lt;endl;       <span class="comment">//a</span></span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当一个函数的返回值为引用时，该返回值为左值而非右值，因此可以像使用其他左值一样使用这个返回值</p>
+<p>（注：左值≠地址，它仍然是一个值）</p>
+<ul>
+<li><p><strong>不可返回局部变量的引用</strong>，由于局部变量在函数完成后会被释放，因此在函数完成后引用会找不到它的对象。例如上一个例程，如果把test2()函数改为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">char</span> &amp;<span class="title">test2</span><span class="params">(string s ,string::size_type num)</span><span class="comment">//此处形参不再是引用</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">return</span> s[num];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="function">srting <span class="title">s</span><span class="params">(<span class="string">&quot;test&quot;</span>)</span></span>;</span><br><span class="line">   <span class="built_in">test2</span>(s,<span class="number">0</span>)=<span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">   cout&lt;&lt;s[<span class="number">0</span>]&lt;&lt;endl;      <span class="comment">//t</span></span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该函数的返回值为对s的引用，但s本身为一个局部变量，在函数完成时已经被释放，因此该引用是无效的（但是这样<strong>返回形参的引用</strong>编译器并不会报错，而返回<strong>函数内定义的局部变量</strong>的引用会报错）</p>
+<p>但如果形参定义为引用，由于引用本身是不占用存储空间的，所以’a’可以通过引用直接向s[0]赋值</p>
+</li>
+</ul>
+<h3 id="返回数组指针"><a href="#返回数组指针" class="headerlink" title="返回数组指针"></a>返回数组指针</h3><ul>
+<li><p>尾置返回类型</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">func</span><span class="params">(<span class="type">int</span> i)</span> -&gt; <span class="title">int</span><span class="params">(*)</span>[10]</span></span><br></pre></td></tr></table></figure>
+
+<p>声明函数的返回值为一个含有十个整数的数组的指针</p>
+</li>
+<li><p>使用decltype</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> test[<span class="number">5</span>]=&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</span><br><span class="line"><span class="keyword">decltype</span>(test) *<span class="built_in">func</span>()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;test;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;	</span><br><span class="line">	cout&lt;&lt;*(*func+<span class="number">1</span>); <span class="comment">//输出2</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>decltype(test)的结果是一个数组，因此函数前要用*声明返回值为指针</li>
+<li>使用此方法返回的是一个数组的整体地址，而不是首地址，类型为int*[5]，因此一次解引用的结果才是首地址</li>
+</ul>
+</li>
+</ul>
+<h2 id="内联函数"><a href="#内联函数" class="headerlink" title="内联函数"></a>内联函数</h2><p>正常的调用函数一般比等价的表达式要慢（保存寄存器、拷贝等操作），因此对于规模较小的函数可以定义为内联函数类型：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">fuc</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="constexpr函数"><a href="#constexpr函数" class="headerlink" title="constexpr函数"></a>constexpr函数</h2><p>将函数隐式地定义为内联函数，但函数内只能有一条return语句，且返回值必须为字面值</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkk.gitee.io/2022/10/03/C++-4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -287,324 +646,9 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkk.gitee.io/2022/09/16/python-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/09/16/python-2/" class="post-title-link" itemprop="url">python_2</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-09-16 10:29:36" itemprop="dateCreated datePublished" datetime="2022-09-16T10:29:36+08:00">2022-09-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-09-18 21:07:06" itemprop="dateModified" datetime="2022-09-18T21:07:06+08:00">2022-09-18</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="开始编程"><a href="#开始编程" class="headerlink" title="开始编程"></a>开始编程</h1><h2 id="1、条件控制"><a href="#1、条件控制" class="headerlink" title="1、条件控制"></a>1、条件控制</h2><p>一般形式：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> condition_1:</span><br><span class="line">    statement_block_1</span><br><span class="line"><span class="keyword">elif</span> condition_2:</span><br><span class="line">    statement_block_2</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    statement_block_3</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>记得在条件后加<code>:</code></li>
-<li>Python 中用 <strong>elif</strong> 代替了 <strong>else if</strong>，所以if语句的关键字为：<strong>if – elif – else</strong></li>
-<li>python中没有switch语句</li>
-</ul>
-<h2 id="2、循环语句"><a href="#2、循环语句" class="headerlink" title="2、循环语句"></a>2、循环语句</h2><h3 id="while语句"><a href="#while语句" class="headerlink" title="while语句"></a>while语句</h3><p>可以与else配合使用：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">while &lt;expr&gt;:</span><br><span class="line">    &lt;statement(s)&gt;</span><br><span class="line">else:</span><br><span class="line">    &lt;additional_statement(s)&gt;</span><br></pre></td></tr></table></figure>
-
-<h3 id="for语句"><a href="#for语句" class="headerlink" title="for语句"></a>for语句</h3><p>一般格式</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="string">&#x27;dhk&#x27;</span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> a: </span><br><span class="line">	<span class="built_in">print</span>(x,end=<span class="string">&#x27;&#x27;</span>) <span class="comment">#dhk</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">   <span class="built_in">print</span>(<span class="string">&quot;error!!&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<p>不同于C，python的for语句常用来遍历某个可迭代对象，如列表、字符串，如上的循环中，x每次只取遍历对象的<strong>最基本单位并自动递增</strong>。</p>
-<h3 id="range函数"><a href="#range函数" class="headerlink" title="range函数"></a>range函数</h3><p>生成一个数字序列，格式：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">10</span>,<span class="number">2</span>):</span><br><span class="line">   <span class="built_in">print</span>(x,end=<span class="string">&#x27;&#x27;</span>)<span class="comment">#13579</span></span><br></pre></td></tr></table></figure>
-
-<p>range函数的指定区间同样<strong>遵循左闭右开</strong>的原则</p>
-<h3 id="pass语句"><a href="#pass语句" class="headerlink" title="pass语句"></a>pass语句</h3><p>空语句，表示空</p>
-<h2 id="3、迭代器"><a href="#3、迭代器" class="headerlink" title="3、迭代器"></a>3、迭代器</h2><p>迭代是Python最强大的功能之一，是<strong>访问集合元素的一种方式</strong>。</p>
-<p>迭代器是一个<strong>可以记住遍历的位置</strong>的对象。</p>
-<p>迭代器对象从集合的第一个元素开始访问，直到所有的元素被访问完结束。迭代器只能往前不会后退。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">    <span class="built_in">list</span> = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line">    it = <span class="built_in">iter</span>(<span class="built_in">list</span>)  <span class="comment"># 创建迭代器对象</span></span><br><span class="line">    it2 = <span class="built_in">iter</span>(<span class="built_in">list</span>)  <span class="comment"># 创建迭代器对象</span></span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> it:</span><br><span class="line">        <span class="keyword">if</span> x != <span class="number">4</span>:</span><br><span class="line">            <span class="built_in">print</span>(x, end=<span class="string">&quot; &quot;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(x)</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">next</span>(it2))</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">next</span>(it2))</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">next</span>(it2))</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">next</span>(it2))</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">1 2 3 4</span></span><br><span class="line"><span class="string">1</span></span><br><span class="line"><span class="string">2</span></span><br><span class="line"><span class="string">3</span></span><br><span class="line"><span class="string">4</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="把一个类作为迭代器使用："><a href="#把一个类作为迭代器使用：" class="headerlink" title="把一个类作为迭代器使用："></a>把一个类作为迭代器使用：</h3><p>若想把一个类作为迭代器使用，需要在类中实现两个方法：</p>
-<ul>
-<li><p><code>__iter__()</code>:返回一个特殊的迭代器对象， 这个迭代器对象实现了 <strong>next</strong>() 方法并通过 StopIteration 异常标识迭代的完成。</p>
-</li>
-<li><p><code>__next__()</code>:返回下一个迭代器对象</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">   <span class="keyword">class</span> <span class="title class_">MyNumbers</span>:</span><br><span class="line">       <span class="keyword">def</span> <span class="title function_">__iter__</span>(<span class="params">self</span>):</span><br><span class="line">           self.a = <span class="number">1</span></span><br><span class="line">           <span class="keyword">return</span> self</span><br><span class="line">  </span><br><span class="line">       <span class="keyword">def</span> <span class="title function_">__next__</span>(<span class="params">self</span>):</span><br><span class="line">           <span class="keyword">if</span> self.a &lt;= <span class="number">20</span>:</span><br><span class="line">               x = self.a</span><br><span class="line">               self.a += <span class="number">1</span></span><br><span class="line">               <span class="keyword">return</span> x</span><br><span class="line">           <span class="keyword">else</span>:</span><br><span class="line">               <span class="keyword">raise</span> StopIteration <span class="comment">#挂起StopIteration标志迭代完成，不能用return</span></span><br><span class="line">   a = MyNumbers()</span><br><span class="line">   i = <span class="built_in">iter</span>(a)</span><br><span class="line">   <span class="keyword">for</span> x <span class="keyword">in</span> i:</span><br><span class="line">       <span class="built_in">print</span>(x, end=<span class="string">&#x27; &#x27;</span>)</span><br><span class="line"><span class="comment">#1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 </span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="4、生成器"><a href="#4、生成器" class="headerlink" title="4、生成器"></a>4、生成器</h2><p> 在 Python 中，使用了 yield 的函数被称为生成器（generator）。</p>
-<p>在调用生成器运行的过程中，<strong>每次遇到 yield 时函数会暂停并保存当前所有的运行信息，返回 yield 的值</strong>, 并在下一次执行 next() 方法时从当前位置继续运行。</p>
-<ul>
-<li>生成器函数返回的是一个<strong>迭代器对象</strong></li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fibonacci</span>(<span class="params">n</span>): <span class="comment"># 生成器函数 - 斐波那契</span></span><br><span class="line">    a, b, counter = <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">if</span> (counter &gt; n): </span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        <span class="keyword">yield</span> a</span><br><span class="line">        a, b = b, a + b</span><br><span class="line">        counter += <span class="number">1</span></span><br><span class="line">f = fibonacci(<span class="number">10</span>) <span class="comment"># f 是一个迭代器，由生成器返回生成</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="built_in">print</span> (<span class="built_in">next</span>(f), end=<span class="string">&quot; &quot;</span>)</span><br><span class="line">    <span class="keyword">except</span> StopIteration:</span><br><span class="line">        sys.exit()</span><br></pre></td></tr></table></figure>
-
-<h2 id="5、函数"><a href="#5、函数" class="headerlink" title="5、函数"></a>5、函数</h2><p>规则：</p>
-<ul>
-<li>函数代码块以 <strong>def</strong> 关键词开头，后接函数标识符名称和圆括号 **()**。</li>
-<li>函数内容以冒号 <strong>:</strong> 起始，并且缩进。</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">def 函数名（参数列表）:</span><br><span class="line">    函数体</span><br></pre></td></tr></table></figure>
-
-<h3 id="关键字参数"><a href="#关键字参数" class="headerlink" title="关键字参数"></a>关键字参数</h3><p>在调用函数时，实参可以是key&#x3D;value的形式，称为关键字参数。</p>
-<p>凡是按照这种形式定义的实参，可以不按照从左到右的顺序定义，但仍能为指定的形参赋值。</p>
-<ul>
-<li><p><strong>关键字参数在位置参数后面</strong>，因为python函数在解析参数时，是按照顺序来的，<strong>位置参数</strong>是必须先满足，才考虑其他可变参数。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">printinfo</span>(<span class="params">age, name</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;名字: &quot;</span>, name)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;年龄: &quot;</span>, age)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  </span><br><span class="line">printinfo(<span class="number">50</span>, name=<span class="string">&quot;runoob&quot;</span>) <span class="comment">#age为位置参数，name为关键字参数</span></span><br></pre></td></tr></table></figure>
-
-<p>需要注意：</p>
-<ul>
-<li><strong>位置参数的输入必须和定义时的位置相同</strong></li>
-<li><strong>关键字参数的输入必须在位置参数之后</strong></li>
-</ul>
-</li>
-</ul>
-<h3 id="当参数不定长时"><a href="#当参数不定长时" class="headerlink" title="当参数不定长时"></a>当参数不定长时</h3><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">printinfo</span>(<span class="params"> arg1, *vartuple </span>):</span><br></pre></td></tr></table></figure>
-
-<p>加了星号 ***** 的参数会以元组(tuple)的形式导入，存放所有未命名的变量参数</p>
-<p>当参数添加双星号******时，传入的参数将以字典的形式保存</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">func</span>(<span class="params">**dic</span>)</span><br><span class="line">	<span class="built_in">print</span>(dic)</span><br><span class="line">func(**&#123;<span class="string">&#x27;a&#x27;</span>:<span class="number">1</span>,<span class="string">&#x27;b&#x27;</span>:<span class="number">2</span>&#125;)</span><br><span class="line"><span class="comment">#or</span></span><br><span class="line">func(a=<span class="number">1</span>,b=<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
-
-<h3 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h3><p>Python 使用 <strong>lambda</strong> 来创建匿名函数</p>
-<ul>
-<li>lambda 的主体是一个表达式，而不是一个代码块。仅仅能在 lambda 表达式中封装有限的逻辑进去。</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 可写函数说明</span></span><br><span class="line"><span class="built_in">sum</span> = <span class="keyword">lambda</span> arg1, arg2: arg1 + arg2</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 调用sum函数</span></span><br><span class="line"><span class="built_in">print</span> (<span class="string">&quot;相加后的值为 : &quot;</span>, <span class="built_in">sum</span>( <span class="number">10</span>, <span class="number">20</span> ))</span><br><span class="line"><span class="built_in">print</span> (<span class="string">&quot;相加后的值为 : &quot;</span>, <span class="built_in">sum</span>( <span class="number">20</span>, <span class="number">20</span> ))</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">30</span></span><br><span class="line"><span class="string">40</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="强制位置参数＆命名关键字参数"><a href="#强制位置参数＆命名关键字参数" class="headerlink" title="强制位置参数＆命名关键字参数"></a>强制位置参数＆命名关键字参数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># a, b, c成为限定位置形参</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">func</span>(<span class="params">a, b, c, /, d</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#这时参数kw1, kw2必须传入关键字参数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">func</span>(<span class="params">其他形参, *, kw1, kw2</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="6、类"><a href="#6、类" class="headerlink" title="6、类"></a>6、类</h2><p>Python中的类提供了面向对象编程的所有基本功能：类的继承机制允许多个基类，派生类可以覆盖基类中的任何方法，方法中可以调用基类中的同名方法。</p>
-<p>定义：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span>:</span><br><span class="line">    i = <span class="number">12345</span></span><br><span class="line">    a = <span class="number">1</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">f</span>(<span class="params">self</span>):<span class="comment">#类中的函数称作类的方法</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;hello world&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>类的初始化（构造方法）</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Complex</span>:</span><br><span class="line">    name = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    age = <span class="number">0</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, n, a</span>): <span class="comment">#类的方法必须包含self，且其必须为第一个参数</span></span><br><span class="line">        self.name = n</span><br><span class="line">        self.age = a</span><br></pre></td></tr></table></figure>
-
-<p>创建一个类的实例：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x = MyClass()</span><br></pre></td></tr></table></figure>
-
-<p>访问类的属性、方法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;MyClass 类的属性 i 为：&quot;</span>, x.i)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;MyClass 类的方法 f 输出为：&quot;</span>, x.f())</span><br></pre></td></tr></table></figure>
-
-<h4 id="类的继承："><a href="#类的继承：" class="headerlink" title="类的继承："></a>类的继承：</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#类定义</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">people</span>:</span><br><span class="line">    <span class="comment">#定义基本属性</span></span><br><span class="line">    name = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    age = <span class="number">0</span></span><br><span class="line">    <span class="comment">#定义私有属性,私有属性在类外部无法直接进行访问</span></span><br><span class="line">    __weight = <span class="number">0</span></span><br><span class="line">    <span class="comment">#定义构造方法</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,n,a,w</span>):</span><br><span class="line">        self.name = n</span><br><span class="line">        self.age = a</span><br><span class="line">        self.__weight = w</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">speak</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;%s 说: 我 %d 岁。&quot;</span> %(self.name,self.age))</span><br><span class="line"> </span><br><span class="line"><span class="comment">#单继承示例</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">student</span>(<span class="title class_ inherited__">people</span>):</span><br><span class="line">    grade = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,n,a,w,g</span>):</span><br><span class="line">        <span class="comment">#调用父类的构函</span></span><br><span class="line">        people.__init__(self,n,a,w)</span><br><span class="line">        self.grade = g</span><br><span class="line">    <span class="comment">#覆写父类的方法</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">speak</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;%s 说: 我 %d 岁了，我在读 %d 年级&quot;</span>%(self.name,self.age,self.grade))</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">s = student(<span class="string">&#x27;ken&#x27;</span>,<span class="number">10</span>,<span class="number">60</span>,<span class="number">3</span>)</span><br><span class="line">s.speak()</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>子类中若出现了父类同名的方法，则在调用该子类方法时使用的内容也是子类中定义的内容</li>
-</ul>
-<p>私有属性与方法：</p>
-<p>在方法或属性的开头加两个下划线，<strong>声明</strong>（不包含在变量名中）该属性为私有，不能在类的外部被使用或直接访问</p>
-<h1 id="文件间的引用"><a href="#文件间的引用" class="headerlink" title="文件间的引用"></a>文件间的引用</h1><h2 id="1、import语句"><a href="#1、import语句" class="headerlink" title="1、import语句"></a>1、import语句</h2><p>想使用一个 Python 源文件，只需在另一个源文件里执行 import 语句导入该模块</p>
-<ul>
-<li>一个模块只会被导入一次，不管你执行了多少次 <strong>import</strong>。这样可以防止导入模块被一遍又一遍地执行。</li>
-</ul>
-<h2 id="2、from-import语句"><a href="#2、from-import语句" class="headerlink" title="2、from..import语句"></a>2、from..import语句</h2><p>从模块中导入指定的部分，例如:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> test_file <span class="keyword">import</span> test_fuction1,test_fuction2</span><br><span class="line"><span class="comment">#从test_file.py中导入两个函数</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="3、使用模块中的变量、函数"><a href="#3、使用模块中的变量、函数" class="headerlink" title="3、使用模块中的变量、函数"></a>3、使用模块中的变量、函数</h2><p>通过 modname.itemname 这样的表示法来访问模块内的函数</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkk.gitee.io/2022/09/15/C++-3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/09/15/C++-3/" class="post-title-link" itemprop="url">C++字符串、向量和数组</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-09-15 19:34:35" itemprop="dateCreated datePublished" datetime="2022-09-15T19:34:35+08:00">2022-09-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-01-12 14:45:43" itemprop="dateModified" datetime="2023-01-12T14:45:43+08:00">2023-01-12</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="字符串、向量和数组"><a href="#字符串、向量和数组" class="headerlink" title="字符串、向量和数组"></a>字符串、向量和数组</h1><h2 id="1、using声明"><a href="#1、using声明" class="headerlink" title="1、using声明"></a>1、using声明</h2><p>作用：使用using声明命名空间的相关成员后，后续不需再声明</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> std::cin;</span><br><span class="line"><span class="type">int</span> i;</span><br><span class="line">cin&gt;&gt;i;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>每个名字都需要独立的using声明</li>
-</ul>
-<h2 id="2、string类型"><a href="#2、string类型" class="headerlink" title="2、string类型"></a>2、string类型</h2><ul>
-<li>使用前需包含头文件<code>&lt;string&gt;</code>(没有.h)，且需声明string定义于命名空间中</li>
-</ul>
-<h3 id="初始化string类型的方法"><a href="#初始化string类型的方法" class="headerlink" title="初始化string类型的方法"></a>初始化string类型的方法</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">string s1;</span><br><span class="line">string s2=s1;</span><br><span class="line"><span class="function">string <span class="title">s3</span><span class="params">(<span class="string">&quot;value&quot;</span>)</span></span>;</span><br><span class="line">string s3 =<span class="string">&quot;value&quot;</span>;</span><br><span class="line"><span class="function">string <span class="title">s4</span><span class="params">(n,<span class="string">&#x27;c&#x27;</span>)</span></span>;<span class="comment">//此处只能为字符</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="读写string对象"><a href="#读写string对象" class="headerlink" title="读写string对象"></a>读写string对象</h3><p>当要将标准输入内容读取到一个string对象时，string对象会自动忽略开头的空白（空格、换行等），从第一个真正的字符开始，直到遇到遇到下一个空白（但读取结束的标准是换行）</p>
-<h3 id="使用getline函数读取一整行"><a href="#使用getline函数读取一整行" class="headerlink" title="使用getline函数读取一整行"></a>使用getline函数读取一整行</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">string s;</span><br><span class="line"><span class="built_in">getline</span>(cin,s);</span><br></pre></td></tr></table></figure>
-
-<p>getline只有当读取到换行符时才会结束，并且这个换行符会被丢弃。</p>
-<h3 id="相加问题"><a href="#相加问题" class="headerlink" title="相加问题"></a>相加问题</h3><p>string对象可以相加，string对象也可以与字面值相加，<strong>但字面值不能与字面值相加！</strong></p>
-<h3 id="单独处理字符"><a href="#单独处理字符" class="headerlink" title="单独处理字符"></a>单独处理字符</h3><p>C++11提供了一种语句：范围for</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">string <span class="built_in">str</span>(<span class="string">&quot;something&quot;</span>);</span><br><span class="line"><span class="keyword">for</span>(auto c:<span class="built_in">str</span>)	cout&lt;&lt;c&lt;&lt;endl;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>每次循环中，都会把序列中的<strong>基础元素</strong>存入c中</li>
-</ul>
-<p>还可以通过引用等方式单独改变字符</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">string <span class="title">str</span><span class="params">(<span class="string">&quot;something&quot;</span>)</span></span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> &amp;c:str)	c=<span class="built_in">toupper</span>(c);<span class="comment">//大写转换函数</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="下标问题"><a href="#下标问题" class="headerlink" title="下标问题"></a>下标问题</h3><p>C++支持对字符串使用下标运算符<code>[]</code>访问字符串的单个字符，规则同python，但貌似C++不支持截取。</p>
-<h2 id="3、vector类型"><a href="#3、vector类型" class="headerlink" title="3、vector类型"></a>3、vector类型</h2><p>要想使用vector，需包含<code>&lt;vector&gt;</code>头文件。<strong>类型vector表示对象的集合</strong></p>
-<p>实例化：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;<span class="type">int</span>&gt; a;</span><br><span class="line">vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; b;</span><br></pre></td></tr></table></figure>
-
-<h3 id="定义与初始化"><a href="#定义与初始化" class="headerlink" title="定义与初始化"></a>定义与初始化</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;<span class="type">int</span>&gt; a;</span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">a</span><span class="params">(b)</span></span>; <span class="comment">//a包含b中所有元素的副本 a和b的类型需相同</span></span><br><span class="line">vector&lt;<span class="type">int</span>&gt; a=b;</span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">a</span><span class="params">(n,val)</span></span>; <span class="comment">//a中有n个重复的val</span></span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">a</span><span class="params">(n)</span></span>; <span class="comment">//包含n个对象</span></span><br><span class="line">vector&lt;<span class="type">int</span>&gt; a&#123;A,B,C&#125;;</span><br><span class="line">vector&lt;<span class="type">int</span>&gt; a=&#123;A,B,C&#125;;</span><br></pre></td></tr></table></figure>
-
-<h3 id="向vector对象尾部添加元素"><a href="#向vector对象尾部添加元素" class="headerlink" title="向vector对象尾部添加元素"></a>向vector对象尾部添加元素</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;<span class="type">int</span>&gt; a;</span><br><span class="line">a.<span class="built_in">push_back</span>(<span class="number">1</span>);<span class="comment">//a=&#123;1&#125;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="其他函数"><a href="#其他函数" class="headerlink" title="其他函数"></a>其他函数</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a.<span class="built_in">empty</span>(); <span class="comment">//如果a不含元素则返回真</span></span><br><span class="line">a.<span class="built_in">size</span>(); <span class="comment">//返回元素个数</span></span><br></pre></td></tr></table></figure>
-
-<p>其他的类函数参考书p91</p>
-<h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3><p>vector对象同样支持使用下标运算符进行单个元素的索引，但不能通过下标添加元素。</p>
-<h2 id="4、迭代器"><a href="#4、迭代器" class="headerlink" title="4、迭代器"></a>4、迭代器</h2><p>迭代器（iterator）是一种可以遍历容器元素的数据类型。迭代器是一个变量，相当于容器和操纵容器的算法之间的中介。<strong>C++更趋向于使用迭代器而不是数组下标操作</strong>，因为标准库为每一种标准容器（如vector、map和list等）定义了一种迭代器类型，而只有少数容器（如vector）支持数组下标操作访问容器元素。可以通过迭代器指向你想访问容器的元素地址，通过*x打印出元素值。这和我们所熟知的指针极其类似。</p>
-<p>C语言有指针，指针用起来十分灵活高效。<br>C++语言有迭代器，迭代器相对于指针而言功能更为丰富。</p>
-<h3 id="迭代器的使用"><a href="#迭代器的使用" class="headerlink" title="迭代器的使用"></a>迭代器的使用</h3><p>可以看出，迭代器的基本使用和指针极其相似</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	vector&lt;string&gt; v&#123;<span class="string">&quot;aaaa&quot;</span>,<span class="string">&quot;bbbb&quot;</span>&#125;;</span><br><span class="line">	<span class="keyword">auto</span> i=v.<span class="built_in">begin</span>();</span><br><span class="line">	cout&lt;&lt;*(i+<span class="number">1</span>); <span class="comment">//bbbb</span></span><br><span class="line">	<span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="迭代器运算符"><a href="#迭代器运算符" class="headerlink" title="迭代器运算符"></a>迭代器运算符</h3><ul>
-<li><p>获得迭代器所指元素</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*iter  <span class="keyword">or</span>  iter-&gt;mem</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>获取迭代器长度</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">i.<span class="built_in">end</span>()-i.<span class="built_in">begin</span>()</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="迭代器类型"><a href="#迭代器类型" class="headerlink" title="迭代器类型"></a>迭代器类型</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;string&gt; v&#123;<span class="string">&quot;aaaa&quot;</span>,<span class="string">&quot;bbbb&quot;</span>&#125;;</span><br><span class="line"><span class="keyword">auto</span> i=v.<span class="built_in">begin</span>();</span><br><span class="line"><span class="comment">//vector&lt;string&gt;::iterator i; 类型</span></span><br><span class="line"></span><br><span class="line"><span class="function">string <span class="title">str</span><span class="params">(<span class="string">&quot;12345&quot;</span>)</span></span>;</span><br><span class="line"><span class="keyword">auto</span> i=str.<span class="built_in">begin</span>();</span><br><span class="line"><span class="comment">//string::iterator i; 类型</span></span><br><span class="line"></span><br><span class="line">对应的只读类型</span><br><span class="line"><span class="comment">//vector&lt;string&gt;::const_iterator v;</span></span><br><span class="line"><span class="comment">//string::const_iterator str;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="当需要对迭代器进行遍历时，需注意for循环的条件3："><a href="#当需要对迭代器进行遍历时，需注意for循环的条件3：" class="headerlink" title="当需要对迭代器进行遍历时，需注意for循环的条件3："></a>当需要对迭代器进行遍历时，需注意for循环的条件3：</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	vector&lt;<span class="type">int</span>&gt; v&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>&#125;;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> i=v.<span class="built_in">begin</span>(); i !=v.<span class="built_in">end</span>(); ++i)<span class="comment">//应使用++i，这是因为end为元素10之后的位置	</span></span><br><span class="line">	&#123;</span><br><span class="line">		*i=*i*<span class="number">2</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> a:v) cout&lt;&lt;a&lt;&lt;endl;</span><br><span class="line">	<span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="5、数组"><a href="#5、数组" class="headerlink" title="5、数组"></a>5、数组</h2><p>大部分规定与C相同。</p>
-<ul>
-<li><p>定义数组时不允许用auto关键字由初始值推断类型。</p>
-</li>
-<li><p>可使用decltype(数组名)定义数组类型。</p>
-</li>
-<li><p><strong>数组不是类类型，因此没有成员函数。</strong></p>
-<p>因此C++11引入了begin、end函数来查询数组相关元素的<strong>地址</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[]=&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;</span><br><span class="line"><span class="type">int</span> *p=<span class="built_in">begin</span>(a);</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>注意：end()和vector类型的子函数.end()不同，end()函数返回的是数组最后一个元素的地址，而vector类型的end子函数返回的是最后一个元素的后一位地址</p>
-<h3 id="单个元素类型"><a href="#单个元素类型" class="headerlink" title="单个元素类型"></a>单个元素类型</h3><p>通常对数组的单个类型定义为size_t型，该类型为一种机器相关的无符号类型，它被设计得足够大以便能表示内存中任意对象的大小</p>
-<p><strong>要使用该类型，应包含cstddef头文件</strong></p>
-<h3 id="C与C-的字符串风格"><a href="#C与C-的字符串风格" class="headerlink" title="C与C++的字符串风格"></a>C与C++的字符串风格</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> a[<span class="number">10</span>]=<span class="string">&quot;dhk&quot;</span>; <span class="comment">//C风格</span></span><br><span class="line"><span class="function">string <span class="title">a</span><span class="params">(<span class="string">&quot;dhk&quot;</span>)</span></span>;	<span class="comment">//C++风格</span></span><br></pre></td></tr></table></figure>
-
-<p>在C中，通常我们要对字符串进行一些例如比较、拷贝、连接等的操作时，通常使用的是标准库中的相关字符串长度，相较于C++中string类型的变量可以对存放字符串的变量直接进行运算等操作，C的字符串风格更加繁琐，且极容易在数组的内存方面引发严重问题</p>
-<h4 id="混用规则："><a href="#混用规则：" class="headerlink" title="混用规则："></a>混用规则：</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">string <span class="title">a</span><span class="params">(<span class="string">&quot;dhk&quot;</span>)</span></span>;</span><br><span class="line"><span class="type">char</span> *str=a;<span class="comment">//错误，a的类型为string，而str类型为char*，冲突</span></span><br><span class="line"><span class="type">char</span> *str=a.<span class="built_in">c_str</span>();<span class="comment">//正确。c_str()函数返回的是C风格字符串（一个地址）</span></span><br></pre></td></tr></table></figure>
-
-<p>上述用法相当于是<strong>又</strong>在内存中创建了一个”dhk”字符串，而用于找到该字符串的指针一旦改变，该字符串就将不能再被找到，因此通常对存放该类型的指针进行const操作。其规则类似C中的<code>char *str=&quot;dhk&quot;</code>所遵循的规则。</p>
-<h3 id="使用数组初始化vector类型"><a href="#使用数组初始化vector类型" class="headerlink" title="使用数组初始化vector类型"></a>使用数组初始化vector类型</h3><p>C++不允许用一个数组为另一个数组赋初值，也不允许通过vector类型对象为一个数组初始化，但是允许通过数组为vector对象初始化。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[]=&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">v</span><span class="params">(begin(a),end(a))</span></span>;</span><br></pre></td></tr></table></figure>
-
-<h2 id="6、多维数组"><a href="#6、多维数组" class="headerlink" title="6、多维数组"></a>6、多维数组</h2><p>一些基础内容同C，详见<u>二维数组复习 | 小董的BLOG (gitee.io)</u></p>
-<p>多维数组可以理解为数组的数组例如<code>int a[3][4]</code>可以理解为a数组包含三个元素，而这三个元素都为大小为4的数组</p>
-<h3 id="下标引用"><a href="#下标引用" class="headerlink" title="下标引用"></a>下标引用</h3><h3 id="使用范围for语句和下标引用处理多维数组"><a href="#使用范围for语句和下标引用处理多维数组" class="headerlink" title="使用范围for语句和下标引用处理多维数组"></a>使用范围for语句和下标引用处理多维数组</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">3</span>][<span class="number">4</span>]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line"><span class="type">size_t</span> x=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> &amp;row : a)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> &amp;col : row)</span><br><span class="line">	&#123;</span><br><span class="line">		col=x;</span><br><span class="line">		x++;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -671,13 +715,13 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-count">38</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
