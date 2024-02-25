@@ -20,7 +20,193 @@
       </tags>
   </entry>
   <entry>
-    <title>bobo&#39;s question</title>
+    <title>linux杂</title>
+    <url>/2024/02/19/linux%E6%9D%82/</url>
+    <content><![CDATA[<h1 id="Ubuntu网络图标消失"><a href="#Ubuntu网络图标消失" class="headerlink" title="Ubuntu网络图标消失"></a>Ubuntu网络图标消失</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo service network-manager stop</span><br><span class="line">sudo rm /var/lib/NetworkManager/NetworkManager.state </span><br><span class="line">sudo service network-manager start</span><br></pre></td></tr></table></figure>
+
+<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd			切换文件夹</span><br><span class="line">pwd		查看当前绝对路径</span><br><span class="line">mkdir		创建目录</span><br><span class="line">ls			查看当前文件夹下内容	</span><br><span class="line">mv			移动/改名文件（取决于第二个参数是路径还是文件名）</span><br><span class="line">cp			拷贝一个文件到另一个文件夹中</span><br><span class="line">rm			删除  （rm -r 删除目录）</span><br><span class="line">clear		清屏</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>find [路径] -name “”</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">无路径默认桌面</span><br><span class="line">find -name &quot;*1*&quot;	名字含1的文件</span><br><span class="line">find -name &quot;*.txt&quot;	为后缀的文件</span><br><span class="line">find -name &quot;1*&quot;	以1为开头的文件</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>tar</p>
+<p>打&#x2F;解包文件，解包后文件存放路径为当且文件夹</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">tar -cvf test.tar 1 2</span><br><span class="line">tar -xvf test.tar</span><br></pre></td></tr></table></figure>
+
+<p>tar下的压缩与解压</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">tar -zcvf test.gz 1 2</span><br><span class="line">tar -zxvf test.gz</span><br><span class="line">tar -zxvf test.gz -C 指定路径（必须存在）</span><br><span class="line"></span><br><span class="line">tar -jcvf test.bz2 1 2</span><br><span class="line">tar -jxvf test.bz2</span><br><span class="line">tar -jxvf test.bz2 -C 指定路径（必须存在）</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>软件安装</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 1. 安装软件</span><br><span class="line">sudo apt install 软件包</span><br><span class="line"># 2. 卸载软件</span><br><span class="line">sudo apt remove 软件名</span><br><span class="line"># 3. 更新已安装的包</span><br><span class="line">sudo apt upgrade</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>which 提示文件&#x2F;命令所在位置</p>
+</li>
+</ul>
+<h2 id="杀死进程"><a href="#杀死进程" class="headerlink" title="杀死进程"></a>杀死进程</h2><ul>
+<li>xkill	强制关闭窗口</li>
+<li>kill (pid号)     pid号用ps -aux查询</li>
+<li>pkill (程序名)</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>ROS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>基础乐理</title>
+    <url>/2024/02/05/%E5%9F%BA%E7%A1%80%E4%B9%90%E7%90%86/</url>
+    <content><![CDATA[<h1 id="常用大调"><a href="#常用大调" class="headerlink" title="常用大调"></a>常用大调</h1><h2 id="C大调"><a href="#C大调" class="headerlink" title="C大调"></a>C大调</h2><table>
+<thead>
+<tr>
+<th align="center">C</th>
+<th align="center">D</th>
+<th align="center">E</th>
+<th align="center">F</th>
+<th align="center">G</th>
+<th align="center">A</th>
+<th align="center">B</th>
+<th align="center">C</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">3</td>
+<td align="center">4</td>
+<td align="center">5</td>
+<td align="center">6</td>
+<td align="center">7</td>
+<td align="center">8</td>
+</tr>
+</tbody></table>
+<h2 id="D大调"><a href="#D大调" class="headerlink" title="D大调"></a>D大调</h2><table>
+<thead>
+<tr>
+<th align="center">D</th>
+<th align="center">E</th>
+<th align="center">升F</th>
+<th align="center">G</th>
+<th align="center">A</th>
+<th align="center">B</th>
+<th align="center">升C</th>
+<th align="center">D</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">3</td>
+<td align="center">4</td>
+<td align="center">5</td>
+<td align="center">6</td>
+<td align="center">7</td>
+<td align="center">8</td>
+</tr>
+</tbody></table>
+<h2 id="E大调"><a href="#E大调" class="headerlink" title="E大调"></a>E大调</h2><table>
+<thead>
+<tr>
+<th align="center">E</th>
+<th align="center">升F</th>
+<th align="center">升G</th>
+<th align="center">A</th>
+<th align="center">B</th>
+<th align="center">升C</th>
+<th align="center">升D</th>
+<th align="center">E</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">3</td>
+<td align="center">4</td>
+<td align="center">5</td>
+<td align="center">6</td>
+<td align="center">7</td>
+<td align="center">8</td>
+</tr>
+</tbody></table>
+<h2 id="F大调"><a href="#F大调" class="headerlink" title="F大调"></a>F大调</h2><table>
+<thead>
+<tr>
+<th align="center">F</th>
+<th align="center">G</th>
+<th align="center">A</th>
+<th align="center">降B</th>
+<th align="center">C</th>
+<th align="center">D</th>
+<th align="center">E</th>
+<th align="center">F</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">3</td>
+<td align="center">4</td>
+<td align="center">5</td>
+<td align="center">6</td>
+<td align="center">7</td>
+<td align="center">8</td>
+</tr>
+</tbody></table>
+<h2 id="G大调"><a href="#G大调" class="headerlink" title="G大调"></a>G大调</h2><table>
+<thead>
+<tr>
+<th align="center">G</th>
+<th align="center">A</th>
+<th align="center">B</th>
+<th align="center">C</th>
+<th align="center">D</th>
+<th align="center">E</th>
+<th align="center">升F</th>
+<th align="center">G</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">3</td>
+<td align="center">4</td>
+<td align="center">5</td>
+<td align="center">6</td>
+<td align="center">7</td>
+<td align="center">8</td>
+</tr>
+</tbody></table>
+<h2 id="A大调"><a href="#A大调" class="headerlink" title="A大调"></a>A大调</h2><table>
+<thead>
+<tr>
+<th align="center">A</th>
+<th align="center">B</th>
+<th align="center">升C</th>
+<th align="center">D</th>
+<th align="center">E</th>
+<th align="center">升F</th>
+<th align="center">升G</th>
+<th align="center">A</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">3</td>
+<td align="center">4</td>
+<td align="center">5</td>
+<td align="center">6</td>
+<td align="center">7</td>
+<td align="center">8</td>
+</tr>
+</tbody></table>
+]]></content>
+      <tags>
+        <tag>杂项</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>机器人控制(考试复习自用)</title>
     <url>/2023/06/18/bobo-s-question/</url>
     <content><![CDATA[<h1 id="第一章"><a href="#第一章" class="headerlink" title="第一章"></a>第一章</h1><ul>
 <li>工业机器人特征<ul>
@@ -34,7 +220,7 @@
 <li>装配</li>
 </ul>
 </li>
-<li>**<u>机器人控制方法</u>**6<ul>
+<li><strong><u>机器人控制方法</u></strong><ul>
 <li><strong>运动学</strong></li>
 <li><strong>轨迹追踪</strong></li>
 <li><strong>参数识别</strong></li>
@@ -390,7 +576,7 @@
       </tags>
   </entry>
   <entry>
-    <title>PLC、电力电子和控制电路</title>
+    <title>PLC、电力电子和控制电路(考试复习自用)</title>
     <url>/2023/05/29/PLC/</url>
     <content><![CDATA[<h1 id="PLC存储区和分类"><a href="#PLC存储区和分类" class="headerlink" title="PLC存储区和分类"></a>PLC存储区和分类</h1><ul>
 <li><p>输入继电器 I</p>
@@ -600,7 +786,7 @@
       </tags>
   </entry>
   <entry>
-    <title>lzz-第四章 传感器技术</title>
+    <title>lzz-第四章 传感器技术(考试复习自用)</title>
     <url>/2023/05/18/lzz-%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E4%BC%A0%E6%84%9F%E5%99%A8%E6%8A%80%E6%9C%AF/</url>
     <content><![CDATA[<h1 id="1、传感器概述"><a href="#1、传感器概述" class="headerlink" title="1、传感器概述"></a>1、传感器概述</h1><p>输出信号多为易处理电信号（电压、电流、频率）</p>
 <p>由**<u>敏感元件、传感元件及测量转换电路</u>**组成</p>
@@ -745,7 +931,7 @@
       </tags>
   </entry>
   <entry>
-    <title>lzz-第三章 伺服技术</title>
+    <title>lzz-第三章 伺服技术(考试复习自用)</title>
     <url>/2023/05/17/lzz-%E7%AC%AC%E4%B8%89%E7%AB%A0-%E4%BC%BA%E6%9C%8D%E6%8A%80%E6%9C%AF/</url>
     <content><![CDATA[<h1 id="1、伺服系统"><a href="#1、伺服系统" class="headerlink" title="1、伺服系统"></a>1、伺服系统</h1><h2 id="伺服系统定义"><a href="#伺服系统定义" class="headerlink" title="伺服系统定义"></a>伺服系统定义</h2><p>以机械参数（位移、速度、加速度、力矩等）作为**<u>被控制量</u>**的一种<u><strong>自动控制系统</strong></u></p>
 <h2 id="一般组成"><a href="#一般组成" class="headerlink" title="一般组成"></a>一般组成</h2><img src="/images/loading.png" data-original="/2023/05/17/lzz-%E7%AC%AC%E4%B8%89%E7%AB%A0-%E4%BC%BA%E6%9C%8D%E6%8A%80%E6%9C%AF/1.jpg" class title="伺服系统组成"> 
@@ -989,7 +1175,7 @@
       </tags>
   </entry>
   <entry>
-    <title>lzz-第二章 机械传动部件选择</title>
+    <title>lzz-第二章 机械传动部件选择(考试复习自用)</title>
     <url>/2023/05/16/lzz-%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E6%9C%BA%E6%A2%B0%E4%BC%A0%E5%8A%A8%E9%83%A8%E4%BB%B6%E9%80%89%E6%8B%A9/</url>
     <content><![CDATA[<h1 id="1、机械系统组成"><a href="#1、机械系统组成" class="headerlink" title="1、机械系统组成"></a><u>1、机械系统组成</u></h1><p>联系各部件并实现其构造功能</p>
 <ul>
@@ -1256,7 +1442,7 @@
       </tags>
   </entry>
   <entry>
-    <title>lzz——绪论</title>
+    <title>lzz——绪论(考试复习自用)</title>
     <url>/2023/05/16/%E7%BB%AA%E8%AE%BA/</url>
     <content><![CDATA[<h1 id="1、什么是机电一体化"><a href="#1、什么是机电一体化" class="headerlink" title="1、什么是机电一体化"></a>1、什么是机电一体化</h1><h2 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h2><ul>
 <li>机械工程</li>
@@ -2705,7 +2891,7 @@
       </tags>
   </entry>
   <entry>
-    <title>单片机复习</title>
+    <title>单片机复习(考试复习自用)</title>
     <url>/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/</url>
     <content><![CDATA[<h1 id="计算机基础"><a href="#计算机基础" class="headerlink" title="计算机基础"></a>计算机基础</h1><ul>
 <li><p>原码、反码、补码</p>
