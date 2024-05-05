@@ -19,13 +19,13 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"dhkkk.gitee.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"dhkkkkkk.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="顺序容器概述容器：一些特定类型对象的集合。顺序容器提供了控制元素存储和访问顺序的能力，且该顺序与元素的内容无关，而与元素加入容器时的位置相关 标准库中的顺序容器C++中提供了多种多种顺序容器，这些容器根据下两方面性能的选择都有不同的折中：  向容器中不同位置添加、删除元素的代价 非顺序访问容器中的元素的代价     vector 可变大小数组；支持快速任意元素随机访问；在尾部之外插入元素代价较大">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C++-顺序容器">
-<meta property="og:url" content="https://dhkkk.gitee.io/2023/01/12/C++-8/index.html">
+<meta property="og:url" content="https://dhkkkkkk.github.io/2023/01/12/C++-8/index.html">
 <meta property="og:site_name" content="小董的BLOG">
 <meta property="og:description" content="顺序容器概述容器：一些特定类型对象的集合。顺序容器提供了控制元素存储和访问顺序的能力，且该顺序与元素的内容无关，而与元素加入容器时的位置相关 标准库中的顺序容器C++中提供了多种多种顺序容器，这些容器根据下两方面性能的选择都有不同的折中：  向容器中不同位置添加、删除元素的代价 非顺序访问容器中的元素的代价     vector 可变大小数组；支持快速任意元素随机访问；在尾部之外插入元素代价较大">
 <meta property="og:locale" content="zh_CN">
@@ -35,7 +35,7 @@
 <meta property="article:tag" content="C++学习">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://dhkkk.gitee.io/2023/01/12/C++-8/">
+<link rel="canonical" href="https://dhkkkkkk.github.io/2023/01/12/C++-8/">
 
 
 <script id="page-configurations">
@@ -199,7 +199,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkk.gitee.io/2023/01/12/C++-8/">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2023/01/12/C++-8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/zoe.gif">
@@ -369,7 +369,7 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array&lt;person,10&gt; men=&#123;a,b,a&#125;;</span><br></pre></td></tr></table></figure>
 
 <p>并且初始化时不能像men6一样使用大括号实现多个构造函数参数初始化</p>
-<h3 id="string容器初始化"><a href="#string容器初始化" class="headerlink" title="string容器初始化"></a>string容器初始化</h3><p><a href="https://dhkkk.gitee.io/2022/09/15/C++-3/">C++字符串、向量和数组 | 小董的BLOG (gitee.io)</a></p>
+<h3 id="string容器初始化"><a href="#string容器初始化" class="headerlink" title="string容器初始化"></a>string容器初始化</h3><p><a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/09/15/C++-3/">C++字符串、向量和数组 | 小董的BLOG (gitee.io)</a></p>
 <h2 id="赋值操作"><a href="#赋值操作" class="headerlink" title="赋值操作"></a>赋值操作</h2><p>除了一般初始化列表拷贝（不支持array），插入函数之外，这里将介绍assign函数和swap函数</p>
 <h3 id="assign"><a href="#assign" class="headerlink" title="assign"></a>assign</h3><p>顺序容器中定义了assign成员，该函数允许从一个不同但可以兼容的类型元素赋值（不支持array），例如：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">list&lt;string&gt; names;</span><br><span class="line">vector&lt;<span class="type">const</span> <span class="type">char</span>*&gt; oldstyle;</span><br><span class="line">names=oldstyle;<span class="comment">//错误的，不可以直接将类型不同的容器赋值</span></span><br><span class="line">names=<span class="built_in">assign</span>( oldstyle.<span class="built_in">begin</span>(),oldstyle.<span class="built_in">end</span>() );</span><br></pre></td></tr></table></figure>
@@ -378,7 +378,7 @@
 <p>assign也支持输入一个整数和一个元素值：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">list&lt;string&gt; <span class="title">names</span><span class="params">(<span class="number">1</span>)</span></span>;</span><br><span class="line">name.<span class="built_in">assign</span>(<span class="number">10</span>,<span class="string">&quot;dhk&quot;</span>);<span class="comment">//替换为10个相同的指定元素</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="swap"><a href="#swap" class="headerlink" title="swap"></a>swap</h3><p>swap函数的作用是交换<strong>两个相同类型容器</strong>的元素，但是swap的速度要快于一般的值拷贝，因为其本质的操作并没有改变这些元素的地址，而是改变了两个容器的<strong>数据结构</strong>，我个人的理解是就好像<a href="https://dhkkk.gitee.io/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/">基于FreeRTOS的列表学习 | 小董的BLOG (gitee.io)</a>中列表与列表项之间的关系，swap只是改变了首尾列表项与对应列表的指针关系；也就是说容器内元素的地址未发生变化，只是用于存储它们所属容器信息的某个变量（应该只有首尾元素）发生了变化。因此，<strong>swap操作是在一个常数时间内完成的</strong>，因为它跟元素的个数无关</p>
+<h3 id="swap"><a href="#swap" class="headerlink" title="swap"></a>swap</h3><p>swap函数的作用是交换<strong>两个相同类型容器</strong>的元素，但是swap的速度要快于一般的值拷贝，因为其本质的操作并没有改变这些元素的地址，而是改变了两个容器的<strong>数据结构</strong>，我个人的理解是就好像<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/">基于FreeRTOS的列表学习 | 小董的BLOG (gitee.io)</a>中列表与列表项之间的关系，swap只是改变了首尾列表项与对应列表的指针关系；也就是说容器内元素的地址未发生变化，只是用于存储它们所属容器信息的某个变量（应该只有首尾元素）发生了变化。因此，<strong>swap操作是在一个常数时间内完成的</strong>，因为它跟元素的个数无关</p>
 <p>因此，在swap前使用的迭代器、引用、指针在swap后<strong>都不会失效，因为元素本身的地址是没有改变的</strong>，这点就不同于assign的值拷贝。<strong>也就是说我们在使用swap后仍可以使用之前的迭代器、引用和指针，它们依旧指向（绑定）swap前的那个元素，只是这个元素不再属于之前的容器了</strong></p>
 <p>需要注意的是：</p>
 <ul>
@@ -1049,11 +1049,11 @@
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
+<script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
 </html>
