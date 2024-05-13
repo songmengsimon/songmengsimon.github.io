@@ -19,38 +19,38 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"dhkkkkkk.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"songmengsimon.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="最近又用到了iic，但是原理又有些忘记了，刚好就趁这个机会整理一下一些常用的通信协议，主要是针对协议层和寄存器的整理，均以32为例，32有关内容大部分来自《STM32中文参考手册V10》，方便日后查阅温习。 串口协议因为也不是初学，同步异步和各种标准就不赘述了,主要讲异步 协议层内容串口通讯的数据包由发送设备通过自身的 TXD 接口传输到接收设备的 RXD 接口。在串口通讯 的协议层中，规定了数据">
 <meta property="og:type" content="article">
 <meta property="og:title" content="常用的数据通信协议">
-<meta property="og:url" content="https://dhkkkkkk.github.io/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/index.html">
-<meta property="og:site_name" content="小董的BLOG">
+<meta property="og:url" content="https://songmengsimon.github.io/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/index.html">
+<meta property="og:site_name" content="宋檬的BLOG">
 <meta property="og:description" content="最近又用到了iic，但是原理又有些忘记了，刚好就趁这个机会整理一下一些常用的通信协议，主要是针对协议层和寄存器的整理，均以32为例，32有关内容大部分来自《STM32中文参考手册V10》，方便日后查阅温习。 串口协议因为也不是初学，同步异步和各种标准就不赘述了,主要讲异步 协议层内容串口通讯的数据包由发送设备通过自身的 TXD 接口传输到接收设备的 RXD 接口。在串口通讯 的协议层中，规定了数据">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
-<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
-<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
-<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
-<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
-<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
-<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
-<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
-<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
-<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
-<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
-<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
-<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
-<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
+<meta property="og:image" content="https://songmengsimon.github.io/images/loading.png">
+<meta property="og:image" content="https://songmengsimon.github.io/images/loading.png">
+<meta property="og:image" content="https://songmengsimon.github.io/images/loading.png">
+<meta property="og:image" content="https://songmengsimon.github.io/images/loading.png">
+<meta property="og:image" content="https://songmengsimon.github.io/images/loading.png">
+<meta property="og:image" content="https://songmengsimon.github.io/images/loading.png">
+<meta property="og:image" content="https://songmengsimon.github.io/images/loading.png">
+<meta property="og:image" content="https://songmengsimon.github.io/images/loading.png">
+<meta property="og:image" content="https://songmengsimon.github.io/images/loading.png">
+<meta property="og:image" content="https://songmengsimon.github.io/images/loading.png">
+<meta property="og:image" content="https://songmengsimon.github.io/images/loading.png">
+<meta property="og:image" content="https://songmengsimon.github.io/images/loading.png">
+<meta property="og:image" content="https://songmengsimon.github.io/images/loading.png">
+<meta property="og:image" content="https://songmengsimon.github.io/images/loading.png">
 <meta property="article:published_time" content="2023-02-09T14:05:44.000Z">
 <meta property="article:modified_time" content="2023-02-18T16:13:16.771Z">
-<meta property="article:author" content="dhk">
+<meta property="article:author" content="simon">
 <meta property="article:tag" content="嵌入式学习">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://dhkkkkkk.github.io/images/loading.png">
+<meta name="twitter:image" content="https://songmengsimon.github.io/images/loading.png">
 
-<link rel="canonical" href="https://dhkkkkkk.github.io/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/">
+<link rel="canonical" href="https://songmengsimon.github.io/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/">
 
 
 <script id="page-configurations">
@@ -76,7 +76,7 @@
   padding: 1px 4px;
 }
 </style>
-  <title>常用的数据通信协议 | 小董的BLOG</title>
+  <title>常用的数据通信协议 | 宋檬的BLOG</title>
   
 
 
@@ -127,7 +127,7 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">小董的BLOG</h1>
+      <h1 class="site-title">宋檬的BLOG</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
   </div>
@@ -214,16 +214,16 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/">
+    <link itemprop="mainEntityOfPage" href="https://songmengsimon.github.io/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
+      <meta itemprop="name" content="simon">
+      <meta itemprop="description" content="开心每一天">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
+      <meta itemprop="name" content="宋檬的BLOG">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -664,10 +664,10 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="dhk"
+    <img class="site-author-image" itemprop="image" alt="simon"
       src="/images/zoe.gif">
-  <p class="site-author-name" itemprop="name">dhk</p>
-  <div class="site-description" itemprop="description">记录一些学习日常</div>
+  <p class="site-author-name" itemprop="name">simon</p>
+  <div class="site-description" itemprop="description">开心每一天</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
@@ -687,10 +687,10 @@
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <a href="https://github.com/dhkkkkkk" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;dhkkkkkk" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+        <a href="https://github.com/songmengsimon" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;songmengsimon" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
-        <a href="/1154012965@qq.com" title="QQ email → 1154012965@qq.com"><i class="fa fa-envelope fa-fw"></i>QQ email</a>
+        <a href="/1258331726@qq.com" title="QQ email → 1258331726@qq.com"><i class="fa fa-envelope fa-fw"></i>QQ email</a>
       </span>
   </div>
 
@@ -720,7 +720,7 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">dhk</span>
+  <span class="author" itemprop="copyrightHolder">simon</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
